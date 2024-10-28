@@ -15,10 +15,10 @@ class Player :public Entity{
         //List<Decision> fDecisions; 
     public:
         Player();
-        //Finish building the overload constructor later
+        Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina);
         //Getter and setter for fHungerLevel
         int getHungerLevel();
-        void setHungerLevel(string pHungerLevel);
+        void setHungerLevel(int pHungerLevel);
 
         //Getter and setter for fThirstLevel
         int getThirstLevel();
@@ -39,5 +39,5 @@ class Player :public Entity{
         void DecreaseStamina(int pDecrementValue);     //Decrease Stamina
 
         void Heal(int pHealValue);
-        void ApplyEffects(); //This function will run every turn to check for the Hunger level, thirst level, and stamina
+        // void ApplyEffects(); This function will run every turn to check for the Hunger level, thirst level, and stamina
 };

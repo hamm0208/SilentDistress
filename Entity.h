@@ -12,7 +12,7 @@ class Entity
 		bool fIsAlive; //Is the Entity Alive
 	public:
 		Entity(); //Default Constructor To set a default value for the attributes
-		Entity(string pName, int pAttackDam, int pHealth); //Constructor to load the parameter into the attributes
+		Entity(string pName, int pAttackDamage, int pHealth); //Constructor to load the parameter into the attributes
 		//Getter and seter for fName
 		string getName();
 		void setName(string pName);

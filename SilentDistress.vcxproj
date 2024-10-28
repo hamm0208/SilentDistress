@@ -135,7 +135,9 @@
     <ClInclude Include="List.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="SinglyLinkedList.h" />
     <ClInclude Include="SinglyLinkedNode.h" />
+    <ClInclude Include="SinglyLinkedNodeIterator.h" />
     <ClInclude Include="Stack.h" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-
+using namespace std;
 template <typename T>
 class SinglyLinkedNode {
 public:
@@ -19,7 +19,7 @@ public:
     SinglyLinkedNode(const T& value) : value(value), next(&NIL) {}
 
     // Getter for value
-    T getValue() const {
+    T& getValue() {
         return value;
     }
 
@@ -31,11 +31,6 @@ public:
     // Getter for the next node
     Node* getNext() const {
         return next;
-    }
-
-    // Setter for the next node
-    void setNext(Node* nextNode) {
-        next = nextNode;
     }
 
     // Append a new node to the end of the list
