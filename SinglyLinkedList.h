@@ -78,9 +78,8 @@ class SinglyLinkedList{
                     while (ptr->getNext() != last) {        //If ptr's next points to the last node, then that is the new last node
                         ptr = ptr->getNext();
                     }
-                    delete toDelete;                       //Delete last node
                     last = ptr;                            //the new last node is now the ptr
-                    last->next = &(Node::NIL);             //Reassign the last's next node points to the sentinel node
+					ptr->removeNext();                     //Delete last node
                 }
                 --count;
 				return value;                               // Return the value.

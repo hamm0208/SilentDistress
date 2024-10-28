@@ -8,6 +8,11 @@ int main() {
 	myList.pushBack(2);
 	myList.pushBack(3);
 	myList.pushBack(4);
+
+	cout << myList.popBack() << endl;
+	cout << myList.popBack() << endl;
+	cout << myList.popBack() << endl;
+	cout << myList.popBack() << endl;
 	
 
 	return 0;
