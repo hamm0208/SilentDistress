@@ -33,13 +33,12 @@ public:
         return next;
     }
 
-    // Append a new node to the end of the list
+    // Append a new node to the this
     void append(Node* newNode) {
-        Node* current = this;
-        while (current->next != &NIL) {
-            current = current->next;
+        if(next != &NIL){
+            newNode->next = this->next;
         }
-        current->next = newNode;
+        this->next = newNode;
     }
 
     // Remove the next node
