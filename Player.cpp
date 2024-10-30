@@ -48,7 +48,23 @@ void Player::IncreaseHungerLevel(int pIncrementValue) {
     fHungerLevel += pIncrementValue;
 };
 void Player::DecreaseHungerLevel(int pDecrementValue) {
-    fHungerLevel -= pDecrementValue;
+    if(pDecrementValue>= fHungerLevel){
+        fHungerLevel = 0;
+    }else{
+        fHungerLevel -= pDecrementValue;
+    }
+};
+
+void Player::IncreaseThirstLevel(int pIncrementValue){
+    fHungerLevel += pIncrementValue;
+};
+
+void Player::DecreaseThirstLevel(int pDecrementValue) {
+    if(pDecrementValue>= fThirstLevel){
+        fThirstLevel = 0;
+    }else{
+        fThirstLevel -= pDecrementValue;
+    }
 };
 
 //Increase and decreasing Stamina Level
@@ -56,7 +72,13 @@ void Player::IncreaseStamina(int pIncrementValue) {
     fStamina += pIncrementValue;
 };
 void Player::DecreaseStamina(int pDecrementValue) {
-    fStamina -= pDecrementValue;
+    if(fStamina != 0){
+        if(pDecrementValue <= fStamina){
+            fStamina = 0;
+        }else{
+            fStamina -= pDecrementValue;
+        }
+    }
 };
 
 void Player::Heal(int pHealValue) {

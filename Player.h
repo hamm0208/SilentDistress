@@ -35,6 +35,9 @@ class Player :public Entity{
         void IncreaseHungerLevel(int pIncrementValue); //Increase hunger level
         void DecreaseHungerLevel(int pDecrementValue); //Decrease hunger level, If pDecrementValue is more than fHungerLevel, then set fHungerLevel back to 0
 
+        void IncreaseThirstLevel(int pIncrementValue); //Increase thirst level
+        void DecreaseThirstLevel(int pDecrementValue); //Decrease thirst level, If pDecrementValue is more than fThirstLevel, then set fThirstLevel back to 0
+
         void IncreaseStamina(int pIncrementValue);     //Increase Stamina
         void DecreaseStamina(int pDecrementValue);     //Decrease Stamina
 
