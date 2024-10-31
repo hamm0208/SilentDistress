@@ -99,18 +99,18 @@ class ItemHashTable{
             return V();
         }
 
-        bool remove(Item key) {
+        bool remove(Item* key) {
             int index = hashKey(key);
             HNode* current = table[index];
 
-            if (current != &HNode::NIL && current->getKey().getName() == key.getName()) {
+            if (current != &HNode::NIL && current->getKey()->getName() == key->getName()) {
                 table[index] = current->getNext(); // Move the head of the list to the next node
                 delete current;
                 return true;
             }
 
             while (current != &HNode::NIL && current->getNext() != &HNode::NIL) {
-                if (current->getNext()->getKey().getName() == key.getName()) {
+                if (current->getNext()->getKey()->getName() == key->getName()) {
                     current->removeNext();
                     return true;
                 }
