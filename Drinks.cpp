@@ -15,7 +15,7 @@ void Drinks::Use(Player& pPlayer){
 //Display Drinks's attributes
 void Drinks::Inspect(){
     Item::Inspect();
-    cout << "Hydration Value:\t" << fHydrationValue << endl; //Display hydration value
+    cout << "Hydration Value:\t\t" << fHydrationValue << endl; //Display hydration value
 }
 //Getter and setter for fHydrationValue
 int Drinks::getHydrationValue(){

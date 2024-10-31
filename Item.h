@@ -32,3 +32,5 @@ class Item
         virtual void Use(Player& pPlayer) = 0;  //Apply effects of the item to the Player
         virtual void Inspect();                 //Display all the attributes in Items
 };
+
+

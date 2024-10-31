@@ -25,8 +25,8 @@ void Weapon::Use(Player& pPlayer){
 //Display Weapon's attributes
 void Weapon::Inspect(){
     Item::Inspect();
-    cout <<"Damage:\t" << fDamage << endl;
-    cout <<"Durability:\t" << fDamage << endl;
+    cout <<"Damage:\t\t\t\t" << fDamage << endl;
+    cout <<"Durability:\t\t\t" << fDamage << endl;
 }
 
 //Getter and setter for fDamage

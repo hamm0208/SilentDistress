@@ -17,7 +17,7 @@ void Medical::Use(Player& pPlayer){
 //Display Medical's attributes
 void Medical::Inspect(){
     Item::Inspect();
-    cout << "Heal amount:\t" << fHealAmount << endl; //Display hydration value
+    cout << "Heal amount:\t\t\t" << fHealAmount << endl; //Display hydration value
 }
 //Getter and setter for fHydrationValue
 int Medical::getHealAmount(){

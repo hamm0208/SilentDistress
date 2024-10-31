@@ -21,16 +21,23 @@ void Inventory::AddItem(Item* pItem) {
 }
 void Inventory::DisplayInventory() {
 	//BUCKET_SIZE IS THE SIZE OF THE BUCKET ADN USE IT TO ITERATE THROUGH THE LIST
+	bool isEmpty = true;
+	cout << "----------------------------------------------------------------------" << endl;
 	for (int i = 0; i < BUCKET_SIZE; ++i) {
 		HNode* node = fInventory.getTable()[i];
-		while (node != &(HNode::NIL)) {
+		while (node != &(HNode::NIL)){
+			isEmpty = false;
+			cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << endl;
+			cout<<"Details of " << node->getKey()->getName() << ", Quanity: " <<node->getValue() << endl;
 			node->getKey()->Inspect();
+    		cout << "Total Weight:\t\t\t" << node->getKey()->getWeight() * node->getValue() << "\n";
 			node = node->getNext();
 		}
-		if (node != &(HNode::NIL)) {
-			cout << endl;
-		}
 	}
+	if (isEmpty) {
+		cout << "\t\t\tEmpty Inventory!" << endl;
+	}
+	cout << "----------------------------------------------------------------------" << endl;
 }
 Inventory::~Inventory() {
 }

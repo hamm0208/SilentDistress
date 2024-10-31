@@ -41,9 +41,9 @@ void Item::setIsConsumable(bool pIsConsumable){
 };
 
 void Item::Inspect() {
-    cout << "Name:\t" << fName << "\n";
-    cout << "Description:\t" << fDescription << "\n";
-    cout << "Weight:\t" << fWeight << "\n";
-    cout << "Consumable:\t" << (fIsConsumable ? "Yes" : "No") << endl;
+    cout << "Name:\t\t\t\t" << fName << "\n";
+    cout << "Description:\t\t\t" << fDescription << "\n";
+    cout << "Weight:\t\t\t\t" << fWeight << "\n";
+    cout << "Consumable:\t\t\t" << (fIsConsumable ? "Yes" : "No") << endl;
 }
 

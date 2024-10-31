@@ -10,7 +10,7 @@ void SleepingBag::Use(Player& pPlayer) {
 }
 void SleepingBag::Inspect() {
     Item::Inspect();
-    cout << "Recovery Amount:\t" << fRecoveryAmount << endl;
+    cout << "Recovery Amount:\t\t" << fRecoveryAmount << endl;
 }
 
 //Getter and setter for fRecoveryAmount
