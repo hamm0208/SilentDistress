@@ -9,7 +9,8 @@ Food::Food():Item("Unknown Food", "No description available", 0, true), //Defaul
 }
 
 //Initialize attributes and base class, Item
-Food::Food(string pName, string pDescription, int pWeight, bool pIsConsumable, int pNutrition, bool pIsCooked, bool pIsCookable, int pHealthRestorationValue, int pStaminaValue):Item(pName, pDescription, pWeight, pIsConsumable),
+Food::Food(string pName, string pDescription, int pWeight, bool pIsConsumable, int pNutrition, bool pIsCooked, bool pIsCookable, int pHealthRestorationValue, int pStaminaValue):
+Item(pName, pDescription, pWeight, pIsConsumable),
 fNutrition(pNutrition), fIsCookable(pIsCookable), fIsCooked(pIsCooked), fHealthRestorationValue(pHealthRestorationValue), fStaminaValue(pStaminaValue){}
 
 //Eat the food
@@ -27,7 +28,7 @@ void Food::Use(Player& pPlayer){
 //Display Food's attributes
 void Food::Inspect(){
     Item::Inspect();
-    cout << "Is Cookable: " << (fIsCookable ? "Yes" : "No") << endl;
-    cout << "Health Restoration Value: " << fHealthRestorationValue << endl;
-    cout << "Stamina Value: " << fStaminaValue << endl;
+    cout << "Is Cookable:\t" << (fIsCookable ? "Yes" : "No") << endl;
+    cout << "Health Restoration Value:\t" << fHealthRestorationValue << endl;
+    cout << "Stamina Value:\t" << fStaminaValue << endl;
 }

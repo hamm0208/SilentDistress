@@ -10,6 +10,46 @@ class Food:public Item{
     public:
         Food();
         Food(string pName, string pDescription, int pWeight, bool pIsConsumable, int pNutrition,bool pIsCooked, bool pIsCookable, int pHealthRestorationValue, int pStaminaValue);
-        void Use(Player& pPlayer);
+        void Use(Player& pPlayer) override;
         void Inspect();
+
+        //Getter and setter for fNutrition
+        int getNutrition(){
+            return fNutrition;
+        }
+        void setNutrition(int  pNutrition){
+            fNutrition = pNutrition;
+        }
+
+        //Getter and setter for fHealthRestorationValue
+        int getHealthRestorationValue(){
+            return fHealthRestorationValue;
+        }
+        void setHealthRestorationValue(int  pHealthRestorationValue){
+            fHealthRestorationValue = pHealthRestorationValue;
+        }
+
+        //Getter and setter for fStaminaValue
+        int getStaminaValue(){
+            return fStaminaValue;
+        }
+        void setStaminaValue(int  pStaminaValue){
+            fStaminaValue = pStaminaValue;
+        }
+
+        //Getter and setter for fIsCooked
+        bool getIsCooked(){
+            return fIsCooked;
+        }
+        void setIsCooked(bool pIsCooked){
+            fIsCooked = pIsCooked;
+        }
+        
+        //Getter and setter for fIsCookable
+        bool getIsCookable(){
+            return fIsCookable;
+        }
+        void setIsCookable(bool pIsCookable){
+            fIsCookable = pIsCookable;
+        }
 };

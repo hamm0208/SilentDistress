@@ -55,6 +55,7 @@ void Player::DecreaseHungerLevel(int pDecrementValue) {
     }
 };
 
+//Increase and decreasing Thirst Level
 void Player::IncreaseThirstLevel(int pIncrementValue){
     fHungerLevel += pIncrementValue;
 };
