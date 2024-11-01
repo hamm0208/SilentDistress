@@ -18,5 +18,6 @@ class Weapon:public Item{
         void setDurability(int pDurability);
         //Getter and setter for fCurrentDurability
         int getCurrentDurability();
-        void decreaseCurrentDiability(int pDecrementValue);
+        void setCurrentDurability(int pCurrentDurability);
+        void decreaseCurrentDurability(int pDecrementValue);
 };

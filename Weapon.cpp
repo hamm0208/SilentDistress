@@ -26,7 +26,7 @@ void Weapon::Use(Player& pPlayer){
 void Weapon::Inspect(){
     Item::Inspect();
     cout <<"Damage:\t\t\t\t" << fDamage << endl;
-    cout <<"Durability:\t\t\t" << fDamage << endl;
+    cout <<"Durability:\t\t\t" << "(" << fCurrentDurability << "/" << fDurability << ")" << endl;
 }
 
 //Getter and setter for fDamage
@@ -47,6 +47,9 @@ void Weapon::setDurability(int pDurability){
 int Weapon::getCurrentDurability(){
     return fCurrentDurability;
 }
-void Weapon::decreaseCurrentDiability(int pDecrementValue){
+void Weapon::setCurrentDurability(int pCurrentDurability) {
+    fCurrentDurability = pCurrentDurability;
+}
+void Weapon::decreaseCurrentDurability(int pDecrementValue){
     fCurrentDurability -= pDecrementValue;
 }
