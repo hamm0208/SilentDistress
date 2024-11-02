@@ -53,7 +53,6 @@ bool Inventory::RemoveItem(Item* pItem) {
 	}
 };
 
-<<<<<<< HEAD
 //Search item from inventory by name
 Item* Inventory::SearchItem(string pName) {
 	int index = fInventory.hashKey(pName);
@@ -67,10 +66,6 @@ Item* Inventory::SearchItem(string pName) {
 	return (Item*)0;
 };
 
-<<<<<<< HEAD
-=======
->>>>>>> parent of 6ddcac8 (Finish Inventory class)
-=======
 //Equip item to be used
 void Inventory::EquipItem() {
 	ViewInventoryItems();
@@ -89,7 +84,6 @@ void Inventory::EquipItem() {
 
 }
 
->>>>>>> parent of 7d83273 (Adding inventory to player)
 //Display item details
 void Inventory::ViewItemDetails(Item* pItem) {
 	int item_Quantity = fInventory.findValue(pItem);										//Find the item quantity in inventory

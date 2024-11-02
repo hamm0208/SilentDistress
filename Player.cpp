@@ -1,11 +1,7 @@
 #include "Player.h"
-<<<<<<< HEAD
-#include "Weapon.h";
-Player::Player():Entity(), fInventory(100) {
-=======
+#include "Weapon.h"
 
 Player::Player():Entity() {
->>>>>>> parent of 7d83273 (Adding inventory to player)
     fHungerLevel = 0;
     fThirstLevel = 0;
     fStamina = 0;
