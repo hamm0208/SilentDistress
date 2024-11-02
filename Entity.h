@@ -10,7 +10,6 @@ class Entity
 		int fHealth; //Entity max health
 		int fCurrentHealth; //Entity's current health
 		bool fIsAlive; //Is the Entity Alive
-		bool fIsFighting;
 	public:
 		Entity(); //Default Constructor To set a default value for the attributes
 		Entity(string pName, int pAttackDamage, int pHealth); //Constructor to load the parameter into the attributes
@@ -32,10 +31,8 @@ class Entity
 
 		//Getter and setter for fIsAlive
 		bool getIsAlive();
-		void setIsAlive(bool pFlag);
+		void setIsAlive(bool flag);
 
-		bool getIsFighting();
-		void setIsFighting(bool pFlag);
 		//Entity dies
 		void Die();
 

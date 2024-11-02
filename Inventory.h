@@ -1,5 +1,9 @@
 #pragma once
+<<<<<<< HEAD
 #include "Weapon.h"
+=======
+#include "Item.h"
+>>>>>>> parent of 7d83273 (Adding inventory to player)
 #include "Hash.h"
 
 class Inventory{
@@ -17,6 +21,7 @@ class Inventory{
 		void AddItem(Item* pItem);								//Adding item to inventory
 		bool RemoveItem(Item* pItem);							//Removing an item from inventory
 		Item* SearchItem(string pName);							//Search if item exist in fInventory by name
+		void EquipItem();										//Equip items  (Maybe Change this into player, bc only player can equip item
 		void ViewInventoryDetails();							//View All Item Details
 		void ViewItemDetails(Item* pItem);						//View Item Details
 		void ViewInventoryItems();								//View All of items

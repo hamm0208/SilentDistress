@@ -1,6 +1,11 @@
 #include "Player.h"
+<<<<<<< HEAD
 #include "Weapon.h";
 Player::Player():Entity(), fInventory(100) {
+=======
+
+Player::Player():Entity() {
+>>>>>>> parent of 7d83273 (Adding inventory to player)
     fHungerLevel = 0;
     fThirstLevel = 0;
     fStamina = 0;
@@ -8,8 +13,8 @@ Player::Player():Entity(), fInventory(100) {
 }
 
 //Initialise all the parameter into the class's attributes
-Player::Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina, int pInventoryCapacity) :
-    Entity(pName, pAttackDamage, pHealth), fHungerLevel(pHungerLevel), fThirstLevel(pThirstLevel), fStamina(pStamina), fIsresting(false), fInventory(pInventoryCapacity){};
+Player::Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina) :
+    Entity(pName, pAttackDamage, pHealth), fHungerLevel(pHungerLevel), fThirstLevel(pThirstLevel), fStamina(pStamina), fIsresting(false) {};
 
 //Getter and setter for fHungerLevel
 int Player::getHungerLevel() {

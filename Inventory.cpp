@@ -1,4 +1,5 @@
 #include "Inventory.h"
+#include "Weapon.h"
 Inventory::Inventory(int pCapacity) : fInventory(BUCKET_SIZE), fMaxCapacity(pCapacity), fCurrentItem(nullptr), fCurrentCapacity(0) {
 }
 
@@ -66,8 +67,29 @@ Item* Inventory::SearchItem(string pName) {
 	return (Item*)0;
 };
 
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 6ddcac8 (Finish Inventory class)
+=======
+//Equip item to be used
+void Inventory::EquipItem() {
+	ViewInventoryItems();
+	string item_Name = "";
+	int test = 0;
+	cout << "Name of item to equip (Case sensitive and leave no blank space): ";
+	cin.clear();
+	getline(cin, item_Name);
+	Item* searched_Item = SearchItem(item_Name);
+	if (searched_Item != (Item*)0) {
+		setCurrentItem(searched_Item);
+		cout << "You have equipped " << searched_Item->getName() << "!" << endl;
+	}else {
+		cout << item_Name << " is not in your inventory" << endl;
+	}
+
+}
+
+>>>>>>> parent of 7d83273 (Adding inventory to player)
 //Display item details
 void Inventory::ViewItemDetails(Item* pItem) {
 	int item_Quantity = fInventory.findValue(pItem);										//Find the item quantity in inventory

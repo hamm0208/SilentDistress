@@ -1,9 +1,13 @@
 /*
 Remove this when youre done broooo
 Maybe sleeping will count as 2 turns, and will increase hunger and thirst
+oh and also do the implementation later on the Player.cpp 
 */
 #pragma once
+<<<<<<< HEAD
 #include "Inventory.h"
+=======
+>>>>>>> parent of 7d83273 (Adding inventory to player)
 #include "Entity.h"
 class Player :public Entity{
      private:
@@ -11,13 +15,13 @@ class Player :public Entity{
         int fThirstLevel;   //0 - 10 Thirst level, same concept as fHungerLevel
         int fStamina;       //If stamina reach 0, you must go to sleep and waste 1 turn
         bool fIsresting;    //Is resting flag
-        Inventory fInventory;
+        //Inventory fInventory;
         //List<Decision> fDecisions; 
     public:
         Player();
-        Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina, int pInventoryCapacity);
-        int getHungerLevel();
+        Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina);
         //Getter and setter for fHungerLevel
+        int getHungerLevel();
         void setHungerLevel(int pHungerLevel);
 
         //Getter and setter for fThirstLevel
@@ -42,6 +46,7 @@ class Player :public Entity{
         void DecreaseStamina(int pDecrementValue);     //Decrease Stamina
 
         void Heal(int pHealValue);
+<<<<<<< HEAD
         void EquipItem();
         void ViewItems();
         void AddItem(Item& pItem);
@@ -53,3 +58,7 @@ class Player :public Entity{
         void UseCurrentItem();
         // void ApplyEffects(); This function will run every turn to check for the Hunger level, thirst level, and stamina
 };
+=======
+        // void ApplyEffects(); This function will run every turn to check for the Hunger level, thirst level, and stamina
+};
+>>>>>>> parent of 7d83273 (Adding inventory to player)

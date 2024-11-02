@@ -7,11 +7,7 @@ SleepingBag::SleepingBag(string pName, string pDescription, int pWeight, bool pI
 
 void SleepingBag::Use(Player& pPlayer) {
     pPlayer.IncreaseStamina(fRecoveryAmount);
-    pPlayer.IncreaseHungerLevel(2);
-    pPlayer.IncreaseThirstLevel(2);
-    cout<<"Your hunger level and thrist level has been incresed by 2 after your rest" <<endl;
 }
-
 void SleepingBag::Inspect() {
     Item::Inspect();
     cout << "Recovery Amount:\t\t" << fRecoveryAmount << endl;
