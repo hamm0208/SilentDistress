@@ -67,7 +67,7 @@ class ItemHashTable{
             }
         }
 
-        int hashKey(string pName) {
+        int hashKey(Item* key) {
             int hash = 0;
             string name = key->getName();
             for (size_t x = 0; x < name.length(); x++) {
@@ -77,7 +77,7 @@ class ItemHashTable{
         }
 
         void insert(Item* key, V value) {
-            int index = hashKey(key->getName());
+            int index = hashKey(key);
             if (table[index] == &HNode::NIL) {
                 table[index] = new HNode(key, value);
             }
@@ -88,7 +88,7 @@ class ItemHashTable{
         }
 
         V findValue(Item* key) {
-            int index = hashKey(key->getName());
+            int index = hashKey(key);
             HNode* targetBucket = table[index];
             while (targetBucket != &(HNode::NIL)) {
                 if (targetBucket->getKey()->getName() == key->getName()) {
@@ -100,7 +100,7 @@ class ItemHashTable{
         }
 
         bool remove(Item* key) {
-            int index = hashKey(key->getName());
+            int index = hashKey(key);
             HNode* current = table[index];
 
             if (current != &HNode::NIL && current->getKey()->getName() == key->getName()) {
@@ -129,7 +129,7 @@ class ItemHashTable{
         }
 
         void modifyValue(Item* key, V newValue){
-            int index = hashKey(key->getName());
+            int index = hashKey(key);
             HNode* targetBucket = table[index];
 
             while (targetBucket != &HNode::NIL) {

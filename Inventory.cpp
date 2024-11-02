@@ -52,6 +52,7 @@ bool Inventory::RemoveItem(Item* pItem) {
 	}
 };
 
+<<<<<<< HEAD
 //Search item from inventory by name
 Item* Inventory::SearchItem(string pName) {
 	int index = fInventory.hashKey(pName);
@@ -65,6 +66,8 @@ Item* Inventory::SearchItem(string pName) {
 	return (Item*)0;
 };
 
+=======
+>>>>>>> parent of 6ddcac8 (Finish Inventory class)
 //Display item details
 void Inventory::ViewItemDetails(Item* pItem) {
 	int item_Quantity = fInventory.findValue(pItem);										//Find the item quantity in inventory

@@ -15,7 +15,10 @@ int main() {
 		new Weapon("Big Axe", "Slash down your foe with this axe", 40, false, 10, 10),
 		new Medical("First Aid Kit", "Heal all your wounds", 10, true, 20)
 	};
+<<<<<<< HEAD
 	Player player_JohnWick = Player("John Wick", 10, 100, 0, 0, 100, 100);
+=======
+>>>>>>> parent of 6ddcac8 (Finish Inventory class)
 
 	for (int x = 0; x < ALL_ITEM_COUNT; x++) {
 		delete game_AllItems[x];
