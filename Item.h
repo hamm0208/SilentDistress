@@ -11,8 +11,6 @@ class Item{
     public:
         Item(); //Default constructor
         Item(string pName, string pDescription, int pWeight, bool pIsConsumable); //Constructor to load the parameter into the attributes
-        virtual void Use(Player& pPlayer) = 0;  //Apply effects of the item to the Player
-        virtual void Inspect();                 //Display all the attributes in Items
 
         //Getter and setter for fName
         string getName();
@@ -30,6 +28,8 @@ class Item{
         bool getIsConsumable();
         void setIsConsumable(bool pIsConsumable);
 
+        virtual void Use(Player& pPlayer) = 0;  //Apply effects of the item to the Player
+        virtual void Inspect();                 //Display all the attributes in Items
 };
 
 

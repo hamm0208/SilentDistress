@@ -5,7 +5,7 @@ Inventory::Inventory(int pCapacity) : fInventory(BUCKET_SIZE), fMaxCapacity(pCap
 //Add  new item to inventory
 void Inventory::AddItem(Item* pItem) {
 	int item_Weight = pItem->getWeight(); //Item's weight
-	if (!IsFull()) {
+	if (IsFull()) {
 		if ((item_Weight + fCurrentCapacity) >= fMaxCapacity) { //If item's weight + fCurrentCapacity reaches over fMaxCapacity, then you can't add more items
 			cout << pItem->getName() << "'s weight will exceed the inventory limit (" << fCurrentCapacity << "/" << fMaxCapacity << ")! Discard some item in inventory to create space to add new items in." << endl;
 			return; //End function
@@ -52,6 +52,7 @@ bool Inventory::RemoveItem(Item* pItem) {
 	}
 };
 
+<<<<<<< HEAD
 //Search item from inventory by name
 Item* Inventory::SearchItem(string pName) {
 	int index = fInventory.hashKey(pName);
@@ -65,6 +66,8 @@ Item* Inventory::SearchItem(string pName) {
 	return (Item*)0;
 };
 
+=======
+>>>>>>> parent of 6ddcac8 (Finish Inventory class)
 //Display item details
 void Inventory::ViewItemDetails(Item* pItem) {
 	int item_Quantity = fInventory.findValue(pItem);										//Find the item quantity in inventory
@@ -77,10 +80,17 @@ void Inventory::ViewItemDetails(Item* pItem) {
 		cout << "Item does not exist in inventory." << endl;
 	}
 }
-//View all items's detail in fInventory
-void Inventory::ViewInventoryDetails() {
+
+//Check whether the inventory is full
+bool Inventory::IsFull() {
+	return fCurrentCapacity >= fMaxCapacity;
+}
+
+
+//Display all items's detail in  Inventory
+void Inventory::ViewInventory() {
 	bool isEmpty = true;							//Is inventory empty flag
-	cout << "------------------------------------------------------------------" << endl;
+	cout << "----------------------------------------------------------------------" << endl;
 	for (int i = 0; i < BUCKET_SIZE; ++i) {			//Iterate through the Inventory
 		HNode* node = fInventory.getTable()[i];		//Get the HashNode from the table through the index
 		while (node != &(HNode::NIL)){				//While HNode is not the sentinel node, display item details
@@ -93,110 +103,7 @@ void Inventory::ViewInventoryDetails() {
 	if (isEmpty) {
 		cout << "\t\t\tEmpty Inventory!" << endl;
 	}
-	cout << "------------------------------------------------------------------" << endl;
+	cout << "----------------------------------------------------------------------" << endl;
 }
-
-//View all the items in fInventory
-void Inventory::ViewInventoryItems() {
-	int count = 0;
-	bool isEmpty = true;							//Is inventory empty flag
-	cout << "------------------------------------" << endl;
-	for (int i = 0; i < BUCKET_SIZE; ++i) {			//Iterate through the Inventory
-		HNode* node = fInventory.getTable()[i];		//Get the HashNode from the table through the index
-		while (node != &(HNode::NIL)) {				//While HNode is not the sentinel node, display item details
-			isEmpty = false;
-			count++;
-			cout << count <<". " << node->getKey()->getName() <<", Weight: " << node->getKey()->getWeight() << endl;
-			node = node->getNext();					//Move to next node
-		}
-	}
-	if (isEmpty) {
-		cout << "\t\t\tEmpty Inventory!" << endl;
-	}
-	cout << "------------------------------------" << endl;
-};
-
-//Check whether the inventory is full
-bool Inventory::IsFull() {
-	return fCurrentCapacity >= fMaxCapacity;
-}
-
-//Getter fInventory
-ItemHashTable<int> Inventory::getInventory(){
-	return fInventory;
-}
-
-//Getter fMaxCapacity
-int Inventory::getMaxCapacity() const{
-	return fMaxCapacity;	
-};
-
-//Getter fCurrentCapacity
-int Inventory::getCurrentCapacity() const{
-	return fCurrentCapacity;
-};
-
-//Setter fCurrentCapacity
-void Inventory::setCurrentCapacity(int pCurrentCapacity){
-	fCurrentCapacity = pCurrentCapacity;
-};
-//Get fCurrentItem
-Item* Inventory:: getCurrentItem(){
-	return fCurrentItem;
-};
-
-//Set fCurrentItem
-void Inventory::setCurrentItem(Item* pItem){
-	fCurrentItem = pItem;
-};
-
-//Get fCurrentItem's Quantity
-int Inventory::getCurrentItemQuantity(){
-	return fInventory.findValue(fCurrentItem);
-};
-
-//Decrease Quantity of fCurrentItem
-void Inventory::DecreaseCurrentItemQuantity(int pDecrementValue){
-	int item_CurrentQuantity = getCurrentItemQuantity();
-	int item_AfterDeduction = item_CurrentQuantity - pDecrementValue;
-	if(item_AfterDeduction<=0){ //If after deduction is less or equal to 0, the item will be removed from inventory
-		cout << fCurrentItem->getName() << " will now be discarded" << endl;
-		fInventory.remove(fCurrentItem);
-		
-	}else{
-		fInventory.modifyValue(fCurrentItem,  - pDecrementValue);
-	}
-};
-
-//Use fCurrentItem
-void Inventory::UseCurrentItem(Player& pPlayer){
-	if(fCurrentItem != NULL){
-		fCurrentItem->Use(pPlayer);
-		cout << "You have used " << fCurrentItem->getName() << endl;
-		if(fCurrentItem->getIsConsumable()){
-			DecreaseCurrentItemQuantity(1);
-			if (getCurrentItemQuantity() > 0) {
-				cout << "Decreasing " << fCurrentItem->getName() << "'s quantity by 1" << endl;
-				cout << "You only have " << getCurrentItemQuantity() << " " << getCurrentItem()->getName() << " left!" << endl;
-			}
-		}
-		if(Weapon* weapon = dynamic_cast<Weapon*>(fCurrentItem)){ //If fCurrentItem is type of Weapon, it will decrease the durability instead of the quantity
-			weapon->decreaseCurrentDurability(1);
-			cout << "Decreasing " << fCurrentItem->getName() << "'s durability by 1" << endl;
-			if(weapon->getCurrentDurability() <= 0){ //If durability reaches 0, then it will call DecreaseCurrentItemQuantity(1), which will decrease the current item by 1
-				DecreaseCurrentItemQuantity(1);
-				if (getCurrentItemQuantity() > 0) {	//If there are still extra quantity, then change the CurrentDurability to the max Durability
-					cout << "Decreasing " << fCurrentItem->getName() << "'s quantity by 1" << endl;
-					cout << "You only have " << getCurrentItemQuantity() << " " << getCurrentItem()->getName() << " left!" << endl;
-					weapon->setCurrentDurability(weapon->getDurability());
-
-				}
-			}
-		}
-	}else{
-		cout<<"You have no items equipped"<<endl;
-	}
-};
-
 Inventory::~Inventory() {
 }
