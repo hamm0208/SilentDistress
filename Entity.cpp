@@ -7,10 +7,11 @@ Entity::Entity(){
     fHealth = 0;
     fCurrentHealth = 0;
     fIsAlive = true;
+    fIsFighting = false;
 }
 
 //Constructor
-Entity::Entity(string pName, int pAttackDamage, int pHealth): fName(pName), fAttackDamage(pAttackDamage), fHealth(pHealth), fCurrentHealth(pAttackDamage), fIsAlive(true){}
+Entity::Entity(string pName, int pAttackDamage, int pHealth): fName(pName), fAttackDamage(pAttackDamage), fHealth(pHealth), fCurrentHealth(pAttackDamage), fIsAlive(true), fIsFighting(false){}
 
 //Getter and seter for fName
 string Entity::getName(){
@@ -48,12 +49,20 @@ void Entity::setCurrentHealth(int pCurrentHealth){
 bool Entity::getIsAlive(){
     return fIsAlive;
 }
-void Entity::setIsAlive(bool flag){
-    fIsAlive = flag;
+void Entity::setIsAlive(bool pFlag){
+    fIsAlive = pFlag;
+}
+
+//Getter and setter for fIsAlive
+bool Entity::getIsFighting(){
+    return fIsFighting;
+}
+void Entity::setIsFighting(bool pFlag){
+    fIsFighting = pFlag;
 }
 
 void Entity::Die(){
-    fIsAlive = false;
+    setIsAlive(false);
 }
 
 //This Entity class take damage from Attacker

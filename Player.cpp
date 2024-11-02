@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player():Entity() {
+Player::Player():Entity(), fInventory(100) {
     fHungerLevel = 0;
     fThirstLevel = 0;
     fStamina = 0;
@@ -8,8 +8,8 @@ Player::Player():Entity() {
 }
 
 //Initialise all the parameter into the class's attributes
-Player::Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina) :
-    Entity(pName, pAttackDamage, pHealth), fHungerLevel(pHungerLevel), fThirstLevel(pThirstLevel), fStamina(pStamina), fIsresting(false) {};
+Player::Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina, int pInventoryCapacity) :
+    Entity(pName, pAttackDamage, pHealth), fHungerLevel(pHungerLevel), fThirstLevel(pThirstLevel), fStamina(pStamina), fIsresting(false), fInventory(pInventoryCapacity){};
 
 //Getter and setter for fHungerLevel
 int Player::getHungerLevel() {
