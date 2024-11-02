@@ -1,5 +1,5 @@
 #include "Player.h"
-
+#include "Weapon.h";
 Player::Player():Entity(), fInventory(100) {
     fHungerLevel = 0;
     fThirstLevel = 0;
@@ -86,7 +86,6 @@ void Player::Heal(int pHealValue) {
     int player_currentHealth = this->getCurrentHealth();
     this->setCurrentHealth(player_currentHealth + pHealValue);
 };
-/*
 //Equip item to be used
 void Player::EquipItem() {
     fInventory.ViewInventoryItems();
@@ -103,6 +102,9 @@ void Player::EquipItem() {
         cout << item_Name << " is not in your inventory" << endl;
     }
 }
+void Player::AddItem(Item& pItem) {
+    fInventory.AddItem(&pItem);
+};
 
 void Player::ViewItems() {
     fInventory.ViewInventoryItems();
@@ -161,4 +163,3 @@ void Player::UseCurrentItem() {
         fInventory.UseCurrentItem(*this);
     }
 };
-*/

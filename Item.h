@@ -1,7 +1,7 @@
 #pragma once
-#include "Player.h"
 #include <iostream>
 using namespace std;
+class Player;
 class Item{
     private:
         string fName;           //Name of item

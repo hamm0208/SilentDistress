@@ -1,6 +1,5 @@
 #pragma once
 #include "Weapon.h"
-#include "Item.h"
 #include "Hash.h"
 
 class Inventory{
@@ -12,7 +11,6 @@ class Inventory{
 		static const int BUCKET_SIZE = 10;
 	public:
 		typedef HashNode<Item*, int> HNode;
-<<<<<<< HEAD
 		Inventory(int pCapacity);								//Default constructor
 		~Inventory();											//Overload constructor
 		void AddItem(Item* pItem);								//Adding item to inventory
@@ -33,7 +31,6 @@ class Inventory{
 		Item* getCurrentItem();							//Get current item
 		void setCurrentItem(Item* pItem);				//Set current item
 		int getCurrentItemQuantity();					//So basically these  will be used by the player, when they use an item
-=======
 		Inventory(int pCapacity);
 		~Inventory();
 		void AddItem(Item* pItem);
@@ -50,6 +47,5 @@ class Inventory{
 		void setCurrentItem(Item* pItem);
 		int getCurrentItemQuantity(); //So basically these  will be used by the player, when they use an item
 		void DecreaseItemQuantity(int pDecrementValue); //so if item quantity reaches 0, remove item from inventory
->>>>>>> parent of 6ddcac8 (Finish Inventory class)
 };
 

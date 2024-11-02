@@ -42,15 +42,14 @@ class Player :public Entity{
         void DecreaseStamina(int pDecrementValue);     //Decrease Stamina
 
         void Heal(int pHealValue);
-        /*
         void EquipItem();
         void ViewItems();
+        void AddItem(Item& pItem);
         void ViewItemsDetails();
         void ViewItemDetails(Item& pItem);
         void DiscardItem();
         void SearchItems();
         Item* getCurrentItem();
         void UseCurrentItem();
-        */
         // void ApplyEffects(); This function will run every turn to check for the Hunger level, thirst level, and stamina
 };
