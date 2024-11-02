@@ -18,6 +18,44 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DoublyLinkedNode.h" />
+    <ClInclude Include="DoublyLinkedNodeIterator.h" />
+    <ClInclude Include="Drinks.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Food.h" />
+    <ClInclude Include="Hash.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="List.h" />
+    <ClInclude Include="Medical.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="Queue.h" />
+    <ClInclude Include="SinglyLinkedList.h" />
+    <ClInclude Include="SinglyLinkedNode.h" />
+    <ClInclude Include="SinglyLinkedNodeIterator.h" />
+    <ClInclude Include="SleepingBag.h" />
+    <ClInclude Include="Stack.h" />
+    <ClInclude Include="Weapon.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DoublyLinkedNode.cpp" />
+    <ClCompile Include="DoublyLinkedNodeIterator.cpp" />
+    <ClCompile Include="Drinks.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Food.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Item.cpp" />
+    <ClCompile Include="List.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Medical.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Queue.cpp" />
+    <ClCompile Include="SinglyLinkedNode.cpp" />
+    <ClCompile Include="SleepingBag.cpp" />
+    <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="Weapon.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -126,43 +164,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="DoublyLinkedNode.h" />
-    <ClInclude Include="DoublyLinkedNodeIterator.h" />
-    <ClInclude Include="Drinks.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="Food.h" />
-    <ClInclude Include="Hash.h" />
-    <ClInclude Include="Inventory.h" />
-    <ClInclude Include="Item.h" />
-    <ClInclude Include="List.h" />
-    <ClInclude Include="Medical.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Queue.h" />
-    <ClInclude Include="SinglyLinkedList.h" />
-    <ClInclude Include="SinglyLinkedNode.h" />
-    <ClInclude Include="SinglyLinkedNodeIterator.h" />
-    <ClInclude Include="SleepingBag.h" />
-    <ClInclude Include="Stack.h" />
-    <ClInclude Include="Weapon.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="DoublyLinkedNodeIterator.cpp" />
-    <ClCompile Include="Drinks.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Food.cpp" />
-    <ClCompile Include="Inventory.cpp" />
-    <ClCompile Include="Item.cpp" />
-    <ClCompile Include="List.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Medical.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Queue.cpp" />
-    <ClCompile Include="SinglyLinkedNode.cpp" />
-    <ClCompile Include="SleepingBag.cpp" />
-    <ClCompile Include="Stack.cpp" />
-    <ClCompile Include="Weapon.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

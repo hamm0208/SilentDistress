@@ -1,39 +1,63 @@
 #include "Player.h"
 #include "Weapon.h"
-
-Player::Player():Entity() {
-    fHungerLevel = 0;
-    fThirstLevel = 0;
-    fStamina = 0;
+Player::Player():Entity(),  fInventory(100){
+    fMaxHungerLevel = 0;
+    fMaxThirstLevel = 0;
+    fMaxStaminaLevel = 0;
+    fCurrentHungerLevel = fMaxHungerLevel;
+    fCurrentThirstLevel = fMaxThirstLevel;
+    fCurrentStaminaLevel = fMaxStaminaLevel;
     fIsresting = false;
 }
 
 //Initialise all the parameter into the class's attributes
-Player::Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina) :
-    Entity(pName, pAttackDamage, pHealth), fHungerLevel(pHungerLevel), fThirstLevel(pThirstLevel), fStamina(pStamina), fIsresting(false) {};
-
-//Getter and setter for fHungerLevel
-int Player::getHungerLevel() {
-    return fHungerLevel;
-};
-void Player::setHungerLevel(int pHungerLevel) {
-    fHungerLevel = pHungerLevel;
+Player::Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina, int pInventoryCapacity) :
+Entity(pName, pAttackDamage, pHealth), fMaxHungerLevel(pHungerLevel), fMaxThirstLevel(pThirstLevel), fMaxStaminaLevel(pStamina), fIsresting(false), fInventory(pInventoryCapacity){
+    fCurrentHungerLevel = fMaxHungerLevel;
+    fCurrentThirstLevel = fMaxThirstLevel;
+    fCurrentStaminaLevel = fMaxStaminaLevel;
 };
 
-//Getter and setter for fThirstLevel
-int Player::getThirstLevel() {
-    return fThirstLevel;
+//Getter and setter for fMaxHungerLevel
+int Player::getMaxHungerLevel() {
+    return fMaxHungerLevel;
 };
-void Player::setThirstLevel(int pThirstLevel) {
-    fThirstLevel = pThirstLevel;
+void Player::setMaxHungerLevel(int pHungerLevel) {
+    fMaxHungerLevel = pHungerLevel;
+};
+int Player::getCurrentHungerLevel() {
+    return fCurrentHungerLevel;
+};
+void Player::setCurrentHungerLevel(int pHungerLevel) {
+    fCurrentHungerLevel = pHungerLevel;
 };
 
-//Getter and setter for fStamina
-int Player::getfStamina() {
-    return fStamina;
+//Getter and setter for fMaxThirstLevel
+int Player::getMaxThirstLevel() {
+    return fMaxThirstLevel;
 };
-void Player::setStamina(int pStamina) {
-    fStamina = pStamina;
+void Player::setMaxThirstLevel(int pThirstLevel) {
+    fMaxThirstLevel = pThirstLevel;
+};
+int Player::getCurrentThirstLevel() {
+    return fCurrentThirstLevel;
+};
+void Player::setCurrentThirstLevel(int pThirstLevel) {
+    fCurrentThirstLevel = pThirstLevel;
+};
+
+//Getter and setter for fMaxStaminaLevel
+int Player::getMaxStaminaLevel() {
+    return fMaxStaminaLevel;
+};
+void Player::setMaxStaminaLevel(int pStamina) {
+    fMaxStaminaLevel = pStamina;
+};
+int Player::getCurrentStaminaLevel() {
+    return fCurrentStaminaLevel;
+};
+void Player::setCurrentStaminaLevel(int pStamina) {
+    fCurrentStaminaLevel = pStamina;
 };
 
 //Getter and setter for fIsresting
@@ -46,47 +70,68 @@ void Player::setIsresting(bool pIsresting) {
 
 //Increase and decreasing Hunger Level
 void Player::IncreaseHungerLevel(int pIncrementValue) {
-    fHungerLevel += pIncrementValue;
+    if(fCurrentHungerLevel + pIncrementValue >= fMaxHungerLevel){
+        fCurrentHungerLevel = fMaxHungerLevel;
+    }else{
+        fCurrentHungerLevel += pIncrementValue;
+    }
 };
 void Player::DecreaseHungerLevel(int pDecrementValue) {
-    if(pDecrementValue>= fHungerLevel){
-        fHungerLevel = 0;
+    if(pDecrementValue>= fMaxHungerLevel){
+        fMaxHungerLevel = 0;
     }else{
-        fHungerLevel -= pDecrementValue;
+        fMaxHungerLevel -= pDecrementValue;
     }
 };
 
 //Increase and decreasing Thirst Level
 void Player::IncreaseThirstLevel(int pIncrementValue){
-    fHungerLevel += pIncrementValue;
+    if(fCurrentThirstLevel + pIncrementValue >= fMaxThirstLevel){
+        fCurrentThirstLevel = fMaxThirstLevel;
+    }else{
+        fCurrentThirstLevel += pIncrementValue;
+    }
 };
 
 void Player::DecreaseThirstLevel(int pDecrementValue) {
-    if(pDecrementValue>= fThirstLevel){
-        fThirstLevel = 0;
+    if(pDecrementValue>= fMaxThirstLevel){
+        fMaxThirstLevel = 0;
     }else{
-        fThirstLevel -= pDecrementValue;
+        fMaxThirstLevel -= pDecrementValue;
     }
 };
 
 //Increase and decreasing Stamina Level
 void Player::IncreaseStamina(int pIncrementValue) {
-    fStamina += pIncrementValue;
+    if(fCurrentStaminaLevel + pIncrementValue >= fMaxStaminaLevel){
+        fCurrentStaminaLevel = fMaxStaminaLevel;
+    }else{
+        fCurrentStaminaLevel += pIncrementValue;
+    }
 };
 void Player::DecreaseStamina(int pDecrementValue) {
-    if(fStamina != 0){
-        if(pDecrementValue <= fStamina){
-            fStamina = 0;
+    if(fCurrentStaminaLevel != 0){
+        if(pDecrementValue <= fMaxStaminaLevel){
+            fCurrentStaminaLevel = 0;
         }else{
-            fStamina -= pDecrementValue;
+            fCurrentStaminaLevel -= pDecrementValue;
         }
     }
 };
 
 void Player::Heal(int pHealValue) {
-    int player_currentHealth = this->getCurrentHealth();
-    this->setCurrentHealth(player_currentHealth + pHealValue);
+    if(getCurrentHealth() + pHealValue >= getHealth()){
+        this->setCurrentHealth(getHealth());
+    }else{
+        this->setCurrentHealth(getCurrentHealth() + pHealValue);
+    }
 };
+
+
+void Player::AddItem(Item* pItem) {
+    fInventory.AddItem(pItem);
+};
+
 //Equip item to be used
 void Player::EquipItem() {
     fInventory.ViewInventoryItems();
@@ -103,9 +148,6 @@ void Player::EquipItem() {
         cout << item_Name << " is not in your inventory" << endl;
     }
 }
-void Player::AddItem(Item& pItem) {
-    fInventory.AddItem(&pItem);
-};
 
 void Player::ViewItems() {
     fInventory.ViewInventoryItems();
@@ -152,8 +194,7 @@ Item* Player::getCurrentItem() {
 };
 void Player::UseCurrentItem() {
     if (Weapon* weapon = dynamic_cast<Weapon*>(getCurrentItem())) { //If fCurrentItem is type of Weapon, it will decrease the durability instead of the quantity
-        if (getIsFighting()) {
-            weapon->Use(*this);
+        if (weapon->Use(*this)) {
             setAttackDamage(getAttackDamage() - weapon->getDamage());
         }
         else {

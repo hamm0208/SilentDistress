@@ -1,4 +1,6 @@
 #include "Item.h"
+#include "Player.h"
+
 //Default constructor
 Item::Item(){
     fName = "";

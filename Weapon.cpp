@@ -1,4 +1,6 @@
 #include "Weapon.h"
+#include "Player.h"
+
 //Default Constructor
 Weapon::Weapon():Item("Unknown Weapon", "No description available", 0, false){
     fDamage = 0;
@@ -12,21 +14,27 @@ Weapon::Weapon(string pName, string pDescription, int pWeight, bool pIsConsumabl
 };
 
 //Weapon will increase Player's damage
-void Weapon::Use(Player& pPlayer){
+bool Weapon::Use(Player& pPlayer){
     int player_newDamage = 0; 
-    if(fCurrentDurability == 0){
-        player_newDamage = pPlayer.getAttackDamage()-fDamage; //When duability reaches 0, the weapon will have no affect when used
-    }else{
+    if(pPlayer.getIsFighting()){
         player_newDamage = pPlayer.getAttackDamage()+fDamage; //Else, it will increase the damage
+        pPlayer.setAttackDamage(player_newDamage);   //Increase player's attack damage, if player Use weapon, it will decrease the durability by 1
+        return true;
+    }else{
+        return false;
     }
-    pPlayer.setAttackDamage(player_newDamage);   //Increase player's attack damage, if player Use weapon, it will decrease the durability by 1
 }
 
 //Display Weapon's attributes
 void Weapon::Inspect(){
     Item::Inspect();
     cout <<"Damage:\t\t\t\t" << fDamage << endl;
-    cout <<"Durability:\t\t\t" << fDamage << endl;
+    cout <<"Durability:\t\t\t" << "(" << fCurrentDurability << "/" << fDurability << ")" << endl;
+}
+
+//Clone new weapon
+Item* Weapon::clone() const {
+    return new Weapon(*this); // Use the copy constructor of Weapon
 }
 
 //Getter and setter for fDamage
@@ -47,6 +55,9 @@ void Weapon::setDurability(int pDurability){
 int Weapon::getCurrentDurability(){
     return fCurrentDurability;
 }
-void Weapon::decreaseCurrentDiability(int pDecrementValue){
+void Weapon::setCurrentDurability(int pCurrentDurability) {
+    fCurrentDurability = pCurrentDurability;
+}
+void Weapon::decreaseCurrentDurability(int pDecrementValue){
     fCurrentDurability -= pDecrementValue;
 }
