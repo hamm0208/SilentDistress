@@ -10,7 +10,7 @@ class Entity
 		int fHealth; //Entity max health
 		int fCurrentHealth; //Entity's current health
 		bool fIsAlive; //Is the Entity Alive
-		bool fIsFighting;
+		bool fIsFighting; //Is the Entity fighting
 	public:
 		Entity(); //Default Constructor To set a default value for the attributes
 		Entity(string pName, int pAttackDamage, int pHealth); //Constructor to load the parameter into the attributes

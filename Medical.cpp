@@ -3,6 +3,7 @@
 
 //Default constructor
 Medical::Medical():Item("Unknown Medical", "No description available", 0, true), fHealAmount(0){}
+
 //Overloaded constructor
 Medical::Medical(string pName, string pDescription, int pWeight, bool pIsConsumable, int pHealAmount)
 :Item(pName, pDescription, pWeight, pIsConsumable), fHealAmount(pHealAmount){};
@@ -14,11 +15,7 @@ bool Medical::Use(Player& pPlayer){
         cout<< "You are full HP right now!" <<endl;
         return false;
     }else{
-        if( player_newHealth >= pPlayer.getHealth()){
-            pPlayer.setCurrentHealth(pPlayer.getHealth());   //Increase Player's HP Level to player's max HP
-        }else{
-            pPlayer.setCurrentHealth(player_newHealth);     //Increase Player's HP Level
-        }
+        pPlayer.Heal(fHealAmount);   //Increase Player's HP Level to player's max HP
         cout<< "You have been healed!!" <<endl;
         return true;
     }
@@ -36,8 +33,8 @@ Item* Medical::clone() const {
 
 //Getter and setter for fHydrationValue
 int Medical::getHealAmount(){
-            return fHealAmount;
-        };
+    return fHealAmount;
+};
 void Medical::setHealAmount(int pHealAmount){
     fHealAmount = pHealAmount;
 };

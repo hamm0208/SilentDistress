@@ -16,8 +16,8 @@ Weapon::Weapon(string pName, string pDescription, int pWeight, bool pIsConsumabl
 //Weapon will increase Player's damage
 bool Weapon::Use(Player& pPlayer){
     int player_newDamage = 0; 
-    if(pPlayer.getIsFighting()){
-        player_newDamage = pPlayer.getAttackDamage()+fDamage; //Else, it will increase the damage
+    if(pPlayer.getIsFighting()){ //If Player is fighting, then it will increase the damage
+        player_newDamage = pPlayer.getAttackDamage()+fDamage; 
         pPlayer.setAttackDamage(player_newDamage);   //Increase player's attack damage, if player Use weapon, it will decrease the durability by 1
         return true;
     }else{

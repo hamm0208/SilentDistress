@@ -2,13 +2,14 @@
 #include "Item.h"
 class Drinks :public Item{
     private:
-        int fHydrationValue;
+        int fHydrationValue; //Hydration value for the player
     public:
-        Drinks();
-        Drinks(string pName, string pDescription, int pWeight, bool pIsConsumable, int pHydrationValue);
-        bool Use(Player& pPlayer) override;
-        void Inspect();
-        Item* clone() const;
+        Drinks();   //Default construcotr
+        Drinks(string pName, string pDescription, int pWeight, bool pIsConsumable, int pHydrationValue);  //Overloaded constructor
+        bool Use(Player& pPlayer) override; //Use drinks to lower thirst level
+        void Inspect(); //Inspect drink item
+        Item* clone() const; //Clone drink item
+        //Getter and setter for fHydrationValue
         int getHydrationValue();
         void setHydrationValue(int pHydrationValue);
 };

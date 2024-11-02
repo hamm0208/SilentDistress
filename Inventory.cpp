@@ -1,5 +1,7 @@
 #include "Inventory.h"
 #include "Weapon.h"
+
+
 Inventory::Inventory(int pCapacity) : fInventory(BUCKET_SIZE), fMaxCapacity(pCapacity), fCurrentItem(nullptr), fCurrentCapacity(0) {
 }
 
@@ -188,12 +190,10 @@ void Inventory::UseCurrentItem(Player& pPlayer){
 						cout << "Decreasing " << fCurrentItem->getName() << "'s quantity by 1" << endl;
 						cout << "You only have " << getCurrentItemQuantity() << " " << getCurrentItem()->getName() << " left!" << endl;
 						weapon->setCurrentDurability(weapon->getDurability());
-
 					}
 				}
 			}
 		}
-		
 	}else{
 		cout<<"You have no items equipped"<<endl;
 	}

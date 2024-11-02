@@ -18,7 +18,7 @@ fNutrition(pNutrition), fIsCookable(pIsCookable), fIsCooked(pIsCooked), fHealthR
 //Eat the food
 bool Food::Use(Player& pPlayer){
     int hunger_decreaseValue = fIsCooked?(fNutrition+2):fNutrition;  //If fIsCooked is true, +2 nutrition value
-    if(pPlayer.getCurrentHungerLevel() == pPlayer.getMaxHungerLevel()){
+    if(pPlayer.getCurrentHungerLevel() == 0){
         cout<< "You're full right now" <<endl;
         return false;
     }else{

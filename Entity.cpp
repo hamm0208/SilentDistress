@@ -53,7 +53,7 @@ void Entity::setIsAlive(bool pFlag){
     fIsAlive = pFlag;
 }
 
-//Getter and setter for fIsAlive
+//Getter and setter for fIsFighting
 bool Entity::getIsFighting(){
     return fIsFighting;
 }

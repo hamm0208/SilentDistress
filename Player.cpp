@@ -119,15 +119,16 @@ void Player::DecreaseStamina(int pDecrementValue) {
     }
 };
 
+//Heal player
 void Player::Heal(int pHealValue) {
-    if(getCurrentHealth() + pHealValue >= getHealth()){
-        this->setCurrentHealth(getHealth());
+    if(getCurrentHealth() + pHealValue >= getHealth()){ //If new health is more than max health
+        this->setCurrentHealth(getHealth());            //Then set current health to max health
     }else{
-        this->setCurrentHealth(getCurrentHealth() + pHealValue);
+        this->setCurrentHealth(getCurrentHealth() + pHealValue);  //Else set Current health to new health
     }
 };
 
-
+//Adding item to Inventory
 void Player::AddItem(Item* pItem) {
     fInventory.AddItem(pItem);
 };

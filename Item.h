@@ -2,9 +2,8 @@
 #include <iostream>
 using namespace std;
 
-class Player;
-class Item
-{
+class Player;  // Forward declaration of Player class, to avoid circular dependencies (CHATGPT BTW FTW, but basically I asked ChatGPT why when i #include "Player" will cause an error)
+class Item{
     private:
         string fName;           //Name of item
         string fDescription;    //Description of item
@@ -15,7 +14,7 @@ class Item
         Item(string pName, string pDescription, int pWeight, bool pIsConsumable); //Constructor to load the parameter into the attributes
         virtual bool Use(Player& pPlayer) = 0;  //Apply effects of the item to the Player
         virtual void Inspect();                 //Display all the attributes in Items
-        virtual Item* clone() const = 0;
+        virtual Item* clone() const = 0;        //Clone new item object
 
         //Getter and setter for fName
         string getName();

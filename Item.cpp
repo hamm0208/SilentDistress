@@ -42,6 +42,7 @@ void Item::setIsConsumable(bool pIsConsumable){
     fIsConsumable = pIsConsumable;
 };
 
+//Inspect Item, virtual function
 void Item::Inspect() {
     cout << "Name:\t\t\t\t" << fName << "\n";
     cout << "Description:\t\t\t" << fDescription << "\n";

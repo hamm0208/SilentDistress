@@ -8,11 +8,11 @@ class Food:public Item{
         bool fIsCooked;             //Food is cooked flag
         bool fIsCookable;           //Food is cookable flag
     public:
-        Food();
-        Food(string pName, string pDescription, int pWeight, bool pIsConsumable, int pNutrition,bool pIsCooked, bool pIsCookable, int pHealthRestorationValue, int pStaminaValue);
-        bool Use(Player& pPlayer) override;
-        void Inspect();
-        Item* clone() const;
+        Food(); //Constructor
+        Food(string pName, string pDescription, int pWeight, bool pIsConsumable, int pNutrition,bool pIsCooked, bool pIsCookable, int pHealthRestorationValue, int pStaminaValue); //Overloaded constructor
+        bool Use(Player& pPlayer) override; //Use Food Item
+        void Inspect(); //Inspect Food Item
+        Item* clone() const; //Clone Food Item
         
         //Getter and setter for fNutrition
         int getNutrition();

@@ -7,7 +7,7 @@ class Inventory{
 		int fMaxCapacity;				//Max capacity of the inventory
 		int fCurrentCapacity;			//Current capacity of inventory
 		Item* fCurrentItem;				//Current equiped item
-		static const int BUCKET_SIZE = 10;	//Constant bucket size of the HashTable
+		static const int BUCKET_SIZE = 5;	//Constant bucket size of the HashTable
 	public:
 		typedef HashNode<Item*, int> HNode;
 		Inventory(int pCapacity);								//Default constructor

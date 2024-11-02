@@ -7,10 +7,10 @@ class Weapon:public Item{
         int fCurrentDurability; //Current durability of weapon
     public:
         Weapon();   //Default Construcotr
-        Weapon(string pName, string pDescription, int pWeight, bool pIsConsumable, int pDamage, int pDurability);
-        bool Use(Player& pPlayer) override;
-        void Inspect() override;
-        Item* clone() const;
+        Weapon(string pName, string pDescription, int pWeight, bool pIsConsumable, int pDamage, int pDurability); //Overloaded constructor
+        bool Use(Player& pPlayer) override; //Use Weapon
+        void Inspect() override;  //Inspect Weapon item
+        Item* clone() const;    //Clone Weapon item
         //Getter and setter for fDamage
         int getDamage();
         void setDamage(int pDamage);
