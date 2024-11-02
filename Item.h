@@ -2,8 +2,7 @@
 #include "Player.h"
 #include <iostream>
 using namespace std;
-class Item
-{
+class Item{
     private:
         string fName;           //Name of item
         string fDescription;    //Description of item

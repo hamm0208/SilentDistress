@@ -8,6 +8,7 @@
 using namespace std;
 const int ALL_ITEM_COUNT = 5;
 int main() {
+	/*
 	Inventory player_Inventory(100);
 	Item* game_AllItems[ALL_ITEM_COUNT] = {
 		new Food("KFC", "Finger Lickin Good", 10, true, 5, false, true, 10, 10),
@@ -19,5 +20,6 @@ int main() {
 	for (int x = 0; x < ALL_ITEM_COUNT; x++) {
 		delete game_AllItems[x];
 	}
+	*/
 	return 0;
 }

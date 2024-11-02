@@ -148,8 +148,11 @@ class ItemHashTable{
 
         ~ItemHashTable() {
             for (int i = 0; i < tableSize; ++i) {
-                if (table[i] != &HNode::NIL) {
-                    delete table[i];
+                HNode* current = table[i];
+                while (current != &HNode::NIL) {
+                    HNode* next = current->getNext();
+                    delete current;
+                    current = next;
                 }
             }
             delete[] table;
