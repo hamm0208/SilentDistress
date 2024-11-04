@@ -40,7 +40,7 @@ class Entity
 		void Die();
 
 		//This entity will take damage that will take in an Attacker's fAttackDamage
-		void TakeDamage(Entity& pAttacker);
+		void TakeDamage(int pAttackDamage);
 
 		//Attack opponent Entity
 		void Attack(Entity& pOpponent);

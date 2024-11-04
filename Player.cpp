@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Weapon.h"
+#include "SleepingBag.h"
 Player::Player():Entity(),  fInventory(100){
     fMaxHungerLevel = 0;
     fMaxThirstLevel = 0;
@@ -7,12 +8,12 @@ Player::Player():Entity(),  fInventory(100){
     fCurrentHungerLevel = fMaxHungerLevel;
     fCurrentThirstLevel = fMaxThirstLevel;
     fCurrentStaminaLevel = fMaxStaminaLevel;
-    fIsresting = false;
+    fIsResting = false;
 }
 
 //Initialise all the parameter into the class's attributes
 Player::Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina, int pInventoryCapacity) :
-Entity(pName, pAttackDamage, pHealth), fMaxHungerLevel(pHungerLevel), fMaxThirstLevel(pThirstLevel), fMaxStaminaLevel(pStamina), fIsresting(false), fInventory(pInventoryCapacity){
+Entity(pName, pAttackDamage, pHealth), fMaxHungerLevel(pHungerLevel), fMaxThirstLevel(pThirstLevel), fMaxStaminaLevel(pStamina), fIsResting(false), fInventory(pInventoryCapacity){
     fCurrentHungerLevel = fMaxHungerLevel;
     fCurrentThirstLevel = fMaxThirstLevel;
     fCurrentStaminaLevel = fMaxStaminaLevel;
@@ -61,11 +62,11 @@ void Player::setCurrentStaminaLevel(int pStamina) {
 };
 
 //Getter and setter for fIsresting
-bool Player::getfIsresting() {
-    return fIsresting;
+bool Player::getfIsResting() {
+    return fIsResting;
 };
-void Player::setIsresting(bool pIsresting) {
-    fIsresting = pIsresting;
+void Player::setIsResting(bool pIsResting) {
+    fIsResting = pIsResting;
 };
 
 //Increase and decreasing Hunger Level
@@ -193,6 +194,7 @@ void Player::SearchItems() {
 Item* Player::getCurrentItem() {
     return fInventory.getCurrentItem();
 };
+
 void Player::UseCurrentItem() {
     if (Weapon* weapon = dynamic_cast<Weapon*>(getCurrentItem())) { //If fCurrentItem is type of Weapon, it will decrease the durability instead of the quantity
         if (weapon->Use(*this)) {
@@ -200,6 +202,14 @@ void Player::UseCurrentItem() {
         }
         else {
             cout << "You are unable to use " << weapon->getName() << " right now, because you are not fighting" << endl;
+        }
+    }
+    else if (SleepingBag* sleepingBag = dynamic_cast<SleepingBag*>(getCurrentItem())) {
+        if (sleepingBag->Use(*this)) {
+            cout << "Your hunger level and thrist level has been incresed by 1 after your rest" << endl;
+        }
+        else {
+            cout << "Your stamina level is full!" << endl;
         }
     }
     else {

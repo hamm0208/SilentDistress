@@ -1,5 +1,6 @@
 #include "SleepingBag.h"
 #include "Player.h"
+#include "Monster.h"
 
 //Constructor
 SleepingBag::SleepingBag() :Item("Unknown Bag", "No description available", 0, false), fRecoveryAmount(0) {};
@@ -12,12 +13,10 @@ bool SleepingBag::Use(Player& pPlayer) {
     if(pPlayer.getCurrentStaminaLevel() <= pPlayer.getMaxStaminaLevel()){ //If player's current stamina is lower or equal than player's max stamina then...
         pPlayer.IncreaseStamina(fRecoveryAmount);   //Increase stamina
         //you get hungry and thirsty when you wake up
-        pPlayer.IncreaseHungerLevel(2);             //Increase hunger level 
-        pPlayer.IncreaseThirstLevel(2);             //Increase thirst level
-        cout<<"Your hunger level and thrist level has been incresed by 2 after your rest" <<endl;
+        pPlayer.IncreaseHungerLevel(1);             //Increase hunger level 
+        pPlayer.IncreaseThirstLevel(1);             //Increase thirst level
         return true;
     }else{
-        cout<< "Your stamina level is full!" <<endl;
         return false;
     }
 }

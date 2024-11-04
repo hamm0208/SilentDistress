@@ -66,18 +66,18 @@ void Entity::Die(){
 }
 
 //This Entity class take damage from Attacker
-void Entity::TakeDamage(Entity& pAttacker){
+void Entity::TakeDamage(int pAttackDamage){
     //If attacker's damage is more than this Entity's current health
-    if(pAttacker.getAttackDamage() >= this->getCurrentHealth()){
+    if(pAttackDamage >= this->getCurrentHealth()){
         this->setCurrentHealth(0);
         this->Die();
     }else{
-        this->fCurrentHealth-= pAttacker.getAttackDamage(); //Minus this Entity's current health with Attacker's Attacker Damage
+        this->fCurrentHealth-= pAttackDamage; //Minus this Entity's current health with Attacker's Attacker Damage
     }
 }
 
 //This entity attack an opponent
 void Entity::Attack(Entity& pOpponent){
-    pOpponent.TakeDamage(*this);
+    pOpponent.TakeDamage(pOpponent.getAttackDamage());
 }
 

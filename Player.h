@@ -5,21 +5,23 @@ Maybe sleeping will count as 2 turns, and will increase hunger and thirst
 #pragma once
 #include "Entity.h"
 #include "Inventory.h"
+#include "Decision.h"
+#include "SinglyLinkedList.h";
 class Player :public Entity{
      private:
         /*
             0 - 10 Hunger and thirst Level, the higher the level, the more hungry you are, will affect your fStamina, fThirst, and fHealth
             Stamina...TBD
         */
-        int fMaxHungerLevel;        //Player's Max Hunger Level
-        int fMaxThirstLevel;        //Player's Max Thirst Level
-        int fMaxStaminaLevel;       //Player's Max Stamina Level
-        bool fIsresting;            //Is Player Resting Flag
-        int fCurrentHungerLevel;    //Current Hunger Level
-        int fCurrentThirstLevel;    //Current Thirst Level
-        int fCurrentStaminaLevel;   //Current Stamina Level
-        Inventory fInventory;       //Player's Inventory
-        //List<Decision> fDecisions; 
+        int fMaxHungerLevel;                    //Player's Max Hunger Level
+        int fMaxThirstLevel;                    //Player's Max Thirst Level
+        int fMaxStaminaLevel;                   //Player's Max Stamina Level
+        bool fIsResting;                        //Is Player Resting Flag
+        int fCurrentHungerLevel;                //Current Hunger Level
+        int fCurrentThirstLevel;                //Current Thirst Level
+        int fCurrentStaminaLevel;               //Current Stamina Level
+        Inventory fInventory;                   //Player's Inventory
+        SinglyLinkedList<Decision> fDecisions;  //Player's list of decisions
     public:
         Player();
         Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina, int pInventoryCapacity);
@@ -48,8 +50,8 @@ class Player :public Entity{
         void setCurrentStaminaLevel(int pStamina);
 
         //Getter and setter for fIsresting
-        bool getfIsresting();
-        void setIsresting(bool pIsresting);
+        bool getfIsResting();
+        void setIsResting(bool pIsResting);
         
         void IncreaseHungerLevel(int pIncrementValue); //Increase hunger level
         void DecreaseHungerLevel(int pDecrementValue); //Decrease hunger level, If pDecrementValue is more than fMaxHungerLevel, then set fMaxHungerLevel back to 0
@@ -69,5 +71,8 @@ class Player :public Entity{
         void SearchItems();                             //Search an item in inventory
         Item* getCurrentItem();                         //Get currently equiped item
         void UseCurrentItem();                          //Use currently equiped item
+
         // void ApplyEffects(); This function will run every turn to check for the Hunger level, thirst level, and stamina
+        void MakeDecision(Decision& pDecision);
+        void ShowDecision() const;
 };

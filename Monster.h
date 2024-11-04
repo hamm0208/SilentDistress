@@ -9,10 +9,11 @@ class Monster:public Entity
 		Weapon* fWeapon;
 
 	public:
-		//Monster();
-		//Monster(string pName, int pAttackDamage, int pHealth, Weapon* fWeapon);
-		//Weapon* getWeapon();
-		//void Jumpscare();
-		//void Ambush(Player& pPlayer);
-		//void DisturbRest(Player& pPlayer);
+		Monster();
+		Monster(string pName, int pAttackDamage, int pHealth, Weapon* pWeapon);
+		~Monster();
+		Weapon* getWeapon();
+		void Jumpscare();
+		void Ambush(Player& pPlayer);
+		bool DisturbRest(Player& pPlayer);
 };

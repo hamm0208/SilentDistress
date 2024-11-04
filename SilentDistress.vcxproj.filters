@@ -130,5 +130,11 @@
     <Media Include="creepy.wav">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="plane_crash.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="jumpscare.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>
