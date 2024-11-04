@@ -8,6 +8,7 @@
 #include "Medical.h"
 using namespace std;
 const int ALL_ITEM_COUNT = 10;
+
 int main() {
 	Player newPlayer = Player("John Wick", 10, 100, 0, 0, 100, 100);
 	Item* game_AllItems[ALL_ITEM_COUNT] = {
