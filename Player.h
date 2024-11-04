@@ -5,8 +5,10 @@ Maybe sleeping will count as 2 turns, and will increase hunger and thirst
 #pragma once
 #include "Entity.h"
 #include "Inventory.h"
-#include "Decision.h"
-#include "SinglyLinkedList.h";
+#include "SinglyLinkedList.h"
+
+class Decision; 
+
 class Player :public Entity{
      private:
         /*
@@ -21,7 +23,7 @@ class Player :public Entity{
         int fCurrentThirstLevel;                //Current Thirst Level
         int fCurrentStaminaLevel;               //Current Stamina Level
         Inventory fInventory;                   //Player's Inventory
-        SinglyLinkedList<Decision> fDecisions;  //Player's list of decisions
+        SinglyLinkedList<Decision> fDecisionsMade;  //Decisions made by the player
     public:
         Player();
         Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina, int pInventoryCapacity);
@@ -74,5 +76,5 @@ class Player :public Entity{
 
         // void ApplyEffects(); This function will run every turn to check for the Hunger level, thirst level, and stamina
         void MakeDecision(Decision& pDecision);
-        void ShowDecision() const;
+        void ShowDecision();
 };

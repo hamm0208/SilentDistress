@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Decision.h" />
     <ClInclude Include="DoublyLinkedNode.h" />
     <ClInclude Include="DoublyLinkedNodeIterator.h" />
     <ClInclude Include="Drinks.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="SinglyLinkedList.h" />
     <ClInclude Include="SinglyLinkedNode.h" />
     <ClInclude Include="SinglyLinkedNodeIterator.h" />
@@ -40,6 +42,7 @@
     <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Decision.cpp" />
     <ClCompile Include="DoublyLinkedNode.cpp" />
     <ClCompile Include="DoublyLinkedNodeIterator.cpp" />
     <ClCompile Include="Drinks.cpp" />
@@ -53,6 +56,7 @@
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Queue.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SinglyLinkedNode.cpp" />
     <ClCompile Include="SleepingBag.cpp" />
     <ClCompile Include="Stack.cpp" />

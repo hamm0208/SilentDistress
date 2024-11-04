@@ -7,7 +7,7 @@
 #include "Weapon.h"
 #include "Medical.h"
 #include "Monster.h"
-
+#include "Decision.h"
 using namespace std;
 const int ALL_ITEM_COUNT = 10;
 int main() {

@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Weapon.h"
+#include "Decision.h"
 #include "SleepingBag.h"
 Player::Player():Entity(),  fInventory(100){
     fMaxHungerLevel = 0;
@@ -214,5 +215,17 @@ void Player::UseCurrentItem() {
     }
     else {
         fInventory.UseCurrentItem(*this);
+    }
+};
+
+void Player::MakeDecision(Decision& pDecision) {
+    fDecisionsMade.pushBack(pDecision);
+    pDecision.applyEffect(*this);
+};
+
+void Player::ShowDecision(){
+    cout << "List of decisions made by " << getName();
+    for (int x = 0; x < fDecisionsMade.size(); x++) {
+        cout << x + 1 << ". " << fDecisionsMade[x].getName() << endl;
     }
 };
