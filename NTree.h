@@ -8,15 +8,15 @@ private:
 	T fKey;
 	int size;
 	NTree<T, N>* fNodes[N];
+public:
+	static NTree<T, N> NIL;
 	NTree() {
 		size = 0;
-		fKey = (T)0;
+		fKey = T();
 		for (int x = 0; x < N; x++) {
 			fNodes[x] = &NIL;
 		}
 	};
-public:
-	static NTree<T, N> NIL;
 	NTree(const T& pKey) {
 		size = 1;
 		fKey = pKey;

@@ -1,12 +1,20 @@
 #pragma once
 #include "Entity.h"
+#include <thread>
+#include <chrono>
 #include "SFML/Audio.hpp"
-class Event
-{
+class Event{
 private:
-	Entity* fEtntity;					//Responsible entity
+	Entity* fEntity;					//Responsible entity
 	string fDialogue;					//Dialogue of the event
-	sf::SoundBuffer jumpscareBuffer;	//Buffer for the jumpscare sound
-	sf::Sound jumpscareSound;			//Sound object to play the sound
+	sf::SoundBuffer fSoundBuffer;		//Buffer for the sound
+	sf::Sound fSound;					//Sound object to play the sound
+    bool hasSound;
+public:
+    Event();
+    Event(Entity* entity, const string& dialogue, const string& soundFilePath = "");
+    sf::Sound getSound();
+    Entity* getEntity();
+    string getDialogue();
+    void playEvent();
 };
-
