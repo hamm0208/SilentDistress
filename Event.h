@@ -10,9 +10,10 @@ private:
 	sf::SoundBuffer fSoundBuffer;		//Buffer for the sound
 	sf::Sound fSound;					//Sound object to play the sound
     bool hasSound;
+    bool showEntity;
 public:
     Event();
-    Event(Entity* entity, const string& dialogue, const string& soundFilePath = "");
+    Event(Entity* entity, bool pShowEntity, const string& dialogue, const string& soundFilePath = "");
     sf::Sound getSound();
     Entity* getEntity();
     string getDialogue();

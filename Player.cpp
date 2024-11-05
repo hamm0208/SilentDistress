@@ -2,6 +2,11 @@
 #include "Weapon.h"
 #include "Decision.h"
 #include "SleepingBag.h"
+#include "Scene.h"
+#include "List.h"
+#include <thread>
+#include <chrono>
+
 Player::Player():Entity(),  fInventory(100){
     fMaxHungerLevel = 0;
     fMaxThirstLevel = 0;
@@ -14,10 +19,10 @@ Player::Player():Entity(),  fInventory(100){
 
 //Initialise all the parameter into the class's attributes
 Player::Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina, int pInventoryCapacity) :
-Entity(pName, pAttackDamage, pHealth), fMaxHungerLevel(pHungerLevel), fMaxThirstLevel(pThirstLevel), fMaxStaminaLevel(pStamina), fIsResting(false), fInventory(pInventoryCapacity){
-    fCurrentHungerLevel = fMaxHungerLevel;
-    fCurrentThirstLevel = fMaxThirstLevel;
-    fCurrentStaminaLevel = fMaxStaminaLevel;
+Entity(pName, pAttackDamage, pHealth), fCurrentHungerLevel(pHungerLevel), fCurrentThirstLevel(pThirstLevel), fCurrentStaminaLevel(pStamina), fIsResting(false), fInventory(pInventoryCapacity){
+    fMaxHungerLevel = 10;
+    fMaxThirstLevel = 10;
+    fMaxStaminaLevel = fCurrentStaminaLevel;
 };
 
 //Getter and setter for fMaxHungerLevel
@@ -137,10 +142,10 @@ void Player::AddItem(Item* pItem) {
 
 //Equip item to be used
 void Player::EquipItem() {
-    fInventory.ViewInventoryItems();
     string item_Name = "";
     cout << "Name of item to equip (Case sensitive and leave no blank space): ";
     cin.clear();
+    cin.ignore();
     getline(cin, item_Name);
     Item* searched_Item = fInventory.SearchItem(item_Name);
     if (searched_Item != (Item*)0) {
@@ -153,6 +158,14 @@ void Player::EquipItem() {
 }
 
 void Player::ViewItems() {
+    system("CLS");
+    cout << "Viewing Inventory. ";
+    this_thread::sleep_for(std::chrono::seconds(1));
+    cout << ". ";
+    this_thread::sleep_for(std::chrono::seconds(1));
+    cout << ". " << endl;
+    this_thread::sleep_for(std::chrono::seconds(1));
+    system("CLS");
     fInventory.ViewInventoryItems();
 }
 
@@ -168,6 +181,7 @@ void Player::DiscardItem() {
     ViewItems();
     string item_Name = "";
     cout << "Name of item to remove (Case sensitive and leave no blank space): ";
+    cin.ignore();
     cin.clear();
     getline(cin, item_Name);
     Item* searched_Item = fInventory.SearchItem(item_Name);
@@ -228,4 +242,29 @@ void Player::ShowDecision(){
     for (int x = 0; x < fDecisionsMade.size(); x++) {
         cout << x + 1 << ". " << fDecisionsMade[x].getName() << endl;
     }
+};
+
+void Player::ShowAttributes(){
+    system("CLS");
+    cout << "Viewing Attributes. ";
+    this_thread::sleep_for(std::chrono::seconds(1));
+    cout << ". ";
+    this_thread::sleep_for(std::chrono::seconds(1));
+    cout << ". " << endl;
+    this_thread::sleep_for(std::chrono::seconds(1));
+    system("CLS");
+    cout << "--------------------------------------------------\n" <<endl;
+    cout << "Player's Details" << endl;
+    cout << "Name:\t\t " << getName() << endl;;
+    cout << "Attack Damage: \t " << getAttackDamage() << endl;
+    cout << "Max Health:\t " << getHealth() << endl;
+    cout << "Current Health:\t " << getCurrentHealth() << endl;
+    cout << "Hunger Level:\t " << getCurrentHungerLevel() << "/" << getMaxHungerLevel() << endl;
+    cout << "Thirst Level:\t " << getCurrentThirstLevel() << "/" << getMaxThirstLevel() << endl;
+    cout << "Stamina Level:\t " << getCurrentStaminaLevel() << "/" << getMaxStaminaLevel() << endl;
+    cout << "\n--------------------------------------------------\n";
+}
+
+Inventory& Player::getInventory() {
+    return fInventory;
 };

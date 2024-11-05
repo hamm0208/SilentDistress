@@ -28,28 +28,33 @@ void Monster::Jumpscare(){
     }
     sf::Sound sound;
     sound.setBuffer(buffer);
-    sound.setVolume(110);  // Adjust volume as needed
+    sound.setVolume(100);  // Adjust volume as needed
     string asciiArt = R"(
-               .-"------"-.
-              /            \
-             |              |
-             |,  .-.  .-. ,|
-             | )(__/  \__)( |
-             |/     /\     \|
-             (_     ^^     _)
-              \__|IIIIII|__/
-               | \IIIIII/ |
-               \          /
-                `--------`
-                  |    |
-                  |    |
-                  |    |
+             .-"------"-.
+            /            \
+           |              |
+           |,  .-.  .-. , |
+           | )(__/  \__)( |
+           |/     /\     \|
+           (_     ^^     _)
+            \__|IIIIII|__/
+             | \IIIIII/ |
+             \          /
+              `--------`
 ------------------------------------------
     )";
+    system("CLS");
     sound.play();
+    bool ChangingColour = true;
     for (const auto& line : asciiArt) {
         cout << line;
-        this_thread::sleep_for(chrono::milliseconds(1));  // Adjust delay as needed
+        if (ChangingColour) {
+            system("Color 0A");
+        }
+        else {
+            system("Color 0C");
+        }
+        ChangingColour = !ChangingColour;
     }
     this_thread::sleep_for(std::chrono::seconds(1));  // Pause before message
     cout << "\nYou feel a chill down your spine...\n";
@@ -57,9 +62,18 @@ void Monster::Jumpscare(){
     cout << "A dark voice whispers, \"I'm coming for you...\"\n";
     this_thread::sleep_for(std::chrono::milliseconds(1500));
     cout << "Run... if you think you can escape...\n";
-    this_thread::sleep_for(std::chrono::milliseconds(2000));
-
     cout << "\n\n";
+    for (int x = 0; x < 5; x++) {
+        if (ChangingColour) {
+            system("Color 0E");
+        }
+        else {
+            system("Color 0C");
+        }
+        ChangingColour = !ChangingColour;
+        this_thread::sleep_for(std::chrono::milliseconds(500));
+    }
+    system("Color 0E");
     while (sound.getStatus() == sf::Sound::Playing) {
         this_thread::sleep_for(chrono::milliseconds(100));
     }

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Btree.h" />
     <ClInclude Include="Decision.h" />
     <ClInclude Include="DoublyLinkedNode.h" />
     <ClInclude Include="DoublyLinkedNodeIterator.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="Hash.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="Iterator2D.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Medical.h" />
     <ClInclude Include="Monster.h" />
@@ -53,6 +55,7 @@
     <ClCompile Include="Food.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="Iterator2D.cpp" />
     <ClCompile Include="List.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Medical.cpp" />

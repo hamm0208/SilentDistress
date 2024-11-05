@@ -33,6 +33,12 @@ class Stack
 			}
 			cout << endl;
 		}
+		bool IsEmpty() {
+			return GetSize() == 0;
+		}
+		int GetSize() {
+			return fStack.size();
+		}
 		//Return a reference to T, so it can be modify if needed
 		T& operator[](int pIndex){
 			if (pIndex >= fMax || pIndex < 0) {

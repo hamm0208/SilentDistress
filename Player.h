@@ -6,7 +6,7 @@ Maybe sleeping will count as 2 turns, and will increase hunger and thirst
 #include "Entity.h"
 #include "Inventory.h"
 #include "SinglyLinkedList.h"
-
+#include <stdlib.h>
 class Decision; 
 
 class Player :public Entity{
@@ -26,7 +26,7 @@ class Player :public Entity{
         SinglyLinkedList<Decision> fDecisionsMade;  //Decisions made by the player
     public:
         Player();
-        Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina, int pInventoryCapacity);
+        Player(string pName, int pAttackDamage, const int pHealth = 100, const int pHungerLevel = 10, const int pThirstLevel = 10 , const int pStamina = 100, const int pInventoryCapacity = 100);
         //Getter and setter for fMaxHungerLevel
         int getMaxHungerLevel();
         void setMaxHungerLevel(int pHungerLevel);
@@ -51,6 +51,8 @@ class Player :public Entity{
         int getCurrentStaminaLevel();
         void setCurrentStaminaLevel(int pStamina);
 
+        Inventory& getInventory();
+
         //Getter and setter for fIsresting
         bool getfIsResting();
         void setIsResting(bool pIsResting);
@@ -61,6 +63,7 @@ class Player :public Entity{
         void IncreaseThirstLevel(int pIncrementValue); //Increase thirst level
         void DecreaseThirstLevel(int pDecrementValue); //Decrease thirst level, If pDecrementValue is more than fMaxThirstLevel, then set fMaxThirstLevel back to 0
 
+        void ShowAttributes();                          //Show player's attributes
         void IncreaseStamina(int pIncrementValue);      //Increase Stamina
         void DecreaseStamina(int pDecrementValue);      //Decrease Stamina
         void Heal(int pHealValue);                      //Heal Player
@@ -73,8 +76,8 @@ class Player :public Entity{
         void SearchItems();                             //Search an item in inventory
         Item* getCurrentItem();                         //Get currently equiped item
         void UseCurrentItem();                          //Use currently equiped item
-
-        // void ApplyEffects(); This function will run every turn to check for the Hunger level, thirst level, and stamina
         void MakeDecision(Decision& pDecision);
         void ShowDecision();
+
+        // void ApplyEffects(); This function will run every turn to check for the Hunger level, thirst level, and stamina
 };

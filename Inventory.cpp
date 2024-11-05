@@ -21,6 +21,7 @@ void Inventory::AddItem(Item* pItem) {
 			else {													//If item does not exist in Inventory,
 				fInventory.insert(pItem->clone(), 1);				//then insert the cloned item
 			}
+			cout << "You have added " << pItem->getName() << " into your inventory" << endl;
 			fCurrentCapacity += item_Weight;						//Increase fCurrentCapacity by item's weight
 		}
 	}else{
@@ -45,6 +46,7 @@ bool Inventory::RemoveItem(Item* pItem) {
 	} while (choice < 1 || choice > 2);
 	if (choice == 1) {
 		cout << pItem->getName() << " has been discarded!\n" << endl;
+		fCurrentCapacity = fCurrentCapacity - (pItem->getWeight() * item_Quantity);
 		fInventory.remove(pItem);
 		return true;
 	}
@@ -81,6 +83,7 @@ void Inventory::ViewItemDetails(Item* pItem) {
 }
 //View all items's detail in fInventory
 void Inventory::ViewInventoryDetails() {
+	system("CLS");
 	bool isEmpty = true;							//Is inventory empty flag
 	cout << "------------------------------------------------------------------" << endl;
 	for (int i = 0; i < BUCKET_SIZE; ++i) {			//Iterate through the Inventory
@@ -102,7 +105,8 @@ void Inventory::ViewInventoryDetails() {
 void Inventory::ViewInventoryItems() {
 	int count = 0;
 	bool isEmpty = true;							//Is inventory empty flag
-	cout << "------------------------------------" << endl;
+	cout << "--------------------------------------------------\n" << endl;
+	cout << "\t\tItems In Inventory\n" << endl;
 	for (int i = 0; i < BUCKET_SIZE; ++i) {			//Iterate through the Inventory
 		HNode* node = fInventory.getTable()[i];		//Get the HashNode from the table through the index
 		while (node != &(HNode::NIL)) {				//While HNode is not the sentinel node, display item details
@@ -113,9 +117,11 @@ void Inventory::ViewInventoryItems() {
 		}
 	}
 	if (isEmpty) {
-		cout << "\t\t\tEmpty Inventory!" << endl;
+		cout << "\t\tEmpty Inventory!" << endl;
 	}
-	cout << "------------------------------------" << endl;
+	cout << "\n\t\tWeight: " << fCurrentCapacity << "/" << fMaxCapacity << endl;
+
+	cout << "\n--------------------------------------------------\n" << endl;
 };
 
 //Check whether the inventory is full

@@ -11,7 +11,7 @@ Entity::Entity(){
 }
 
 //Constructor
-Entity::Entity(string pName, int pAttackDamage, int pHealth): fName(pName), fAttackDamage(pAttackDamage), fHealth(pHealth), fCurrentHealth(pAttackDamage), fIsAlive(true), fIsFighting(false){}
+Entity::Entity(string pName, int pAttackDamage, int pHealth): fName(pName), fAttackDamage(pAttackDamage), fHealth(pHealth), fCurrentHealth(pHealth), fIsAlive(true), fIsFighting(false){}
 
 //Getter and seter for fName
 string Entity::getName(){

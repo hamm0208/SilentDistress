@@ -76,7 +76,7 @@ public:
 			NTree<T, N>* Result = fNodes[aIndex];
 			fNodes[aIndex] = &NIL;
 			size--;
-			return  Result;
+			return *Result;
 		}
 		else {
 			throw std::domain_error("Illegal subtree index!");
