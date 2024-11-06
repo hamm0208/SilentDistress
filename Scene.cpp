@@ -58,7 +58,7 @@ void Scene::ShowLootsDetails(){
 
         isEmpty = true;
     }
-    if (isEmpty) {
+    if (!isEmpty) {
         cout << "\t\t\tNo Loot!!" << endl;
     }
     cout << "------------------------------------------------------------------" << endl;

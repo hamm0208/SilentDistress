@@ -147,7 +147,6 @@ void Game::DisplayPlayerMenu() {
 
 void Game::DisplayInventoryMenu() {
     bool inInventoryMenu = true;
-
     while (inInventoryMenu) {
         cout << "---------------- Inventory Menu ----------------" << endl;
         // Display player's inventory
@@ -193,11 +192,21 @@ void Game::DisplayInventoryMenu() {
     }
 };
 void Game::DisplayLootMenu() {
+    system("CLS");
     bool inLootMenu = true;
+    Scene* currentScene = getCurrentScene();
+    cout << "Searching " << currentScene->getName() <<"'s Loot. ";
+    this_thread::sleep_for(std::chrono::seconds(1));
+    cout << ". ";
+    this_thread::sleep_for(std::chrono::seconds(1));
+    cout << ". " << endl;
+    this_thread::sleep_for(std::chrono::seconds(1));
     while (inLootMenu) {
-        Scene* currentScene = getCurrentScene();
+        system("CLS");
         cout << "---------------- " << currentScene->getName() << "'s loot ----------------" << endl;
         currentScene->ShowLoots();
+        cout << "---------------------------------------------------------" << endl;
+
         List<Decision> DecisionInLoot;
         DecisionInLoot.pushBack(Decision("View All Item Details", "Take a look at all of the item details in ", [this](Player& player) { ShowLootDetails(); }));
         DecisionInLoot.pushBack(Decision("Take an item", "Take an item from  the loot to your inventory", [this](Player& player) {PlayerPickUpLoot(); }));
@@ -215,12 +224,19 @@ void Game::DisplayLootMenu() {
             cout << "Press Enter to go back to view all loot";
             cin.ignore(); // Ignore leftover newline from previous input
             cin.ignore();
+            system("clear");
             break;
         case 2:
-            fPlayer->MakeDecision(DecisionInLoot[1]);
-            cout << "Press Enter to go back to view all loot";
-            cin.ignore(); // Ignore leftover newline from previous input
-            cin.ignore(); // Ignore leftover newline from previous input
+            if (currentScene->getLoot().isEmpty()) {
+                cout << "Loot is empty!" << endl;
+            }
+            else {
+                fPlayer->MakeDecision(DecisionInLoot[1]);
+                cout << "Press Enter to go back to view all loot";
+                cin.ignore(); // Ignore leftover newline from previous input
+                cin.ignore(); // Ignore leftover newline from previous input
+                system("clear");
+            }
             break;
         case 3:
             inLootMenu = false; // Exit inventory menu
@@ -235,26 +251,55 @@ void Game::ShowLootDetails() {
     currentScene->ShowLootsDetails();
 }
 
-bool Game::PlayerPickUpLoot() {
+void Game::PlayerPickUpLoot() {
+    system("CLS");
     Scene* currentScene = getCurrentScene();
-    int index = 0;
-    currentScene->ShowLoots();
-    cout << "\nType the number corresponding to the desired item and press Enter (e.g., 1): ";
-    cin >> index;
-    index--;
-    if (index<0 || index > currentScene->getLoot().size()) {
-        cout << "Invalid choice!" << endl;
-        cout << endl;
-        return false;
+    int continuePicking = 1;  // Initialize to 1 (Yes) to start the loop
+
+    while (continuePicking == 1) {  // Loop while the player chooses "Yes"
+        int index = 0;
+
+        cout << "---------------- " << currentScene->getName() << "'s loot ----------------" << endl;
+        currentScene->ShowLoots();
+        cout << "---------------------------------------------------------" << endl;
+        cout << "\nType the number corresponding to the desired item and press Enter (e.g., 1): ";
+        cin >> index;
+        index--;  // Adjust for zero-based indexing
+
+        // Validate the player's input for a valid index
+        if (index < 0 || index >= currentScene->getLoot().size()) {
+            cout << "Invalid choice!" << endl;
+            cout << endl;
+        }
+        else {
+            // Retrieve the selected item and add it to the player's inventory
+            Item* selectedItem = currentScene->getLoot()[index];
+            fPlayer->AddItem(selectedItem);
+
+            // Remove the item from the scene's loot
+            currentScene->getLoot().popAt(index);
+        }
+
+        // Prompt the player if they want to pick up another item
+        if (currentScene->getLoot().isEmpty()) {
+            cout << "No more loot left!" << endl;
+            continuePicking = 2;
+        }
+        else {
+            cout << "\nDo you want to pick up another item?" << endl;
+            cout << "1. Yes\n2. No" << endl;
+            cout << "Enter your choice: ";
+            cin >> continuePicking;
+        }
+
+        // Clear the screen if the player chooses to continue
+        if (continuePicking == 1) {
+            system("CLS");
+        }
     }
-    else {
-        Item* selectedItem = currentScene->getLoot()[index];
-        fPlayer->AddItem(selectedItem);
-        currentScene->getLoot().popAt(index);
-        cout << endl;
-        return true;
-    }
-};
+
+    cout << "Exiting loot pickup." << endl;
+}
 
 //fMonsters
 void Game::MonsterJumpscare() {

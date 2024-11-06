@@ -16,7 +16,6 @@ class Scene
 		string getDescription() const;
 		List<Item*>& getLoot();
 		void AddLoot(Item* pLoot);
-		//void AddDecisions(Decision pDecision);
 		void AddEvent(Event* fEvent);
 		void PlayEvent();
 		bool IsEventEmpty();
