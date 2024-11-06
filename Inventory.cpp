@@ -47,6 +47,9 @@ bool Inventory::RemoveItem(Item* pItem) {
 	if (choice == 1) {
 		cout << pItem->getName() << " has been discarded!\n" << endl;
 		fCurrentCapacity = fCurrentCapacity - (pItem->getWeight() * item_Quantity);
+		if (pItem == getCurrentItem()) {
+			setCurrentItem(nullptr);
+		}
 		fInventory.remove(pItem);
 		return true;
 	}
@@ -155,7 +158,7 @@ Item* Inventory:: getCurrentItem(){
 
 //Set fCurrentItem
 void Inventory::setCurrentItem(Item* pItem){
-	fCurrentItem = pItem;
+	fCurrentItem = fInventory.findKey(pItem);
 };
 
 //Get fCurrentItem's Quantity
@@ -186,6 +189,9 @@ void Inventory::UseCurrentItem(Player& pPlayer){
 					cout << "Decreasing " << fCurrentItem->getName() << "'s quantity by 1" << endl;
 					cout << "You only have " << getCurrentItemQuantity() << " " << getCurrentItem()->getName() << " left!" << endl;
 				}
+				else{
+					setCurrentItem(nullptr);
+				}
 			}
 			if(Weapon* weapon = dynamic_cast<Weapon*>(fCurrentItem)){ //If fCurrentItem is type of Weapon, it will decrease the durability instead of the quantity
 				weapon->decreaseCurrentDurability(1);
@@ -197,6 +203,9 @@ void Inventory::UseCurrentItem(Player& pPlayer){
 						cout << "You only have " << getCurrentItemQuantity() << " " << getCurrentItem()->getName() << " left!" << endl;
 						weapon->setCurrentDurability(weapon->getDurability());
 					}
+				}
+				else {
+					setCurrentItem(nullptr);
 				}
 			}
 		}

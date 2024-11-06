@@ -110,6 +110,19 @@ class ItemHashTable{
             }
             return V();
         }
+        Item* findKey(Item* key) {
+            if (key != nullptr) {
+                int index = hashKey(key->getName()); //Get the index of item
+                HNode* targetBucket = table[index]; //Get the target bucket
+                while (targetBucket != &(HNode::NIL)) { //If target bucket's first item is not NIL...
+                    if (targetBucket->getKey()->getName() == key->getName()) { //If the key's name is the same as the parameter's key's name
+                        return targetBucket->getKey(); // Return the value if key matches
+                    }
+                    targetBucket = targetBucket->getNext(); //Move to the next HNode
+                }
+            }
+            return nullptr;
+        }
 
         //Remove by key
         bool remove(Item* key) {

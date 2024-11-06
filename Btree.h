@@ -10,7 +10,7 @@ private:
 	BTree<T>* fRight;
 public:
 	BTree() :fKey() {
-		fKey = (T*)0;
+		fKey = new T();;
 		fLeft = &NIL;
 		fRight = &NIL;
 	}
@@ -21,7 +21,7 @@ public:
 		fRight = &NIL;
 	}
 	~BTree(){
-		if (fKey != NULL) {
+		if (fKey != nullptr) {
 			delete fKey;
 		}
 		if (fLeft != &NIL) {

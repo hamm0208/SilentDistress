@@ -262,7 +262,12 @@ void Player::ShowAttributes(){
     cout << "Hunger Level:\t " << getCurrentHungerLevel() << "/" << getMaxHungerLevel() << endl;
     cout << "Thirst Level:\t " << getCurrentThirstLevel() << "/" << getMaxThirstLevel() << endl;
     cout << "Stamina Level:\t " << getCurrentStaminaLevel() << "/" << getMaxStaminaLevel() << endl;
+    cout << "Bag Capacity:\t " << getInventory().getCurrentCapacity() << "/" << getInventory().getMaxCapacity() << endl;
     cout << "\n--------------------------------------------------\n";
+    cout << "Press Enter to go back to main menu";
+    cin.ignore();
+    cin.ignore();
+
 }
 
 Inventory& Player::getInventory() {

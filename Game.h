@@ -17,23 +17,24 @@ class Game{
         TreeScene* fTreeTarget;
     public:
         Game(Player* pPlayer, Monster* pMonster);
-
+        ~Game();
         Player* getPlayer();
         Monster* getMonster();
 		List<Decision> getDecisions() const;
-        TreeScene* getRootScene() const;
         Scene* getCurrentScene();
 
         TreeScene* getTreeTarget();
         void setTreeTarget(TreeScene* pNewTarget);
+        TreeScene* getRootScene() const;
+        void setRootScene(TreeScene* pNewRoot);
 
         //fDecisions
-        void AddDecisions(Decision pDecision);
-        void ShowDecisions();
+        void AddDecisions(Decision& pDecision);
+        void ShowDecisions(List<Decision>& pDecision);
 
         //fRootScene & fTreeTarget
-        void AttachLeftScene(TreeScene* pNewTree);  //Attach to fTreeTarget's left node
-        void AttachRightScene(TreeScene* pNewTree); //Attach to fTreeTarget's right node
+        void AttachLeftScene(Scene* pScene);  //Attach to fTreeTarget's left node
+        void AttachRightScene(Scene* pScene); //Attach to fTreeTarget's right node
         void DettachLeftScene();  //Attach to fTreeTarget's left node
         void DettachRightScene(); //Attach to fTreeTarget's right node
         void MoveLeft();
@@ -44,12 +45,14 @@ class Game{
         //fPlayer;
         void DisplayPlayerMenu();
         void DisplayInventoryMenu();
+        //void DisplayLootMenu();
+        //bool PlayerPickUpLoot();
 
         //fMonsters
         void MonsterJumpscare();
         void MonsterAmbush();
 
-        //void Play();
+        void Play();
 };
 
 /*

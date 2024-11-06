@@ -29,6 +29,10 @@ string Scene::getName() const{
 string Scene::getDescription() const{
     return fDescription;
 };
+List<Item*> Scene::getLoot() const{
+    return fLoot;
+};
+
 
 void Scene::AddLoot(Item* pLoot){
     fLoot.pushBack(pLoot);
@@ -54,4 +58,21 @@ void Scene::ShowLoots(){
         cout << x << ". " << currentItem->getName() << endl;
         x++;
     }
+};
+
+void Scene::ShowLootsDetails(){
+    system("CLS");
+    bool isEmpty = false;							//Is inventory empty flag
+    cout << "------------------------------------------------------------------" << endl;
+    for (auto it = fLoot.getIteratorHead(); it != it.end(); ++it) {
+        Item* currentItem = *it;
+        cout << "Details of " << currentItem->getName() << endl;
+        currentItem->Inspect();
+        cout << "Total Weight:\t\t\t" << currentItem->getWeight() << "\n";
+        isEmpty = true;
+    }
+    if (isEmpty) {
+        cout << "\t\t\tNo Loot!!" << endl;
+    }
+    cout << "------------------------------------------------------------------" << endl;
 };

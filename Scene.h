@@ -18,6 +18,7 @@ class Scene
 		Scene(string pName, string pDescription, int pMaxNumberOfEvent);
 		string getName() const;
 		string getDescription() const;
+		List<Item*> getLoot() const;
 		/*
 		List<Decision> getDecisions() const;
 		Player* getPlayer();
@@ -35,6 +36,7 @@ class Scene
 		void PlayEvent();
 		bool IsEventEmpty();
 		void ShowLoots();
+        void ShowLootsDetails();
 		//void ShowDecisions();
 		//bool PlayerPickUpLoot();
 		//void PlayerMenu();

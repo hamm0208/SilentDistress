@@ -9,6 +9,7 @@
 #include "Monster.h"
 #include "Decision.h"
 #include "Scene.h"
+#include "Game.h"
 using namespace std;
 const int ALL_ITEM_COUNT = 10;
 int main() {
@@ -26,9 +27,10 @@ int main() {
 	Player* newPlayer = new Player("John Wick", 10, 100, 0, 0, 100, 100);
 
 	newPlayer->AddItem(defaultWeapon);
-	newPlayer->getInventory().setCurrentItem(defaultWeapon);
+	newPlayer->getInventory().setCurrentItem(newPlayer->getInventory().SearchItem("Bare Hands"));
+	system("CLS");
 
-	Scene scene1 = Scene("Scene 1", "Airplane Drop", 6);
+	Scene* scene1 = new Scene("Scene 1", "Plane Crashsite", 6);
 	Item* scene1_loot[6]{
 		game_AllItems[0],
 		game_AllItems[1],
@@ -38,10 +40,16 @@ int main() {
 		game_AllItems[4],
 	};
 	for (int x = 0; x < 6; x++) {
-		scene1.AddLoot(scene1_loot[x]);
+		scene1->AddLoot(scene1_loot[x]);
 	}
-	
+	BTree<Scene*>* rootScene = new BTree<Scene*>(scene1);
+	Game newGame(newPlayer, monster);
+	newGame.setRootScene(rootScene);
+	newGame.setTreeTarget(newGame.getRootScene());
+	newGame.Play();
 
+
+	delete scene1;
 	delete monsterWeapon;
 	delete defaultWeapon;
 	for (int x = 0; x < ALL_ITEM_COUNT; x++) {
