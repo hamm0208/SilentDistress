@@ -40,6 +40,7 @@ class Game{
         void MoveLeft();
         void MoveRight();
         void BackToRoot();
+        void DiscoverMenu();
 
         void PlaySceneEvent();
 

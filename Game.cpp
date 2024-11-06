@@ -7,6 +7,7 @@ Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPl
     Decision ViewInvetory = Decision("View Inventory", "Take a look at all the items in your inventory.", [this](Player& player) { DisplayInventoryMenu(); });
     Decision UseItem = Decision("Use Equipped Item", "Use your currently equipped item.", [this](Player& player) { player.UseCurrentItem(); });
     Decision SearchForLoot = Decision("Search for loot","Search the area for loot.",[this](Player& player) { DisplayLootMenu(); });
+    Decision Discover = Decision("Discover more areas", "Moving to next location", [this](Player& player) { DiscoverMenu(); });
     /*
     Decision GoToLeft = Decision("Go to the left route", "Move up to to left route.", [this](Player& player) { MoveLeft(); });
     Decision GoToRight= Decision("Go to the left route", "Move up to to right route.", [this](Player& player) { MoveRight(); });
@@ -141,7 +142,9 @@ void Game::BackToRoot() {
         PlaySceneEvent();
     }
 }
+void Game::DiscoverMenu() {
 
+}
 void Game::PlaySceneEvent(){
     fTreeTarget->key()->PlayEvent();
 };
