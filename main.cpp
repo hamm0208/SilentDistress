@@ -30,7 +30,7 @@ int main() {
 	newPlayer->getInventory().setCurrentItem(newPlayer->getInventory().SearchItem("Bare Hands"));
 	system("CLS");
 
-	Scene* scene1 = new Scene("Scene 1", "Plane Crashsite", 6);
+	Scene* scene1 = new Scene("Plane Crashsite", "Plane Crashsite", 6);
 	Item* scene1_loot[6]{
 		game_AllItems[0],
 		game_AllItems[1],
@@ -58,28 +58,5 @@ int main() {
 			game_AllItems[x] = nullptr;
 		}
 	}
-	/*
-	Event scene1_events[4] = {
-		Event(&newPlayer, false , "The plane starts crashing down", "plane_crash.wav"),
-		Event(&newPlayer, true, "Its coming in fast!!"),
-		Event(&newPlayer, true, "What is that creature outside..."),
-		Event(&newPlayer, true, "Lets board the plane"),
-	};
-
-	for (int x = 0; x < 4; x++) {
-		scene1.AddEvent(&scene1_events[x]);
-	}
-	scene1.PlayEvent();
-
-	Player newPlayer = Player("John Wick", 10, 100, 0, 0, 100, 100);
-	newPlayer.AddItem(game_AllItems[0]);
-	newPlayer.AddItem(game_AllItems[1]);
-	newPlayer.AddItem(game_AllItems[2]);
-	newPlayer.AddItem(game_AllItems[3]);
-	newPlayer.AddItem(game_AllItems[4]);
-	newPlayer.DiscardItem();
-	newPlayer.ViewItems();
-	
-	*/
 	return 0;
 }

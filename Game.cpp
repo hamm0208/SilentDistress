@@ -4,10 +4,14 @@ typedef BTree<Scene*> TreeScene;
 Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPlayer(pPlayer),fMonster(pMonster){
     fTreeTarget = fRootScene;
     Decision ViewAttributes = Decision("View Character's Attributes","Take a look at all the attributes of your character.",[this](Player& player) { player.ShowAttributes(); });
-    Decision ViewInvetory = Decision("View Inventory","Take a look at all the items in your inventory.",[this](Player& player) { DisplayInventoryMenu(); });
+    Decision ViewInvetory = Decision("View Inventory", "Take a look at all the items in your inventory.", [this](Player& player) { DisplayInventoryMenu(); });
+    Decision UseItem = Decision("Use Equipped Item", "Use your currently equipped item.", [this](Player& player) { player.UseCurrentItem(); });
+    Decision SearchForLoot = Decision("Search for loot","Search the area for loot.",[this](Player& player) { DisplayLootMenu(); });
     Decision Exit = Decision("Exit Game", "Exit the game", [this](Player& player) { exit(0); });
     AddDecisions(ViewAttributes);
     AddDecisions(ViewInvetory);
+    AddDecisions(UseItem);
+    AddDecisions(SearchForLoot);
     AddDecisions(Exit);
 };
 
@@ -112,9 +116,8 @@ void Game::PlaySceneEvent(){
 
 //fPlayer;
 void Game::DisplayPlayerMenu() {
-    system("CLS");
     cout << "\n--------------------------------------------------\n";
-    cout << "Current Location: \t" << getCurrentScene()->getName() << endl;
+    cout << "Current Location: " << getCurrentScene()->getName() << endl;
     cout << "\nHealth: \t" << fPlayer->getCurrentHealth() << "/" << fPlayer->getHealth() << endl;
     cout << "Hunger: \t" << fPlayer->getCurrentHungerLevel() << "/" << fPlayer->getMaxHungerLevel() << endl;
     cout << "Thirst: \t" << fPlayer->getCurrentThirstLevel() << "/" << fPlayer->getMaxThirstLevel() << endl;
@@ -189,18 +192,20 @@ void Game::DisplayInventoryMenu() {
         }
     }
 };
-/*
 void Game::DisplayLootMenu() {
     bool inLootMenu = true;
-
     while (inLootMenu) {
         Scene* currentScene = getCurrentScene();
         cout << "---------------- " << currentScene->getName() << "'s loot ----------------" << endl;
         currentScene->ShowLoots();
         List<Decision> DecisionInLoot;
-        DecisionInLoot.pushBack(Decision("View All Item Details", "Take a look at all of the item details in ", nullptr, [this](Scene& currentScene) { currentScene.ShowLootsDetails(); }, nullptr));
-        DecisionInLoot.pushBack(Decision("Take an item", "Take an item from  the loot to your inventory", [this](Player& player) {PlayerPickUpLoot(); }, nullptr, nullptr));
+        DecisionInLoot.pushBack(Decision("View All Item Details", "Take a look at all of the item details in ", [this](Player& player) { ShowLootDetails(); }));
+        DecisionInLoot.pushBack(Decision("Take an item", "Take an item from  the loot to your inventory", [this](Player& player) {PlayerPickUpLoot(); }));
         int choice;
+        cout << "\nSelect an option:" << endl;
+        cout << "1. View All Loot  Details" << endl;
+        cout << "2. Add an Item to Inventory" << endl;
+        cout << "3. Go back to previous menu" << endl;
         cout << "Choice (1-3): ";
         cin >> choice;
 
@@ -225,6 +230,10 @@ void Game::DisplayLootMenu() {
         }
     }
 };
+void Game::ShowLootDetails() {
+    Scene* currentScene = getCurrentScene();
+    currentScene->ShowLootsDetails();
+}
 
 bool Game::PlayerPickUpLoot() {
     Scene* currentScene = getCurrentScene();
@@ -239,13 +248,13 @@ bool Game::PlayerPickUpLoot() {
         return false;
     }
     else {
-        fPlayer->AddItem(currentScene->getLoot()[index]);
+        Item* selectedItem = currentScene->getLoot()[index];
+        fPlayer->AddItem(selectedItem);
         currentScene->getLoot().popAt(index);
         cout << endl;
         return true;
     }
 };
-*/
 
 //fMonsters
 void Game::MonsterJumpscare() {

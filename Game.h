@@ -45,9 +45,9 @@ class Game{
         //fPlayer;
         void DisplayPlayerMenu();
         void DisplayInventoryMenu();
-        //void DisplayLootMenu();
-        //bool PlayerPickUpLoot();
-
+        void DisplayLootMenu();
+        bool PlayerPickUpLoot();
+        void ShowLootDetails();
         //fMonsters
         void MonsterJumpscare();
         void MonsterAmbush();

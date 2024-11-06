@@ -7,29 +7,14 @@ class Scene
 	private:
 		string fName;					//Name of scene
 		string fDescription;			//Description of the scene
-		//List<Decision> fDecisions;		//Decisions in the scene to be made by players
 		List<Item*> fLoot;				//Loot in the scene for players to add to inventory
 		Stack<Event*> fEvents;			//Events of the scene
-		//Player* fPlayer;				//Player is in all the scene
-		//Monster* fMonster;				//Monster is in all the scene
-		//BTree<Scene*> fSceneTree;	 Move this to Game  class//Childs of this scene class
 	public:
 		Scene();
 		Scene(string pName, string pDescription, int pMaxNumberOfEvent);
 		string getName() const;
 		string getDescription() const;
-		List<Item*> getLoot() const;
-		/*
-		List<Decision> getDecisions() const;
-		Player* getPlayer();
-		Monster* getMonster();
-		Player* Scene::getPlayer() {
-			return fPlayer;
-		};
-		Monster* Scene::getMonster() {
-			return fMonster;
-		};
-		*/
+		List<Item*>& getLoot();
 		void AddLoot(Item* pLoot);
 		//void AddDecisions(Decision pDecision);
 		void AddEvent(Event* fEvent);
@@ -37,12 +22,6 @@ class Scene
 		bool IsEventEmpty();
 		void ShowLoots();
         void ShowLootsDetails();
-		//void ShowDecisions();
-		//bool PlayerPickUpLoot();
-		//void PlayerMenu();
-		//void MonsterAmbush();
-		//void MonsterJumpScare();
-		//void DisplayInventoryMenu();
 };
 /*
 List<Decision> Scene::getDecisions() const{

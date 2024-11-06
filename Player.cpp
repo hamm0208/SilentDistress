@@ -267,7 +267,6 @@ void Player::ShowAttributes(){
     cout << "Press Enter to go back to main menu";
     cin.ignore();
     cin.ignore();
-
 }
 
 Inventory& Player::getInventory() {
