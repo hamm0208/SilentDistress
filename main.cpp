@@ -28,7 +28,7 @@ int main() {
 	newPlayer->AddItem(defaultWeapon);
 	newPlayer->getInventory().setCurrentItem(defaultWeapon);
 
-	Scene scene1 = Scene("Scene 1", "Airplane Drop", newPlayer, monster, 10);
+	Scene scene1 = Scene("Scene 1", "Airplane Drop", 6);
 	Item* scene1_loot[6]{
 		game_AllItems[0],
 		game_AllItems[1],
@@ -41,7 +41,6 @@ int main() {
 		scene1.AddLoot(scene1_loot[x]);
 	}
 	
-	scene1.PlayerMenu();
 
 	delete monsterWeapon;
 	delete defaultWeapon;
