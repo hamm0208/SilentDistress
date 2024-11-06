@@ -7,11 +7,22 @@ Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPl
     Decision ViewInvetory = Decision("View Inventory", "Take a look at all the items in your inventory.", [this](Player& player) { DisplayInventoryMenu(); });
     Decision UseItem = Decision("Use Equipped Item", "Use your currently equipped item.", [this](Player& player) { player.UseCurrentItem(); });
     Decision SearchForLoot = Decision("Search for loot","Search the area for loot.",[this](Player& player) { DisplayLootMenu(); });
+    /*
+    Decision GoToLeft = Decision("Go to the left route", "Move up to to left route.", [this](Player& player) { MoveLeft(); });
+    Decision GoToRight= Decision("Go to the left route", "Move up to to right route.", [this](Player& player) { MoveRight(); });
+    Decision GoBackToRoot = Decision("Head back to crashsite", "Head back to root location.", [this](Player& player) { BackToRoot(); });
+    AddDecisions(GoToLeft);
+    AddDecisions(GoToRight);
+    AddDecisions(GoBackToRoot);
+
+    Change this to Discover, which will bring up the discover menu, using an item is a turn, or every 2 turns higher the thirst level, every 3 turns, higher the hunger level, move, use will take up 10 stamina
+    */
     Decision Exit = Decision("Exit Game", "Exit the game", [this](Player& player) { exit(0); });
     AddDecisions(ViewAttributes);
     AddDecisions(ViewInvetory);
     AddDecisions(UseItem);
     AddDecisions(SearchForLoot);
+
     AddDecisions(Exit);
 };
 
@@ -86,29 +97,50 @@ void Game::DettachRightScene(){
     fTreeTarget->detachRight();
 };
 void Game::MoveLeft(){
-    system("CLS");
-    cout<<"Moving to " << fTreeTarget->left().key()->getName();
-    this_thread::sleep_for(std::chrono::seconds(1));
-    cout << ". ";
-    this_thread::sleep_for(std::chrono::seconds(1));
-    cout << ". " << endl;
-    this_thread::sleep_for(std::chrono::seconds(1));
-    system("CLS");
-    setTreeTarget(&fTreeTarget->left());
-    PlaySceneEvent();
+    if (fTreeTarget->left().isEmpty()) {
+        cout << "No route to go to..." << endl;
+    }
+    else {
+        system("CLS");
+        cout<<"Moving to " << fTreeTarget->left().key()->getName();
+        this_thread::sleep_for(std::chrono::seconds(1));
+        cout << ". ";
+        this_thread::sleep_for(std::chrono::seconds(1));
+        cout << ". " << endl;
+        this_thread::sleep_for(std::chrono::seconds(1));
+        system("CLS");
+        setTreeTarget(&fTreeTarget->left());
+        PlaySceneEvent();
+    }
 };
 void Game::MoveRight(){
-    system("CLS");
-    cout<<"Moving to " << fTreeTarget->right().key()->getName();
-    this_thread::sleep_for(std::chrono::seconds(1));
-    cout << ". ";
-    this_thread::sleep_for(std::chrono::seconds(1));
-    cout << ". " << endl;
-    this_thread::sleep_for(std::chrono::seconds(1));
-    system("CLS");
-    setTreeTarget(&fTreeTarget->left());
-    PlaySceneEvent();
+    if (fTreeTarget->left().isEmpty()) {
+        cout << "No route to go to..." << endl;
+    }
+    else {
+        system("CLS");
+        cout<<"Moving to " << fTreeTarget->right().key()->getName();
+        this_thread::sleep_for(std::chrono::seconds(1));
+        cout << ". ";
+        this_thread::sleep_for(std::chrono::seconds(1));
+        cout << ". " << endl;
+        this_thread::sleep_for(std::chrono::seconds(1));
+        system("CLS");
+        setTreeTarget(&fTreeTarget->left());
+        PlaySceneEvent();
+    }
 };
+
+void Game::BackToRoot() {
+    if (fTreeTarget == fRootScene) {
+        cout << "I am already at the crash site!" << endl;
+    }
+    else {
+        cout << "Moving back to " << fRootScene->key();
+        setTreeTarget(fRootScene);
+        PlaySceneEvent();
+    }
+}
 
 void Game::PlaySceneEvent(){
     fTreeTarget->key()->PlayEvent();

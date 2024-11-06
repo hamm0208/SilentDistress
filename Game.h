@@ -39,6 +39,7 @@ class Game{
         void DettachRightScene(); //Attach to fTreeTarget's right node
         void MoveLeft();
         void MoveRight();
+        void BackToRoot();
 
         void PlaySceneEvent();
 
