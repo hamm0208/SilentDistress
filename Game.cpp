@@ -137,11 +137,16 @@ void Game::DisplayPlayerMenu() {
     index--;
     cout << endl;
 
-    if (index<0 || index > fDecisions.size()) {
+    if (index < 0 || index >= fDecisions.size()) {
+        system("CLS");
         cout << "Invalid choice!" << endl;
     }
     else {
         fPlayer->MakeDecision(fDecisions[index]);
+        cout << "Press Enter to continue...";
+        cin.ignore();
+        cin.ignore();
+        system("CLS");
     }
 };
 
@@ -187,6 +192,7 @@ void Game::DisplayInventoryMenu() {
             inInventoryMenu = false; // Exit inventory menu
             break;
         default:
+            system("CLS");
             cout << "Invalid choice, please try again." << endl;
         }
     }
