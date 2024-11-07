@@ -230,7 +230,7 @@ void Game::PlaySceneEvent(){
 //fPlayer;
 void Game::DisplayPlayerMenu() {
     if (!getIsGameOver()) {
-        cout << "---------------- Inventory Menu ----------------" << endl;
+        cout << "\n---------------- Inventory Menu ----------------" << endl;
         cout << "Current Location: " << getCurrentScene()->getName() << endl;
         cout << "\nHealth: \t" << fPlayer->getCurrentHealth() << "/" << fPlayer->getHealth() << endl;
         cout << "Hunger: \t" << fPlayer->getCurrentHungerLevel() << "/" << fPlayer->getMaxHungerLevel() << endl;
@@ -367,7 +367,7 @@ void Game::CheckReduceResources() {
     if (fTurn % 4 == 0 && fTurn != 0) {
         fPlayer->DecreaseStamina(1);
     }
-    fPlayer->ApplyEffects();
+    fPlayer->ApplyEffects(*fMonster);
     if (!fPlayer->getIsAlive()) {
         setIsGameOver(true);
     }

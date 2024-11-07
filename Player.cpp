@@ -23,7 +23,7 @@ Player::Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, i
 Entity(pName, pAttackDamage, pHealth), fCurrentHungerLevel(pHungerLevel), fCurrentThirstLevel(pThirstLevel), fCurrentStaminaLevel(pStamina), fIsResting(false), fInventory(pInventoryCapacity){
     fMaxHungerLevel = 10;
     fMaxThirstLevel = 10;
-    fMaxStaminaLevel = fCurrentStaminaLevel;
+    fMaxStaminaLevel = 10;
 };
 
 //Getter and setter for fMaxHungerLevel
@@ -275,7 +275,7 @@ Inventory& Player::getInventory() {
     return fInventory;
 };
 
-void Player::ApplyEffects() {
+void Player::ApplyEffects(Monster& pMonster) {
     if (getCurrentHealth() <= 0) {
         Entity::Die();
         cout << "Your vision fades... Darkness envelops you as life slips away." << endl;
@@ -306,7 +306,7 @@ void Player::ApplyEffects() {
         }
 
         // Stamina effects
-        if (fCurrentStaminaLevel <= 5) {
+        if (fCurrentStaminaLevel <= 5 && fCurrentStaminaLevel>=1) {
             IncreaseHungerLevel(2);
             IncreaseThirstLevel(2);
             cout << "Fatigue overwhelms you, making survival feel impossible. Hunger and thirst surge as your energy wanes." << endl;
@@ -325,8 +325,10 @@ void Player::ApplyEffects() {
             else {
                 cout << "Exhaustion finally takes its toll. You collapse, forced into a deep slumber..." << endl;
                 cout << "As you sleep, your hunger and thirst intensify, clawing at your insides. (+2 Hunger, +2 Thirst)" << endl;
-                IncreaseHungerLevel(2);
-                IncreaseThirstLevel(2);
+                setIsResting(true);
+                pMonster.DisturbRest(*this, 100);
+                IncreaseHungerLevel(3);
+                IncreaseThirstLevel(3);
                 IncreaseStamina(5);
             }
         }

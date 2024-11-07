@@ -44,8 +44,8 @@ int main() {
 	for (int x = 0; x < 6; x++) {
 		scene1->AddLoot(scene1_loot[x]);
 	}
-	//Event scene1_event1(monster, false, "", "", [monster](Entity& e) { monster->Jumpscare(); });
-	//scene1->AddEvent(&scene1_event1);
+	Event scene1_event1(monster, false, "", "", [monster](Entity& e) { monster->Jumpscare(); });
+	scene1->AddEvent(&scene1_event1);
 	BTree<Scene*>* rootScene = new BTree<Scene*>(scene1);
 	Game newGame(newPlayer, monster);
 	newGame.setRootScene(rootScene);

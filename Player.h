@@ -79,5 +79,5 @@ class Player :public Entity{
         bool UseCurrentItem();                          //Use currently equiped item
         void MakeDecision(Decision& pDecision);
         void ShowDecision();
-        void ApplyEffects();
+        void ApplyEffects(Monster& pMonster);
 };

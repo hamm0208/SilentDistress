@@ -63,7 +63,7 @@ void Monster::Jumpscare(){
     this_thread::sleep_for(std::chrono::milliseconds(1500));
     cout << "Run... if you think you can escape...\n";
     cout << "\n\n";
-    for (int x = 0; x < 5; x++) {
+    for (int x = 0; x < 20; x++) {
         if (ChangingColour) {
             system("Color 0E");
         }
@@ -71,12 +71,13 @@ void Monster::Jumpscare(){
             system("Color 0C");
         }
         ChangingColour = !ChangingColour;
-        this_thread::sleep_for(std::chrono::milliseconds(500));
+        this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     system("Color 0E");
     while (sound.getStatus() == sf::Sound::Playing) {
         this_thread::sleep_for(chrono::milliseconds(100));
     }
+    system("PAUSE");
     system("CLS");
 }
 
@@ -84,7 +85,7 @@ void Monster::Ambush(Player& pPlayer) {
 
     // Determine the damage to inflict on the player
     int damage = getAttackDamage() + (rand() % 5); // Base damage + random up to 5
-    int staminaLoss = 10 + (rand() % 5);       // Stamina loss between 10 and 15
+    int staminaLoss = 1 + (rand() % 3);       // Stamina loss between 10 and 15
 
     // Reduce the player's health and stamina
     pPlayer.TakeDamage(damage);
@@ -99,13 +100,14 @@ void Monster::Ambush(Player& pPlayer) {
     this_thread::sleep_for(chrono::milliseconds(1500));
     cout << "Your strength fades, losing " << staminaLoss << " stamina in the struggle.\n";
     this_thread::sleep_for(chrono::milliseconds(1500));
+    system("PAUSE");
+    system("CLS");
 };
 
 bool Monster::DisturbRest(Player& pPlayer, int pChance) {
     srand(static_cast<unsigned int>(time(0)));
     if (rand() % 100 < pChance) {
         if (pPlayer.getfIsResting()) {
-            system("CLS");
             cout << "\nAs you attempt to rest, you hear rustling in the bushes...\n";
             this_thread::sleep_for(chrono::milliseconds(1500));
             cout << "Suddenly, the shadows shift, and you sense a presence lurking nearby!\n";
@@ -125,6 +127,9 @@ bool Monster::DisturbRest(Player& pPlayer, int pChance) {
             cout << "You lose " << 1 << " stamina from the disturbance!" << endl;
             pPlayer.DecreaseStamina(1);
             pPlayer.setIsResting(false);
+            cout << endl;
+            system("PAUSE");
+            system("CLS");
             return true;
         }
         else {
