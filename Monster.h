@@ -15,5 +15,5 @@ class Monster:public Entity
 		Weapon* getWeapon();
 		void Jumpscare();
 		void Ambush(Player& pPlayer);
-		bool DisturbRest(Player& pPlayer);
+		bool DisturbRest(Player& pPlayer, int pChance);
 };

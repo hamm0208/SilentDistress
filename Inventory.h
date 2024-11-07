@@ -18,7 +18,7 @@ class Inventory{
 		void ViewInventoryDetails();							//View All Item Details
 		void ViewItemDetails(Item* pItem);						//View Item Details
 		void ViewInventoryItems();								//View All of items
-		void UseCurrentItem(Player & pPlayer);					//Use fCurrentItem
+		bool UseCurrentItem(Player & pPlayer);					//Use fCurrentItem
 		void DecreaseCurrentItemQuantity(int pDecrementValue); 	//so if item quantity reaches 0, remove item from inventory
 		bool IsFull();											//Check if Inventory is full
 

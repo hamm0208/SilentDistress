@@ -1,9 +1,9 @@
 #include "Event.h"
 
-Event::Event() : fEntity(nullptr), fDialogue(""), hasSound(false), showEntity(true) {}
+Event::Event() : fEntity(nullptr), fDialogue(""), hasSound(false), showEntity(true), fEvent(nullptr) {}
 
-Event::Event(Entity* entity, bool pShowEntity, const string& dialogue, const string& soundFilePath)
-    : fEntity(entity), fDialogue(dialogue), hasSound(!soundFilePath.empty()), showEntity(pShowEntity) {
+Event::Event(Entity* entity, bool pShowEntity, const string& dialogue, const string& soundFilePath, function<void(Entity&)> pEvent)
+    : fEntity(entity), fDialogue(dialogue), hasSound(!soundFilePath.empty()), showEntity(pShowEntity),fEvent(pEvent) {
     if (hasSound) {
         if (!fSoundBuffer.loadFromFile(soundFilePath)) {
             cerr << "Error loading sound file!" << std::endl;
@@ -32,6 +32,9 @@ void Event::playEvent() {
     }
     else {
         cout << fDialogue << endl;
+        if (fEvent != nullptr) {
+            fEvent(*fEntity);
+        }
     }
     if (hasSound) {
         fSound.play();

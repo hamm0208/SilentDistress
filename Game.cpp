@@ -1,32 +1,21 @@
 #include "Game.h"
 typedef BTree<Scene*> TreeScene;
 
-Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPlayer(pPlayer),fMonster(pMonster){
+Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPlayer(pPlayer),fMonster(pMonster),fTurn(0), isGameOver(false){
     fTreeTarget = fRootScene;
     Decision ViewAttributes = Decision("View Character's Attributes","Take a look at all the attributes of your character.",[this](Player& player) { player.ShowAttributes(); });
     Decision ViewInvetory = Decision("View Inventory", "Take a look at all the items in your inventory.", [this](Player& player) { DisplayInventoryMenu(); });
-    Decision UseItem = Decision("Use Equipped Item", "Use your currently equipped item.", [this](Player& player) { player.UseCurrentItem(); });
-    Decision SearchForLoot = Decision("Search for loot","Search the area for loot.",[this](Player& player) { DisplayLootMenu(); });
+    Decision UseItem = Decision("Use Equipped Item", "Use your currently equipped item.", [this](Player& player) {if (player.UseCurrentItem()) IncreaseTurn();  });
+    Decision SearchForLoot = Decision("Search for loot", "Search the area for loot.", [this](Player& player) {IncreaseTurn(); DisplayLootMenu(); });
     Decision Discover = Decision("Discover more areas", "Moving to next location", [this](Player& player) { DiscoverMenu(); });
-    /*
-    Decision GoToLeft = Decision("Go to the left route", "Move up to to left route.", [this](Player& player) { MoveLeft(); });
-    Decision GoToRight= Decision("Go to the left route", "Move up to to right route.", [this](Player& player) { MoveRight(); });
-    Decision GoBackToRoot = Decision("Head back to crashsite", "Head back to root location.", [this](Player& player) { BackToRoot(); });
-    AddDecisions(GoToLeft);
-    AddDecisions(GoToRight);
-    AddDecisions(GoBackToRoot);
-
-    Change this to Discover, which will bring up the discover menu, using an item is a turn, or every 2 turns higher the thirst level, every 3 turns, higher the hunger level, move, use will take up 10 stamina
-    */
-    Decision Exit = Decision("Exit Game", "Exit the game", [this](Player& player) { exit(0); });
+    Decision Exit = Decision("Exit Game", "Exit the game", [this](Player& player) { setIsGameOver(true); });
     AddDecisions(ViewAttributes);
     AddDecisions(ViewInvetory);
     AddDecisions(UseItem);
     AddDecisions(SearchForLoot);
-
+    AddDecisions(Discover);
     AddDecisions(Exit);
 };
-
 
 //Getter for fPlayer
 Player* Game::getPlayer(){
@@ -67,6 +56,18 @@ void Game::setRootScene(TreeScene* pNewRoot) {
     fRootScene = pNewRoot;
 };
 
+int Game::getTurn() {
+    return fTurn;
+};
+void Game::IncreaseTurn() {
+    fTurn++;
+};
+bool Game::getIsGameOver() {
+    return isGameOver;
+};
+void Game::setIsGameOver(bool pFlag) {
+    isGameOver = pFlag;
+};
 //Adding Decision into fDecisions
 void Game::AddDecisions(Decision& pDecision){
     fDecisions.pushBack(pDecision);
@@ -102,6 +103,8 @@ void Game::MoveLeft(){
         cout << "No route to go to..." << endl;
     }
     else {
+        fPlayer->DecreaseStamina(1);
+        IncreaseTurn();
         system("CLS");
         cout<<"Moving to " << fTreeTarget->left().key()->getName();
         this_thread::sleep_for(std::chrono::seconds(1));
@@ -119,6 +122,8 @@ void Game::MoveRight(){
         cout << "No route to go to..." << endl;
     }
     else {
+        fPlayer->DecreaseStamina(1);
+        IncreaseTurn();
         system("CLS");
         cout<<"Moving to " << fTreeTarget->right().key()->getName();
         this_thread::sleep_for(std::chrono::seconds(1));
@@ -134,16 +139,89 @@ void Game::MoveRight(){
 
 void Game::BackToRoot() {
     if (fTreeTarget == fRootScene) {
-        cout << "I am already at the crash site!" << endl;
+        cout << "You're already at the crash site!" << endl;
     }
     else {
-        cout << "Moving back to " << fRootScene->key();
+        fPlayer->DecreaseStamina(1);
+        IncreaseTurn();
+        cout << "Moving back to " << fRootScene->key()->getName();
         setTreeTarget(fRootScene);
         PlaySceneEvent();
     }
 }
 void Game::DiscoverMenu() {
+    if (!getIsGameOver()) {
+        system("CLS");
+        bool inDiscoveringMenu = true;
+        cout << "Discovering. ";
+        this_thread::sleep_for(std::chrono::seconds(1));
+        cout << ". ";
+        this_thread::sleep_for(std::chrono::seconds(1));
+        cout << ". " << endl;
+        this_thread::sleep_for(std::chrono::seconds(1));
+        system("CLS");
 
+        List<Decision> DecisionInDiscovering;
+        DecisionInDiscovering.pushBack(Decision("Head back to plane crashsite",
+            "Take a look at all of the item details in your inventory",
+            [this](Player& player) { BackToRoot(); }));
+
+        // Check if there are routes available to the left and right and show them
+        std::string availableWays = "No route available, head back to crash site"; // Default message
+
+        // Check if left route is available
+        if (!fTreeTarget->left().isEmpty()) {
+            availableWays = "Left Route: " + fTreeTarget->left().key()->getName() + "\t\t"; // Update if left route is found
+            DecisionInDiscovering.pushBack(Decision("Move left to " + fTreeTarget->left().key()->getName(),
+                "Move to the left route to discover " + fTreeTarget->left().key()->getName(),
+                [this](Player& player) { MoveLeft(); }));
+        }
+
+        // Check if right route is available
+        if (!fTreeTarget->right().isEmpty()) {
+            // If left route was also found, append to existing routes
+            if (availableWays != "No route available, head back to crash site") {
+                availableWays += "Right Route: " + fTreeTarget->right().key()->getName() + "\t\t";
+            }
+            else {
+                availableWays = "Right Route: " + fTreeTarget->right().key()->getName() + "\t\t";
+            }
+            DecisionInDiscovering.pushBack(Decision("Move right to " + fTreeTarget->right().key()->getName(),
+                "Move to the right route to discover " + fTreeTarget->right().key()->getName(),
+                [this](Player& player) { MoveRight(); }));
+        }
+
+        while (inDiscoveringMenu) {
+            cout << "-------------------------------- Discover Routes Menu --------------------------------" << endl;
+            cout << endl;
+            std::cout << "\t" << availableWays << "\n" << endl;
+            cout << "---------------------------------------------------------------------------------------\n";
+            int choice = 0;
+            cout << "Select an option:" << endl;
+            ShowDecisions(DecisionInDiscovering);
+            cout << DecisionInDiscovering.size() + 1 << ". Go back to previous menu" << endl;
+            cout << "---------------------------------------------------------------------------------------\n";
+            cout << "Choice (1-" << DecisionInDiscovering.size() + 1 << "): ";
+            cin >> choice;
+
+            // Adjust for zero-based indexing and validate the choice
+            if (choice > 0 && choice <= DecisionInDiscovering.size() + 1) {
+                choice--; // Convert to zero-based index
+
+                if (choice == DecisionInDiscovering.size()) {
+                    inDiscoveringMenu = false; // Exit discovering menu
+                }
+                else {
+                    fPlayer->MakeDecision(DecisionInDiscovering[choice]);
+                    inDiscoveringMenu = false;
+                }
+            }
+            else {
+                system("CLS");
+                cout << "Invalid choice, please try again." << endl;
+            }
+        }
+    }
 }
 void Game::PlaySceneEvent(){
     fTreeTarget->key()->PlayEvent();
@@ -151,139 +229,128 @@ void Game::PlaySceneEvent(){
 
 //fPlayer;
 void Game::DisplayPlayerMenu() {
-    cout << "\n--------------------------------------------------\n";
-    cout << "Current Location: " << getCurrentScene()->getName() << endl;
-    cout << "\nHealth: \t" << fPlayer->getCurrentHealth() << "/" << fPlayer->getHealth() << endl;
-    cout << "Hunger: \t" << fPlayer->getCurrentHungerLevel() << "/" << fPlayer->getMaxHungerLevel() << endl;
-    cout << "Thirst: \t" << fPlayer->getCurrentThirstLevel() << "/" << fPlayer->getMaxThirstLevel() << endl;
-    cout << "Stamina: \t" << fPlayer->getCurrentStaminaLevel() << "/" << fPlayer->getMaxStaminaLevel() << endl;
-    if (fPlayer->getCurrentItem() == nullptr) {
-        cout << "Equiped Item: \tEmpty Slot"<< endl;
-    }
-    else {
-        cout << "Equiped Item: \t" << fPlayer->getCurrentItem()->getName() << endl;
-    }
-    cout << "\nAvailable Decisions:\n";
-    int index = 0;
-    ShowDecisions(fDecisions);
-    cout << "--------------------------------------------------\n";
-    cout << "\nType the number corresponding to the desired decision and press Enter (e.g., 1): ";
-    cin >> index;
-    index--;
-    cout << endl;
+    if (!getIsGameOver()) {
+        cout << "---------------- Inventory Menu ----------------" << endl;
+        cout << "Current Location: " << getCurrentScene()->getName() << endl;
+        cout << "\nHealth: \t" << fPlayer->getCurrentHealth() << "/" << fPlayer->getHealth() << endl;
+        cout << "Hunger: \t" << fPlayer->getCurrentHungerLevel() << "/" << fPlayer->getMaxHungerLevel() << endl;
+        cout << "Thirst: \t" << fPlayer->getCurrentThirstLevel() << "/" << fPlayer->getMaxThirstLevel() << endl;
+        cout << "Stamina: \t" << fPlayer->getCurrentStaminaLevel() << "/" << fPlayer->getMaxStaminaLevel() << endl;
+        if (fPlayer->getCurrentItem() == nullptr) {
+            cout << "Equiped Item: \tEmpty Slot"<< endl;
+        }
+        else {
+            cout << "Equiped Item: \t" << fPlayer->getCurrentItem()->getName() << endl;
+        }
+        cout << "\nAvailable Decisions:\n";
+        int index = 0;
+        ShowDecisions(fDecisions);
+        cout << "--------------------------------------------------\n";
+        cout << "\nType the number corresponding to the desired decision and press Enter (e.g., 1): ";
+        cin >> index;
+        index--;
+        cout << endl;
 
-    if (index < 0 || index >= fDecisions.size()) {
-        system("CLS");
-        cout << "Invalid choice!" << endl;
-    }
-    else {
-        fPlayer->MakeDecision(fDecisions[index]);
-        cout << "Press Enter to continue...";
-        cin.ignore();
-        cin.ignore();
-        system("CLS");
+        if (index < 0 || index >= fDecisions.size()) {
+            system("CLS");
+            cout << "Invalid choice!" << endl;
+        }
+        else {
+            fPlayer->MakeDecision(fDecisions[index]);
+            cout << "Press Enter to continue...";
+            cin.ignore();
+            cin.ignore();
+            system("CLS");
+        }
     }
 };
 
 void Game::DisplayInventoryMenu() {
-    bool inInventoryMenu = true;
-    while (inInventoryMenu) {
-        cout << "---------------- Inventory Menu ----------------" << endl;
-        // Display player's inventory
-        fPlayer->ViewItems();
+    if (!getIsGameOver()) {
+        bool inInventoryMenu = true;
         List<Decision> DecisionInInventory;
         DecisionInInventory.pushBack(Decision("View All Item Details", "Take a look at all of the item details in your inventory", [this](Player& player) { player.ViewItemsDetails(); }));
-        DecisionInInventory.pushBack(Decision("Equip an item", "Equip an item from your inventory", [this](Player& player) { player.EquipItem(); }));
-        DecisionInInventory.pushBack(Decision("Discard an item", "Discard an item from your inventory", [this](Player& player) { player.DiscardItem(); }));
+        DecisionInInventory.pushBack(Decision("Equip an item", "Equip an item from your inventory", [this](Player& player) { IncreaseTurn(); player.EquipItem(); }));
+        DecisionInInventory.pushBack(Decision("Discard an item", "Discard an item from your inventory", [this](Player& player) { IncreaseTurn(); player.DiscardItem(); }));
 
-        cout << "Select an option:" << endl;
-        cout << "1. View All Item Details" << endl;
-        cout << "2. Equip Item" << endl;
-        cout << "3. Discard Item" << endl;
-        cout << "4. Go back to previous menu" << endl;
+        while (inInventoryMenu) {
+            cout << "---------------- Inventory Menu ----------------" << endl;
 
-        int choice;
-        cout << "Choice (1-4): ";
-        cin >> choice;
+            // Display player's inventory
+            fPlayer->ViewItems();
 
-        switch (choice) {
-        case 1:
-            fPlayer->MakeDecision(DecisionInInventory[0]);
-            cout << "Press Enter to go back to inventory";
-            cin.ignore(); // Ignore leftover newline from previous input
-            cin.ignore();
-            break;
-        case 2:
-            fPlayer->MakeDecision(DecisionInInventory[1]);
-            cout << "Press Enter to go back to inventory";
-            cin.ignore(); // Ignore leftover newline from previous input
-            break;
-        case 3:
-            fPlayer->MakeDecision(DecisionInInventory[2]);
-            cout << "Press Enter to go back to inventory";
-            cin.ignore(); // Ignore leftover newline from previous input
-            break;
-        case 4:
-            inInventoryMenu = false; // Exit inventory menu
-            break;
-        default:
-            system("CLS");
-            cout << "Invalid choice, please try again." << endl;
+            cout << "Select an option:" << endl;
+            ShowDecisions(DecisionInInventory);
+            cout << DecisionInInventory.size() + 1 << ". Go back to previous menu" << endl;
+            cout << "--------------------------------------------------\n";
+
+            int choice;
+            cout << "Choice (1-" << DecisionInInventory.size() + 1 << "): ";
+            cin >> choice;
+
+            // Check if the choice is within valid range
+            if (choice > 0 && choice <= DecisionInInventory.size() + 1) {
+                choice--; // Convert to zero-based index
+
+                if (choice == DecisionInInventory.size()) {
+                    inInventoryMenu = false; // Exit inventory menu
+                }else {
+                    // Execute the selected decision
+                    fPlayer->MakeDecision(DecisionInInventory[choice]);
+                    cout << "Press Enter to continue back to inventory.";
+                    cin.ignore();
+                    cin.ignore();
+                }
+            }else {
+                system("CLS");
+                cout << "Invalid choice, please try again." << endl;
+            }
         }
     }
 };
 void Game::DisplayLootMenu() {
     system("CLS");
-    bool inLootMenu = true;
-    Scene* currentScene = getCurrentScene();
-    cout << "Searching " << currentScene->getName() <<"'s Loot. ";
-    this_thread::sleep_for(std::chrono::seconds(1));
-    cout << ". ";
-    this_thread::sleep_for(std::chrono::seconds(1));
-    cout << ". " << endl;
-    this_thread::sleep_for(std::chrono::seconds(1));
-    while (inLootMenu) {
-        system("CLS");
-        cout << "---------------- " << currentScene->getName() << "'s loot ----------------" << endl;
-        currentScene->ShowLoots();
-        cout << "---------------------------------------------------------" << endl;
-
+    if (!getIsGameOver()) {
+        bool inLootMenu = true;
+        Scene* currentScene = getCurrentScene();
+        cout << "Searching " << currentScene->getName() <<"'s Loot. ";
+        this_thread::sleep_for(std::chrono::seconds(1));
+        cout << ". ";
+        this_thread::sleep_for(std::chrono::seconds(1));
+        cout << ". " << endl;
+        this_thread::sleep_for(std::chrono::seconds(1));
         List<Decision> DecisionInLoot;
-        DecisionInLoot.pushBack(Decision("View All Item Details", "Take a look at all of the item details in ", [this](Player& player) { ShowLootDetails(); }));
-        DecisionInLoot.pushBack(Decision("Take an item", "Take an item from  the loot to your inventory", [this](Player& player) {PlayerPickUpLoot(); }));
-        int choice;
-        cout << "\nSelect an option:" << endl;
-        cout << "1. View All Loot  Details" << endl;
-        cout << "2. Add an Item to Inventory" << endl;
-        cout << "3. Go back to previous menu" << endl;
-        cout << "Choice (1-3): ";
-        cin >> choice;
-
-        switch (choice) {
-        case 1:
-            fPlayer->MakeDecision(DecisionInLoot[0]);
-            cout << "Press Enter to go back to view all loot";
-            cin.ignore(); // Ignore leftover newline from previous input
-            cin.ignore();
-            system("clear");
-            break;
-        case 2:
+        while (inLootMenu) {
+            system("CLS");
+            int choice;
+            cout << "---------------- " << currentScene->getName() << "'s loot ----------------" << endl;
             if (currentScene->getLoot().isEmpty()) {
-                cout << "Loot is empty!" << endl;
+                cout << "\t\t" << currentScene->getName() <<" has no  loot!" << endl;
             }
             else {
-                fPlayer->MakeDecision(DecisionInLoot[1]);
-                cout << "Press Enter to go back to view all loot";
-                cin.ignore(); // Ignore leftover newline from previous input
-                cin.ignore(); // Ignore leftover newline from previous input
-                system("clear");
+                currentScene->ShowLoots();
+                DecisionInLoot.pushBack(Decision("View All Item Details", "Take a look at all of the item details in ", [this](Player& player) { ShowLootDetails(); }));
+                DecisionInLoot.pushBack(Decision("Take an item", "Take an item from  the loot to your inventory", [this](Player& player) {PlayerPickUpLoot(); }));
             }
-            break;
-        case 3:
-            inLootMenu = false; // Exit inventory menu
-            break;
-        default:
-            cout << "Invalid choice, please try again." << endl;
+            cout << "---------------------------------------------------------" << endl;
+            cout << "\nSelect an option:" << endl;
+            ShowDecisions(DecisionInLoot);
+            cout << DecisionInLoot.size() + 1 <<". Go back to previous menu" << endl;
+            cout << "Choice (1-" << DecisionInLoot.size() + 1 << "): ";
+            cin >> choice;
+            if (choice > 0 && choice <= DecisionInLoot.size() + 1) {
+                choice--;
+                if (choice == DecisionInLoot.size()) {
+                    inLootMenu = false; // Exit loot menu
+                }
+                else {
+                    fPlayer->MakeDecision(DecisionInLoot[choice]);
+                }
+            }
+            else {
+                system("CLS");
+                cout << "Invalid choice, please try again." << endl;
+            }
         }
     }
 };
@@ -291,55 +358,71 @@ void Game::ShowLootDetails() {
     Scene* currentScene = getCurrentScene();
     currentScene->ShowLootsDetails();
 }
+void Game::CheckReduceResources() {
+    
+    if (fTurn % 3 == 0 && fTurn != 0) {
+        fPlayer->IncreaseHungerLevel(1);
+        fPlayer->IncreaseThirstLevel(1);
+    }
+    if (fTurn % 4 == 0 && fTurn != 0) {
+        fPlayer->DecreaseStamina(1);
+    }
+    fPlayer->ApplyEffects();
+    if (!fPlayer->getIsAlive()) {
+        setIsGameOver(true);
+    }
+};
 
 void Game::PlayerPickUpLoot() {
     system("CLS");
     Scene* currentScene = getCurrentScene();
     int continuePicking = 1;  // Initialize to 1 (Yes) to start the loop
+    if (currentScene->getLoot().isEmpty()) {
+        cout << "There's no loot here!" << endl;
+    }
+    else {
+        while (continuePicking == 1) {  // Loop while the player chooses "Yes"
+            int index = 0;
 
-    while (continuePicking == 1) {  // Loop while the player chooses "Yes"
-        int index = 0;
+            cout << "---------------- " << currentScene->getName() << "'s loot ----------------" << endl;
+            currentScene->ShowLoots();
+            cout << "---------------------------------------------------------" << endl;
+            cout << "\nType the number corresponding to the desired item and press Enter (e.g., 1): ";
+            cin >> index;
+            index--;  // Adjust for zero-based indexing
 
-        cout << "---------------- " << currentScene->getName() << "'s loot ----------------" << endl;
-        currentScene->ShowLoots();
-        cout << "---------------------------------------------------------" << endl;
-        cout << "\nType the number corresponding to the desired item and press Enter (e.g., 1): ";
-        cin >> index;
-        index--;  // Adjust for zero-based indexing
+            // Validate the player's input for a valid index
+            if (index < 0 || index >= currentScene->getLoot().size() + 1) {
+                cout << "Invalid choice!" << endl;
+                cout << endl;
+            }
+            else {
+                // Retrieve the selected item and add it to the player's inventory
+                Item* selectedItem = currentScene->getLoot()[index];
+                fPlayer->AddItem(selectedItem);
 
-        // Validate the player's input for a valid index
-        if (index < 0 || index >= currentScene->getLoot().size()) {
-            cout << "Invalid choice!" << endl;
-            cout << endl;
-        }
-        else {
-            // Retrieve the selected item and add it to the player's inventory
-            Item* selectedItem = currentScene->getLoot()[index];
-            fPlayer->AddItem(selectedItem);
+                // Remove the item from the scene's loot
+                currentScene->getLoot().popAt(index);
+            }
 
-            // Remove the item from the scene's loot
-            currentScene->getLoot().popAt(index);
-        }
+            // Prompt the player if they want to pick up another item
+            if (currentScene->getLoot().isEmpty()) {
+                cout << "No more loot left!" << endl;
+                continuePicking = 2;
+            }
+            else {
+                cout << "\nDo you want to pick up another item?" << endl;
+                cout << "1. Yes\n2. No" << endl;
+                cout << "Enter your choice: ";
+                cin >> continuePicking;
+            }
 
-        // Prompt the player if they want to pick up another item
-        if (currentScene->getLoot().isEmpty()) {
-            cout << "No more loot left!" << endl;
-            continuePicking = 2;
-        }
-        else {
-            cout << "\nDo you want to pick up another item?" << endl;
-            cout << "1. Yes\n2. No" << endl;
-            cout << "Enter your choice: ";
-            cin >> continuePicking;
-        }
-
-        // Clear the screen if the player chooses to continue
-        if (continuePicking == 1) {
-            system("CLS");
+            // Clear the screen if the player chooses to continue
+            if (continuePicking == 1) {
+                system("CLS");
+            }
         }
     }
-
-    cout << "Exiting loot pickup." << endl;
 }
 
 //fMonsters
@@ -355,11 +438,17 @@ void Game::Play() {
         cout << "There's no scene in the game!" << endl;
     }
     else {
-        bool IsExit = false;
-        while (!IsExit) {
-            PlaySceneEvent();
-            DisplayPlayerMenu();
+        while (!isGameOver) {
+            if (fPlayer->getCurrentHealth() == 0) {
+                cout << "Game Over..." << endl;
+                setIsGameOver(true);
+            }else {
+                PlaySceneEvent();
+                CheckReduceResources();
+                DisplayPlayerMenu();
+            }
         }
+        cout << "Game Over..." << endl;
     }
 };
 

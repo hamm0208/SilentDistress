@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Monster.h"
 #include "Weapon.h"
 #include "Decision.h"
 #include "SleepingBag.h"
@@ -85,9 +86,9 @@ void Player::IncreaseHungerLevel(int pIncrementValue) {
 };
 void Player::DecreaseHungerLevel(int pDecrementValue) {
     if(pDecrementValue>= fMaxHungerLevel){
-        fMaxHungerLevel = 0;
+        fCurrentHungerLevel = 0;
     }else{
-        fMaxHungerLevel -= pDecrementValue;
+        fCurrentHungerLevel -= pDecrementValue;
     }
 };
 
@@ -102,9 +103,9 @@ void Player::IncreaseThirstLevel(int pIncrementValue){
 
 void Player::DecreaseThirstLevel(int pDecrementValue) {
     if(pDecrementValue>= fMaxThirstLevel){
-        fMaxThirstLevel = 0;
+        fCurrentThirstLevel = 0;
     }else{
-        fMaxThirstLevel -= pDecrementValue;
+        fCurrentThirstLevel -= pDecrementValue;
     }
 };
 
@@ -118,7 +119,7 @@ void Player::IncreaseStamina(int pIncrementValue) {
 };
 void Player::DecreaseStamina(int pDecrementValue) {
     if(fCurrentStaminaLevel != 0){
-        if(pDecrementValue <= fMaxStaminaLevel){
+        if (pDecrementValue >= fCurrentStaminaLevel) {
             fCurrentStaminaLevel = 0;
         }else{
             fCurrentStaminaLevel -= pDecrementValue;
@@ -210,25 +211,29 @@ Item* Player::getCurrentItem() {
     return fInventory.getCurrentItem();
 };
 
-void Player::UseCurrentItem() {
+bool Player::UseCurrentItem(){
     if (Weapon* weapon = dynamic_cast<Weapon*>(getCurrentItem())) { //If fCurrentItem is type of Weapon, it will decrease the durability instead of the quantity
         if (weapon->Use(*this)) {
             setAttackDamage(getAttackDamage() - weapon->getDamage());
+            return true;
         }
         else {
             cout << "You are unable to use " << weapon->getName() << " right now, because you are not fighting" << endl;
+            return false;
         }
     }
     else if (SleepingBag* sleepingBag = dynamic_cast<SleepingBag*>(getCurrentItem())) {
         if (sleepingBag->Use(*this)) {
             cout << "Your hunger level and thrist level has been incresed by 1 after your rest" << endl;
+            return true;
         }
         else {
             cout << "Your stamina level is full!" << endl;
+            return false;
         }
     }
     else {
-        fInventory.UseCurrentItem(*this);
+        return fInventory.UseCurrentItem(*this);
     }
 };
 
@@ -264,11 +269,66 @@ void Player::ShowAttributes(){
     cout << "Stamina Level:\t " << getCurrentStaminaLevel() << "/" << getMaxStaminaLevel() << endl;
     cout << "Bag Capacity:\t " << getInventory().getCurrentCapacity() << "/" << getInventory().getMaxCapacity() << endl;
     cout << "\n--------------------------------------------------\n";
-    cout << "Press Enter to go back to main menu";
-    cin.ignore();
-    cin.ignore();
 }
 
 Inventory& Player::getInventory() {
     return fInventory;
 };
+
+void Player::ApplyEffects() {
+    if (getCurrentHealth() <= 0) {
+        Entity::Die();
+        cout << "Your vision fades... Darkness envelops you as life slips away." << endl;
+    }
+    else {
+        // Hunger effects
+        if (fCurrentHungerLevel >= 8 && fCurrentHungerLevel < 10) {
+            DecreaseStamina(1);
+            IncreaseThirstLevel(1);
+            cout << "Your stomach growls with a fierce emptiness... Every step feels heavier." << endl;
+        }
+        else if (fCurrentHungerLevel == 10) {
+            TakeDamage(5);
+            DecreaseStamina(2);
+            IncreaseThirstLevel(1);
+            cout << "Starvation claws at you mercilessly. Weak and fading, your body is shutting down." << endl;
+        }
+
+        // Thirst effects
+        if (fCurrentThirstLevel >= 8 && fCurrentThirstLevel < 10) {
+            DecreaseStamina(2);
+            cout << "Your mouth is parched, and each breath feels like fire. You desperately need water." << endl;
+        }
+        else if (fCurrentThirstLevel == 10) {
+            TakeDamage(5);
+            DecreaseStamina(2);
+            cout << "Dehydration sets in. Your vision blurs as intense thirst ravages your body." << endl;
+        }
+
+        // Stamina effects
+        if (fCurrentStaminaLevel <= 5) {
+            IncreaseHungerLevel(2);
+            IncreaseThirstLevel(2);
+            cout << "Fatigue overwhelms you, making survival feel impossible. Hunger and thirst surge as your energy wanes." << endl;
+        }
+        else if (fCurrentStaminaLevel == 0) {
+            if (getIsFighting()) {
+                Entity::Die();
+                cout << "With the last of your strength drained, you collapse in battle."; 
+                this_thread::sleep_for(std::chrono::seconds(1));
+                cout << ". ";
+                this_thread::sleep_for(std::chrono::seconds(1));
+                cout << ". ";
+                this_thread::sleep_for(std::chrono::seconds(1));
+                cout << "The darkness claims you." << endl;
+            }
+            else {
+                cout << "Exhaustion finally takes its toll. You collapse, forced into a deep slumber..." << endl;
+                cout << "As you sleep, your hunger and thirst intensify, clawing at your insides. (+2 Hunger, +2 Thirst)" << endl;
+                IncreaseHungerLevel(2);
+                IncreaseThirstLevel(2);
+                IncreaseStamina(5);
+            }
+        }
+    }
+}

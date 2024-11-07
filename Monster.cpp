@@ -77,6 +77,7 @@ void Monster::Jumpscare(){
     while (sound.getStatus() == sf::Sound::Playing) {
         this_thread::sleep_for(chrono::milliseconds(100));
     }
+    system("CLS");
 }
 
 void Monster::Ambush(Player& pPlayer) {
@@ -100,30 +101,35 @@ void Monster::Ambush(Player& pPlayer) {
     this_thread::sleep_for(chrono::milliseconds(1500));
 };
 
-bool Monster::DisturbRest(Player& pPlayer) {
-    // Simulate the disturbance
-    if (pPlayer.getfIsResting()) {
-        cout << "\nAs you attempt to rest, you hear rustling in the bushes...\n";
-        this_thread::sleep_for(chrono::milliseconds(1500));
-        cout << "Suddenly, the shadows shift, and you sense a presence lurking nearby!\n";
-        this_thread::sleep_for(chrono::milliseconds(1500));
+bool Monster::DisturbRest(Player& pPlayer, int pChance) {
+    srand(static_cast<unsigned int>(time(0)));
+    if (rand() % 100 < pChance) {
+        if (pPlayer.getfIsResting()) {
+            system("CLS");
+            cout << "\nAs you attempt to rest, you hear rustling in the bushes...\n";
+            this_thread::sleep_for(chrono::milliseconds(1500));
+            cout << "Suddenly, the shadows shift, and you sense a presence lurking nearby!\n";
+            this_thread::sleep_for(chrono::milliseconds(1500));
 
-        // Determine if the disturbance leads to an ambush
-        int chanceOfDamage = rand() % 100;
-        if (chanceOfDamage < 40) {
-            cout << "The creature lunges at you, catching you off guard!\n";
-            pPlayer.TakeDamage(10);
-            pPlayer.DecreaseStamina(10);
-            cout << "You feel a sharp pain as it claws at you, causing 10 damage!\n";
+            // Determine if the disturbance leads to an ambush
+            int chanceOfDamage = rand() % 100;
+            if (chanceOfDamage < 40) {
+                cout << "The creature lunges at you, catching you off guard!\n";
+                pPlayer.TakeDamage(10);
+                cout << "You feel a sharp pain as it claws at you, causing 10 damage!\n";
+            }
+            else {
+                cout << "You manage to wake up just in time to see the monster retreat into the shadows.\n";
+                this_thread::sleep_for(chrono::milliseconds(1500));
+            }
+            cout << "You lose " << 1 << " stamina from the disturbance!" << endl;
+            pPlayer.DecreaseStamina(1);
+            pPlayer.setIsResting(false);
+            return true;
         }
         else {
-            cout << "You manage to wake up just in time to see the monster retreat into the shadows.\n";
-            this_thread::sleep_for(chrono::milliseconds(1500));
+            return false;
         }
-        cout << "You lose " << 10 << " stamina from the disturbance!" << endl;
-        pPlayer.DecreaseStamina(10);
-        pPlayer.setIsResting(false);
-        return true;
     }
     else {
         return false;

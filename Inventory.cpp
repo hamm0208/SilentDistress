@@ -179,8 +179,8 @@ void Inventory::DecreaseCurrentItemQuantity(int pDecrementValue){
 };
 
 //Use fCurrentItem
-void Inventory::UseCurrentItem(Player& pPlayer){
-	if(fCurrentItem != NULL){
+bool Inventory::UseCurrentItem(Player& pPlayer){
+	if(fCurrentItem != nullptr){
 		if(fCurrentItem->Use(pPlayer)){
 			cout << "You have used " << fCurrentItem->getName() << endl;
 			if(fCurrentItem->getIsConsumable()){
@@ -208,10 +208,13 @@ void Inventory::UseCurrentItem(Player& pPlayer){
 					setCurrentItem(nullptr);
 				}
 			}
+			return true;
 		}
 	}else{
 		cout<<"You have no items equipped"<<endl;
+		return false;
 	}
+	return false;
 };
 
 Inventory::~Inventory() {

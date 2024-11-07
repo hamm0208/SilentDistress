@@ -3,15 +3,17 @@
 #include "Monster.h"
 
 //Constructor
-SleepingBag::SleepingBag() :Item("Unknown Bag", "No description available", 0, false), fRecoveryAmount(0) {};
+SleepingBag::SleepingBag() :Item("Unknown Bag", "No description available", 0, false), fRecoveryAmount(0), fMonster(nullptr) {};
 //Overloaded constructor
-SleepingBag::SleepingBag(string pName, string pDescription, int pWeight, bool pIsConsumable, int pRecoveryAmount)
-:Item(pName, pDescription, pWeight, pIsConsumable), fRecoveryAmount(pRecoveryAmount) {};
+SleepingBag::SleepingBag(string pName, string pDescription, int pWeight, bool pIsConsumable, int pRecoveryAmount, Monster* pMonster)
+:Item(pName, pDescription, pWeight, pIsConsumable), fRecoveryAmount(pRecoveryAmount), fMonster(pMonster) {};
 
 //Use Sleeping Bag, increase player's stamina
 bool SleepingBag::Use(Player& pPlayer) {
     if(pPlayer.getCurrentStaminaLevel() <= pPlayer.getMaxStaminaLevel()){ //If player's current stamina is lower or equal than player's max stamina then...
         pPlayer.IncreaseStamina(fRecoveryAmount);   //Increase stamina
+        fMonster->DisturbRest(pPlayer, 15);
+        cout << "Your stamina has increased by " << fRecoveryAmount << endl;
         //you get hungry and thirsty when you wake up
         pPlayer.IncreaseHungerLevel(1);             //Increase hunger level 
         pPlayer.IncreaseThirstLevel(1);             //Increase thirst level

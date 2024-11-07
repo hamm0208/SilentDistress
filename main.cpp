@@ -12,25 +12,27 @@
 #include "Game.h"
 using namespace std;
 const int ALL_ITEM_COUNT = 10;
+
 int main() {
 	system("Color 0E");
-	Item* game_AllItems[ALL_ITEM_COUNT] = {
-		new Food("KFC", "Finger Lickin Good", 10, true, 5, false, true, 10, 10),
-		new Drinks("Water Bottle", "Best hydration" , 5, true, 10),
-		new SleepingBag("Cozy Bed", "Good comfy bed", 20, false, 20),
-		new Weapon("Big Axe", "Slash down your foe with this axe", 40, false, 10, 10),
-		new Medical("First Aid Kit", "Heal all your wounds", 10, true, 20),
-	};
 	Weapon* defaultWeapon = new Weapon("Bare Hands", "Good Ole Bare Knuckles", 0, false, 1, 1000);
 	Weapon* monsterWeapon = new Weapon("Claw of the Damned",  "A razor-sharp claw imbued with dark energy. It causes deep wounds and instills fear in its victims.", 10, false, 50, 100);
 	Monster* monster = new Monster("Scary Monster", 50, 200, monsterWeapon);
-	Player* newPlayer = new Player("John Wick", 10, 100, 0, 0, 100, 100);
+	Player* newPlayer = new Player("John Wick", 10, 100, 0, 0, 10, 100);
+	Item* game_AllItems[ALL_ITEM_COUNT] = {
+		new Food("KFC", "Finger Lickin Good", 10, true, 5, false, true, 10, 10),
+		new Drinks("Water Bottle", "Best hydration" , 5, true, 10),
+		new SleepingBag("Cozy Bed", "Good comfy bed", 20, false, 4, monster),
+		new Weapon("Big Axe", "Slash down your foe with this axe", 40, false, 10, 10),
+		new Medical("First Aid Kit", "Heal all your wounds", 10, true, 20),
+	};
 
 	newPlayer->AddItem(defaultWeapon);
 	newPlayer->getInventory().setCurrentItem(newPlayer->getInventory().SearchItem("Bare Hands"));
 	system("CLS");
-
 	Scene* scene1 = new Scene("Plane Crashsite", "Plane Crashsite", 6);
+	Scene* scene2 = new Scene("Plane Crashsite1", "Plane Crashsite", 6);
+	Scene* scene3 = new Scene("Plane Crashsite2", "Plane Crashsite", 6);
 	Item* scene1_loot[6]{
 		game_AllItems[0],
 		game_AllItems[1],
@@ -42,13 +44,19 @@ int main() {
 	for (int x = 0; x < 6; x++) {
 		scene1->AddLoot(scene1_loot[x]);
 	}
+	//Event scene1_event1(monster, false, "", "", [monster](Entity& e) { monster->Jumpscare(); });
+	//scene1->AddEvent(&scene1_event1);
 	BTree<Scene*>* rootScene = new BTree<Scene*>(scene1);
 	Game newGame(newPlayer, monster);
 	newGame.setRootScene(rootScene);
 	newGame.setTreeTarget(newGame.getRootScene());
+	newGame.AttachLeftScene(scene2);
+	newGame.AttachRightScene(scene3);
 	newGame.Play();
 
-
+	
+	delete scene3;
+	delete scene2;
 	delete scene1;
 	delete monsterWeapon;
 	delete defaultWeapon;

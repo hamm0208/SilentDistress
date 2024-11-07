@@ -8,6 +8,7 @@ Maybe sleeping will count as 2 turns, and will increase hunger and thirst
 #include "SinglyLinkedList.h"
 #include <stdlib.h>
 class Decision; 
+class Monster;
 
 class Player :public Entity{
      private:
@@ -26,7 +27,7 @@ class Player :public Entity{
         SinglyLinkedList<Decision> fDecisionsMade;  //Decisions made by the player
     public:
         Player();
-        Player(string pName, int pAttackDamage, const int pHealth = 100, const int pHungerLevel = 10, const int pThirstLevel = 10 , const int pStamina = 100, const int pInventoryCapacity = 100);
+        Player(string pName, int pAttackDamage, const int pHealth = 100, const int pHungerLevel = 10, const int pThirstLevel = 10 , const int pStamina = 10, const int pInventoryCapacity = 100);
         //Getter and setter for fMaxHungerLevel
         int getMaxHungerLevel();
         void setMaxHungerLevel(int pHungerLevel);
@@ -75,9 +76,8 @@ class Player :public Entity{
         void DiscardItem();                             //Discard an item in inventory
         void SearchItems();                             //Search an item in inventory
         Item* getCurrentItem();                         //Get currently equiped item
-        void UseCurrentItem();                          //Use currently equiped item
+        bool UseCurrentItem();                          //Use currently equiped item
         void MakeDecision(Decision& pDecision);
         void ShowDecision();
-
-        // void ApplyEffects(); This function will run every turn to check for the Hunger level, thirst level, and stamina
+        void ApplyEffects();
 };

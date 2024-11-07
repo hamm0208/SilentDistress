@@ -15,6 +15,8 @@ class Game{
 		List<Decision> fDecisions;
         TreeScene* fRootScene;
         TreeScene* fTreeTarget;
+        int fTurn;
+        bool isGameOver;
     public:
         Game(Player* pPlayer, Monster* pMonster);
         ~Game();
@@ -22,12 +24,14 @@ class Game{
         Monster* getMonster();
 		List<Decision> getDecisions() const;
         Scene* getCurrentScene();
-
+        int getTurn();
+        void IncreaseTurn();
+        bool getIsGameOver();
+        void setIsGameOver(bool pFlag);
         TreeScene* getTreeTarget();
         void setTreeTarget(TreeScene* pNewTarget);
         TreeScene* getRootScene() const;
         void setRootScene(TreeScene* pNewRoot);
-
         //fDecisions
         void AddDecisions(Decision& pDecision);
         void ShowDecisions(List<Decision>& pDecision);
@@ -50,6 +54,7 @@ class Game{
         void DisplayLootMenu();
         void PlayerPickUpLoot();
         void ShowLootDetails();
+        void CheckReduceResources();
         //fMonsters
         void MonsterJumpscare();
         void MonsterAmbush();
