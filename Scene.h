@@ -1,5 +1,5 @@
 #pragma once
-#include "Stack.h"
+#include "Queue.h"
 #include "Event.h"
 class Item;
 class Scene
@@ -8,13 +8,15 @@ class Scene
 		string fName;					//Name of scene
 		string fDescription;			//Description of the scene
 		List<Item*> fLoot;				//Loot in the scene for players to add to inventory
-		Stack<Event*> fEvents;			//Events of the scene
+		Queue<Event*> fEvents;			//Events of the scene
 	public:
 		Scene();
 		Scene(string pName, string pDescription, int pMaxNumberOfEvent);
+		~Scene();
 		string getName() const;
 		string getDescription() const;
 		List<Item*>& getLoot();
+		Queue<Event*> getEvent();
 		void AddLoot(Item* pLoot);
 		void AddEvent(Event* fEvent);
 		void PlayEvent();

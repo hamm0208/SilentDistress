@@ -61,11 +61,11 @@ _#/|##########/\######(   /\   )######/\##########|\#_
         }
         ChangingColour = !ChangingColour;
     }
-    this_thread::sleep_for(std::chrono::seconds(1));  // Pause before message
+    this_thread::sleep_for(chrono::seconds(1));  // Pause before message
     cout << "\nYou feel a chill down your spine...\n";
-    this_thread::sleep_for(std::chrono::milliseconds(1000));
+    this_thread::sleep_for(chrono::milliseconds(1000));
     cout << "A dark voice whispers, \"I'm coming for you...\"\n";
-    this_thread::sleep_for(std::chrono::milliseconds(1500));
+    this_thread::sleep_for(chrono::milliseconds(1500));
     cout << "Run... if you think you can escape...\n";
     cout << "\n\n";
     for (int x = 0; x < 20; x++) {
@@ -76,7 +76,7 @@ _#/|##########/\######(   /\   )######/\##########|\#_
             system("Color 0C");
         }
         ChangingColour = !ChangingColour;
-        this_thread::sleep_for(std::chrono::milliseconds(100));
+        this_thread::sleep_for(chrono::milliseconds(100));
     }
     system("Color 0E");
     while (sound.getStatus() == sf::Sound::Playing) {

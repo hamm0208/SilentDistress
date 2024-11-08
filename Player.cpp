@@ -161,11 +161,11 @@ void Player::EquipItem() {
 void Player::ViewItems() {
     system("CLS");
     cout << "Viewing Inventory. ";
-    this_thread::sleep_for(std::chrono::seconds(1));
+    this_thread::sleep_for(chrono::seconds(1));
     cout << ". ";
-    this_thread::sleep_for(std::chrono::seconds(1));
+    this_thread::sleep_for(chrono::seconds(1));
     cout << ". " << endl;
-    this_thread::sleep_for(std::chrono::seconds(1));
+    this_thread::sleep_for(chrono::seconds(1));
     system("CLS");
     fInventory.ViewInventoryItems();
 }
@@ -252,11 +252,11 @@ void Player::ShowDecision(){
 void Player::ShowAttributes(){
     system("CLS");
     cout << "Viewing Attributes. ";
-    this_thread::sleep_for(std::chrono::seconds(1));
+    this_thread::sleep_for(chrono::seconds(1));
     cout << ". ";
-    this_thread::sleep_for(std::chrono::seconds(1));
+    this_thread::sleep_for(chrono::seconds(1));
     cout << ". " << endl;
-    this_thread::sleep_for(std::chrono::seconds(1));
+    this_thread::sleep_for(chrono::seconds(1));
     system("CLS");
     cout << "--------------------------------------------------\n" <<endl;
     cout << "Player's Details" << endl;
@@ -316,11 +316,11 @@ void Player::ApplyEffects(Monster& pMonster) {
             if (getIsFighting()) {
                 Entity::Die();
                 cout << "With the last of your strength drained, you collapse in battle."; 
-                this_thread::sleep_for(std::chrono::seconds(1));
+                this_thread::sleep_for(chrono::seconds(1));
                 cout << ". ";
-                this_thread::sleep_for(std::chrono::seconds(1));
+                this_thread::sleep_for(chrono::seconds(1));
                 cout << ". ";
-                this_thread::sleep_for(std::chrono::seconds(1));
+                this_thread::sleep_for(chrono::seconds(1));
                 cout << "The darkness claims you." << endl;
             }
             else {

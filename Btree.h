@@ -4,6 +4,8 @@ using namespace std;
 
 template <class T>
 class BTree {
+public:
+	static BTree<T> NIL;
 private:
 	T* fKey;
 	BTree<T>* fLeft;
@@ -14,7 +16,6 @@ public:
 		fLeft = &NIL;
 		fRight = &NIL;
 	}
-	static BTree<T> NIL;
 	BTree(const T& aKey){
 		fKey = new T(aKey);
 		fLeft = &NIL;

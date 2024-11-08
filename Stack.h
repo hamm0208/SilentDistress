@@ -33,6 +33,10 @@ class Stack
 			}
 			cout << endl;
 		}
+		int getMax() {
+			return fMax;
+		};
+
 		bool IsEmpty() {
 			return GetSize() == 0;
 		}

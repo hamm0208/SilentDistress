@@ -107,11 +107,11 @@ void Game::MoveLeft(){
         IncreaseTurn();
         system("CLS");
         cout<<"Moving to " << fTreeTarget->left().key()->getName();
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         cout << ". ";
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         cout << ". " << endl;
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         system("CLS");
         setTreeTarget(&fTreeTarget->left());
         PlaySceneEvent();
@@ -126,11 +126,11 @@ void Game::MoveRight(){
         IncreaseTurn();
         system("CLS");
         cout<<"Moving to " << fTreeTarget->right().key()->getName();
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         cout << ". ";
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         cout << ". " << endl;
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         system("CLS");
         setTreeTarget(&fTreeTarget->left());
         PlaySceneEvent();
@@ -154,11 +154,11 @@ void Game::DiscoverMenu() {
         system("CLS");
         bool inDiscoveringMenu = true;
         cout << "Discovering. ";
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         cout << ". ";
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         cout << ". " << endl;
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         system("CLS");
 
         List<Decision> DecisionInDiscovering;
@@ -310,11 +310,11 @@ void Game::DisplayLootMenu() {
         bool inLootMenu = true;
         Scene* currentScene = getCurrentScene();
         cout << "Searching " << currentScene->getName() <<"'s Loot. ";
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         cout << ". ";
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         cout << ". " << endl;
-        this_thread::sleep_for(std::chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(1));
         List<Decision> DecisionInLoot;
         while (inLootMenu) {
             system("CLS");
@@ -408,7 +408,7 @@ void Game::PlayerPickUpLoot() {
 
             }
             else {
-                this_thread::sleep_for(std::chrono::seconds(1));
+                this_thread::sleep_for(chrono::seconds(1));
                 cout << "\nDo you want to pick up another item?" << endl;
                 cout << "1. Yes\n2. No" << endl;
                 cout << "Enter your choice: ";

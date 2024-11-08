@@ -11,6 +11,7 @@
 #include "Scene.h"
 #include "Game.h"
 #include "Iterator1D.h"
+#include "Queue.h"
 using namespace std;
 const int ALL_ITEM_COUNT = 10;
 
@@ -43,20 +44,20 @@ void Introduction() {
 	cout << "Goal:\nPlayer needs to survive the aftermath of a plane crash in a hostile jungle by gathering resources,\n"
 		<< "managing hunger and stamina. Players must explore the jungle to find the end of the jungle to meet the rescue team\n" << endl;
 
-	this_thread::sleep_for(std::chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(1));
 	cout << "Information: " << endl;
 	cout << "1. Turn-Based Gameplay:\n"
 		<< "The game operates on turns where each player action (moving, searching, using/equipping/discarding items) counts as one turn.\n" <<endl;
-	this_thread::sleep_for(std::chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(1));
 	cout << "2. Decision-Based Outcomes:\n"
 		<< "Every choice impacts the storyline, influencing endings based on survival, resource management, and decisions.\n" << endl;
-	this_thread::sleep_for(std::chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(1));
 	cout << "3. Victory Condition:\n"
 		<<"Reach the rescue team without succumbing to hunger, thirst, or the monster's attacks.\n" <<endl;
-	this_thread::sleep_for(std::chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(1));
 	cout << "4. Defeat Condition:\n"
 		<<"The game ends if the player’s health, hunger, or stamina drops to zero or if the monster defeats them.\n" << endl;
-	this_thread::sleep_for(std::chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(1));
 	system("PAUSE");
 	system("CLS");
 
@@ -65,11 +66,11 @@ void Introduction() {
 	cout << "1. Hunger Effects: If hunger reaches certain levels, stamina decreases, thirst increases, or the player takes damage:\n";
 	cout << "   - Hunger level between 8 and 9: Decrease stamina by 1 and increase thirst by 1.\n";
 	cout << "   - Hunger level 10: Take 5 damage, decrease stamina by 2, and increase thirst by 1.\n" << endl;
-	this_thread::sleep_for(std::chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(1));
 	cout << "2. Thirst Effects: If thirst reaches certain levels, stamina decreases and the player may take damage:\n";
 	cout << "   - Thirst level between 8 and 9: Decrease stamina by 2.\n";
 	cout << "   - Thirst level 10: Take 5 damage and decrease stamina by 2.\n" << endl;
-	this_thread::sleep_for(std::chrono::seconds(1));
+	this_thread::sleep_for(chrono::seconds(1));
 	cout << "3. Stamina Effects: Low stamina affects hunger, thirst, and may result in death if stamina reaches zero:\n";
 	cout << "   - Stamina level between 1 and 5: Increase hunger and thirst by 2 each.\n";
 	cout << "   - Stamina level 0: If resting, the player collapses and suffers a deeper hunger and thirst increase.\n   Stamina is restored, but a monster will disturb the rest.\n";
@@ -78,17 +79,49 @@ void Introduction() {
 	system("CLS");
 }
 
+void Scene1Event(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster) {
+	Queue<Event*> Events(pCrashSiteScene.getEvent().getMax());
+	Event* event1 = new Event(pPlayer, false, "plane_crash.wav", [pPlayer](Entity& e) {
+		cout << "You file into the plane, the hum of the engines almost drowning out the low chatter of passengers settling in.\n"
+			<< "A flight attendant directs you to your seat, and you stow your bag, feeling a mix of excitement and fatigue.\n" 
+			<<"The plane's interior is cozy, and as you buckle up, you can’t help but let out a small sigh of relief,\nhome is just a flight away.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(1));
+		cout << "The plane's engines roar as it ascends. You gaze out the window, watching the city shrink below.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(1));
+		system("PAUSE");
+		system("CLS");
+		cout << "30 Minutes Later. ";
+		this_thread::sleep_for(chrono::seconds(1));
+		cout << ". ";
+		this_thread::sleep_for(chrono::seconds(1));
+		cout << ". " << endl;
+		this_thread::sleep_for(chrono::seconds(1));
+		cout << "A sudden jolt rocks the plane. You grip the armrests as the 'Fasten Seatbelt' sign dings on.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(1));
+		cout << "From the corner of your eye, you glimpse a dark figure outside the window, just for a second, before it ram itself onto the plane.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(1));
+		cout << "The plane lurches as the engines begin to sputter. The sound of panicked passengers fills the cabin!\n" << endl;
+	});
+	Event* event2 = new Event(pPlayer, false, "", [pPlayer](Entity& e) {
+		cout << "The plane lurches as the engines begin to sputter. The sound of panicked passengers fills the cabin!\n" << endl;
+	});
+	Events.queue(event1);
+	Events.queue(event2);
+
+	pCrashSiteScene.AddEvent(Events.dequeue());
+	pCrashSiteScene.AddEvent(Events.dequeue());
+}
 int main() {
 	system("Color 0E");
 	//Introduction to the game
-	Introduction();
+	//Introduction();
 
 	//Initialise Variable
 	string playerName = "";
 	Weapon* playerDefaultWeapon = new Weapon("Bare Hands", "Good Ole Bare Knuckles", 0, false, 1, 1000); //Default player weapon
-	Weapon monsterDefaultWeapon("Claw of the Damned", "A razor-sharp claw imbued with dark energy. It causes deep wounds and instills fear in its victims.", 10, false, 50, 100); //Default monster weapon
+	Weapon* monsterDefaultWeapon = new Weapon("Claw of the Damned", "A razor-sharp claw imbued with dark energy. It causes deep wounds and instills fear in its victims.", 10, false, 50, 100); //Default monster weapon
 	Player* player;
-	Monster* dreadstalker = new Monster("Scary Monster", 50, 200, &monsterDefaultWeapon); //Allocate memory for Monster variable on the heap
+	Monster* dreadstalker = new Monster("Scary Monster", 50, 200, monsterDefaultWeapon); //Allocate memory for Monster variable on the heap
 	Item* AllItems[ALL_ITEM_COUNT] = {
 		new Drinks("Water Bottle", "A lifeline in the wilderness, quench your thirst.", 5, true, 5),
 		new Drinks("Coconut Water", "Natural hydration straight from the source", 7, true, 4),
@@ -102,19 +135,33 @@ int main() {
 		new Medical("Wild Mint", "Wild mint leaves can relieve headaches and stomach aches. A natural way to ease discomfort.", 1, false, 5)
 	};
 
-	//Get player's name
+	//Dimensionalise Player Object
 	cout << "Enter your name: ";
 	cin >> playerName;
-	player = new Player("playerName", 10, 100, 0, 0, 10, 100); //Allocate memory for Player variable on the heap
+	player = new Player(playerName, 10, 100, 0, 0, 10, 100); //Allocate memory for Player variable on the heap
 	player->AddItem(playerDefaultWeapon);	//Add the weapon the the inventory
 	player->getInventory().setCurrentItem(player->getInventory().SearchItem("Bare Hands")); //Set current item to the default weapon
+	system("CLS");
+	//Creating 1st Scene (Crash Site)
+	Scene* crashSiteScene = new Scene("Crash Site", "You awaken amid the twisted wreckage of the plane, surrounded by smoke and dense jungle. Disoriented and alone, survival starts here.", 3);
+	Scene1Event(*crashSiteScene, player, dreadstalker);
+	
+	Game newGame(player, dreadstalker);
+	BTree<Scene*>* rootScene = new BTree<Scene*>(crashSiteScene);
+	newGame.setRootScene(rootScene);
+	newGame.setTreeTarget(newGame.getRootScene());
+	newGame.Play();
 
-	//Add item and delete items into scene later
+	delete crashSiteScene;
+	for (Iterator1D<Item*> iter(AllItems, ALL_ITEM_COUNT, 0); iter != iter.end(); ++iter) {
+		if (*iter != nullptr) {
+			delete *iter;
+		}
+	}
 	delete player;
 	delete dreadstalker;
 	return 0;
 }
-
 /*
 int main() {
 	system("Color 0E");
@@ -147,8 +194,8 @@ int main() {
 	for (int x = 0; x < 6; x++) {
 		scene1->AddLoot(scene1_loot[x]);
 	}
-	Event scene1_event1(monster, false, "", "", [monster](Entity& e) { monster->Jumpscare(); });
-	scene1->AddEvent(&scene1_event1);
+	Event scene1_event1(monster, false, "", [monster](Entity& e) { monster->Jumpscare(); });
+	//scene1->AddEvent(&scene1_event1);
 	BTree<Scene*>* rootScene = new BTree<Scene*>(scene1);
 	Game newGame(newPlayer, monster);
 	newGame.setRootScene(rootScene);

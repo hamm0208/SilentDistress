@@ -26,6 +26,15 @@ class Queue{
 			cout << "List is empty" << endl;
 			exit(0);
 		}
+		bool IsEmpty() {
+			return fQueue.size() == 0;
+		}
+		int GetSize() {
+			return fQueue.size();
+		}
+		int getMax() {
+			return fMax;
+		};
 		void View() {
 			for (Iterator iter = fQueue.getIteratorHead(); iter != iter.end(); ++iter) {
 				cout << *iter;
