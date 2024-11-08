@@ -34,9 +34,10 @@ void Introduction() {
 	cout << "+------------------------------------------------------------------+" << endl;
 	cout << GameTittle;
 	cout << "+------------------------------------------------------------------+" << endl;
-	cout << "\nSilentDistress is a horror survival text game where the player,\n"
+	cout << "\nSilent Distress is a horror survival text game where the player,\n"
 		<< "as the lone survivor of a plane crash, must navigate a dark jungle,\n"
 		<< "manage resources, and survive encounters with a lurking monster.\n" << endl;
+
 	system("PAUSE");
 	system("CLS");
 
@@ -56,35 +57,26 @@ void Introduction() {
 		<<"Reach the rescue team without succumbing to hunger, thirst, or the monster's attacks.\n" <<endl;
 	this_thread::sleep_for(chrono::seconds(1));
 	cout << "4. Defeat Condition:\n"
-		<<"The game ends if the player’s health, hunger, or stamina drops to zero or if the monster defeats them.\n" << endl;
+		<<"The game ends if the player's health, hunger, or stamina drops to zero or if the monster defeats them.\n" << endl;
 	this_thread::sleep_for(chrono::seconds(1));
 	system("PAUSE");
 	system("CLS");
 
 	//Survival System Rules
 	cout << "Survival System Rules:\n";
-	cout << "1. Hunger Effects: If hunger reaches certain levels, stamina decreases, thirst increases, or the player takes damage:\n";
-	cout << "   - Hunger level between 8 and 9: Decrease stamina by 1 and increase thirst by 1.\n";
-	cout << "   - Hunger level 10: Take 5 damage, decrease stamina by 2, and increase thirst by 1.\n" << endl;
+	cout << "1. Hunger Effects: If hunger reaches certain levels, stamina decreases, thirst increases, or the player takes damage:\n" << endl;
 	this_thread::sleep_for(chrono::seconds(1));
-	cout << "2. Thirst Effects: If thirst reaches certain levels, stamina decreases and the player may take damage:\n";
-	cout << "   - Thirst level between 8 and 9: Decrease stamina by 2.\n";
-	cout << "   - Thirst level 10: Take 5 damage and decrease stamina by 2.\n" << endl;
+	cout << "2. Thirst Effects: If thirst reaches certain levels, stamina decreases and the player may take damage:\n" << endl;
 	this_thread::sleep_for(chrono::seconds(1));
-	cout << "3. Stamina Effects: Low stamina affects hunger, thirst, and may result in death if stamina reaches zero:\n";
-	cout << "   - Stamina level between 1 and 5: Increase hunger and thirst by 2 each.\n";
-	cout << "   - Stamina level 0: If resting, the player collapses and suffers a deeper hunger and thirst increase.\n   Stamina is restored, but a monster will disturb the rest.\n";
-	cout << "   - If player is fighting and stamina reaches 0: The player dies from exhaustion in battle.\n" << endl;
+	cout << "3. Stamina Effects: Low stamina affects hunger, thirst, and may result in death if stamina reaches zero:\n" << endl;
 	system("PAUSE");
 	system("CLS");
 }
 
 void Scene1Event(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster) {
-	Queue<Event*> Events(pCrashSiteScene.getEvent().getMax());
 	Event* event1 = new Event(pPlayer, false, "plane_crash.wav", [pPlayer](Entity& e) {
-		cout << "You file into the plane, the hum of the engines almost drowning out the low chatter of passengers settling in.\n"
-			<< "A flight attendant directs you to your seat, and you stow your bag, feeling a mix of excitement and fatigue.\n" 
-			<<"The plane's interior is cozy, and as you buckle up, you can’t help but let out a small sigh of relief,\nhome is just a flight away.\n" << endl;
+		cout << "You board the plane, settle into your seat, and stow your bag, feeling both excitement and fatigue.\n"
+			<< "As you buckle up, you sigh in relief, home is just a flight away.\n" << endl;
 		this_thread::sleep_for(chrono::seconds(1));
 		cout << "The plane's engines roar as it ascends. You gaze out the window, watching the city shrink below.\n" << endl;
 		this_thread::sleep_for(chrono::seconds(1));
@@ -96,25 +88,62 @@ void Scene1Event(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster) {
 		this_thread::sleep_for(chrono::seconds(1));
 		cout << ". " << endl;
 		this_thread::sleep_for(chrono::seconds(1));
-		cout << "A sudden jolt rocks the plane. You grip the armrests as the 'Fasten Seatbelt' sign dings on.\n" << endl;
-		this_thread::sleep_for(chrono::seconds(1));
-		cout << "From the corner of your eye, you glimpse a dark figure outside the window, just for a second, before it ram itself onto the plane.\n" << endl;
-		this_thread::sleep_for(chrono::seconds(1));
-		cout << "The plane lurches as the engines begin to sputter. The sound of panicked passengers fills the cabin!\n" << endl;
+		cout << "A sudden jolt rocks the plane.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(2));
+		cout << "From the corner of your eye,\nyou glimpse a dark figure outside the window just for a second,\nbefore it ram itself onto the plane.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(2));
+		cout << "The plane lurches as the engines sputter,\nknowing you're about to crash into the dense jungle of a small island, \n"
+			<<"you brace for impact!\n" << endl;
 	});
 	Event* event2 = new Event(pPlayer, false, "", [pPlayer](Entity& e) {
-		cout << "The plane lurches as the engines begin to sputter. The sound of panicked passengers fills the cabin!\n" << endl;
-	});
-	Events.queue(event1);
-	Events.queue(event2);
+		system("PAUSE");
+		system("CLS");
+		cout << "Your head aches as you wake, smoke and fire crackling around you.\n"
+			<< "The plane is wrecked, debris everywhere.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(2));
 
-	pCrashSiteScene.AddEvent(Events.dequeue());
-	pCrashSiteScene.AddEvent(Events.dequeue());
+		cout << "The jungle is still, then a deep growl echoes. Something huge moves nearby.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(2));
+
+		cout << "The ground shakes with each step. You press against the plane, hoping it won’t notice.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(2));
+
+		cout << "Through the window, you see a massive shape with glowing eyes, sniffing the air.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(2));
+
+		cout << "It steps closer, its feet crushing the ground beneath you.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(2));
+
+		cout << "The creature growls and moves away, the ground shaking as it disappears.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(2));
+
+		cout << "You're alone in the wreckage, but you know the creature is still out there.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(2));
+		system("PAUSE");
+		system("CLS");
+		cout << "Suddenly, you hear a crackling voice through a broken radio.\n"<< endl;
+		this_thread::sleep_for(chrono::seconds(1));
+
+		cout << "Rescue Team: We've located the crash site. We're coming to save you.\nHead to the edge of the island and stay put, we'll meet you there.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(1));
+
+		cout << "The static clears for a moment, and you can hear the distant sound of a helicopter overhead.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(1));
+
+		cout << "A surge of hope fills you, but there's no time to waste.\nYou gather your strength and prepare to make your way to the edge of the island,\nyour heart racing with both fear and anticipation.\n" << endl;
+		this_thread::sleep_for(chrono::seconds(1));
+
+		cout << e.getName() << ": I should loot the area and find the path to the outskirts of the island..." << endl;
+		system("PAUSE");
+		system("CLS");
+	});
+	pCrashSiteScene.AddEvent(event1);
+	pCrashSiteScene.AddEvent(event2);
 }
 int main() {
 	system("Color 0E");
 	//Introduction to the game
-	//Introduction();
+	Introduction();
 
 	//Initialise Variable
 	string playerName = "";
@@ -142,13 +171,23 @@ int main() {
 	player->AddItem(playerDefaultWeapon);	//Add the weapon the the inventory
 	player->getInventory().setCurrentItem(player->getInventory().SearchItem("Bare Hands")); //Set current item to the default weapon
 	system("CLS");
-	//Creating 1st Scene (Crash Site)
-	Scene* crashSiteScene = new Scene("Crash Site", "You awaken amid the twisted wreckage of the plane, surrounded by smoke and dense jungle. Disoriented and alone, survival starts here.", 3);
-	Scene1Event(*crashSiteScene, player, dreadstalker);
-	
+
 	Game newGame(player, dreadstalker);
+	//Creating 1st Scene (Crash Site)
+	Scene* crashSiteScene = new Scene("Crash Site", "You awaken amid the twisted wreckage of the plane, surrounded by smoke and dense jungle. Disoriented and alone, survival starts here.", 2);
+	Scene1Event(*crashSiteScene, player, dreadstalker);
 	BTree<Scene*>* rootScene = new BTree<Scene*>(crashSiteScene);
+	Game* ptr;
 	newGame.setRootScene(rootScene);
+	newGame.setTreeTarget(newGame.getRootScene());
+	
+	Scene* jungleClearingScene = new Scene("Jungle Clearing", "A small clearing opens up before you, dappled sunlight breaking through the trees. The jungle seems deceptively calm here.", 2);
+	Scene* ruinsScene = new Scene("Ruins","You come upon ancient ruins, moss-covered stones hinting at a long-lost civilization. It's quiet, but you feel like you're not alone.",1);
+	Scene* villageScene = new Scene("Abandoned Village","The village is eerie, silent huts and remnants of fires hint at a hasty departure. You sense something watching you.",2);
+	Scene* edgeOfIslandScene = new Scene("Edge of the Island","You see the rescue helicopter just ahead, its blades chopping through the air. But as you approach, the monster emerges from the jungle.",3);
+	newGame.AttachLeftScene(jungleClearingScene);
+	//FIRST THING FIRST COMPLETE ATTACHING
+
 	newGame.setTreeTarget(newGame.getRootScene());
 	newGame.Play();
 
@@ -162,60 +201,3 @@ int main() {
 	delete dreadstalker;
 	return 0;
 }
-/*
-int main() {
-	system("Color 0E");
-	Weapon* defaultWeapon = new Weapon("Bare Hands", "Good Ole Bare Knuckles", 0, false, 1, 1000);
-	Weapon* monsterWeapon = new Weapon("Claw of the Damned",  "A razor-sharp claw imbued with dark energy. It causes deep wounds and instills fear in its victims.", 10, false, 50, 100);
-	Monster* monster = new Monster("Scary Monster", 50, 200, monsterWeapon);
-	Player* newPlayer = new Player("John Wick", 10, 100, 0, 0, 10, 100);
-	Item* game_AllItems[ALL_ITEM_COUNT] = {
-		new Food("KFC", "Finger Lickin Good", 10, true, 5, false, true, 10, 10),
-		new Drinks("Water Bottle", "Best hydration" , 5, true, 10),
-		new SleepingBag("Cozy Bed", "Good comfy bed", 20, false, 4, monster),
-		new Weapon("Big Axe", "Slash down your foe with this axe", 40, false, 10, 10),
-		new Medical("First Aid Kit", "Heal all your wounds", 10, true, 20),
-	};
-
-	newPlayer->AddItem(defaultWeapon);
-	newPlayer->getInventory().setCurrentItem(newPlayer->getInventory().SearchItem("Bare Hands"));
-	system("CLS");
-	Scene* scene1 = new Scene("Plane Crashsite", "Plane Crashsite", 6);
-	Scene* scene2 = new Scene("Plane Crashsite1", "Plane Crashsite", 6);
-	Scene* scene3 = new Scene("Plane Crashsite2", "Plane Crashsite", 6);
-	Item* scene1_loot[6]{
-		game_AllItems[0],
-		game_AllItems[1],
-		game_AllItems[1],
-		game_AllItems[2],
-		game_AllItems[3],
-		game_AllItems[4],
-	};
-	for (int x = 0; x < 6; x++) {
-		scene1->AddLoot(scene1_loot[x]);
-	}
-	Event scene1_event1(monster, false, "", [monster](Entity& e) { monster->Jumpscare(); });
-	//scene1->AddEvent(&scene1_event1);
-	BTree<Scene*>* rootScene = new BTree<Scene*>(scene1);
-	Game newGame(newPlayer, monster);
-	newGame.setRootScene(rootScene);
-	newGame.setTreeTarget(newGame.getRootScene());
-	newGame.AttachLeftScene(scene2);
-	newGame.AttachRightScene(scene3);
-	newGame.Play();
-
-	
-	delete scene3;
-	delete scene2;
-	delete scene1;
-	delete monsterWeapon;
-	delete defaultWeapon;
-	for (int x = 0; x < ALL_ITEM_COUNT; x++) {
-		if (game_AllItems[x] != nullptr) {
-			delete game_AllItems[x];
-			game_AllItems[x] = nullptr;
-		}
-	}
-	return 0;
-}
-*/

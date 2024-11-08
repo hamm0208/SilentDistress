@@ -69,11 +69,11 @@ class Player :public Entity{
         void DecreaseStamina(int pDecrementValue);      //Decrease Stamina
         void Heal(int pHealValue);                      //Heal Player
         void AddItem(Item* pItem);                      //Add item to fInventory
-        void EquipItem();                               //Equip item to use
+        bool EquipItem();                               //Equip item to use
         void ViewItems();                               //View all items in inventory
         void ViewItemsDetails();                        //View all items DETAILS in inventory
         void ViewItemDetails(Item& pItem);              //View A item in inventory
-        void DiscardItem();                             //Discard an item in inventory
+        bool DiscardItem();                             //Discard an item in inventory
         void SearchItems();                             //Search an item in inventory
         Item* getCurrentItem();                         //Get currently equiped item
         bool UseCurrentItem();                          //Use currently equiped item

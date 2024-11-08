@@ -98,7 +98,7 @@ void Game::DettachLeftScene(){
 void Game::DettachRightScene(){
     fTreeTarget->detachRight();
 };
-void Game::MoveLeft(){
+void Game::PlayerMoveLeft(){
     if (fTreeTarget->left().isEmpty()) {
         cout << "No route to go to..." << endl;
     }
@@ -117,7 +117,7 @@ void Game::MoveLeft(){
         PlaySceneEvent();
     }
 };
-void Game::MoveRight(){
+void Game::PlayerMoveRight(){
     if (fTreeTarget->left().isEmpty()) {
         cout << "No route to go to..." << endl;
     }
@@ -136,10 +136,16 @@ void Game::MoveRight(){
         PlaySceneEvent();
     }
 };
-
+void Game::Left() {
+    setTreeTarget(&fTreeTarget->left());
+};
+void Game::Right() {
+    setTreeTarget(&fTreeTarget->left());
+};
 void Game::BackToRoot() {
     if (fTreeTarget == fRootScene) {
         cout << "You're already at the crash site!" << endl;
+        system("PAUSE");
     }
     else {
         fPlayer->DecreaseStamina(1);
@@ -167,14 +173,14 @@ void Game::DiscoverMenu() {
             [this](Player& player) { BackToRoot(); }));
 
         // Check if there are routes available to the left and right and show them
-        std::string availableWays = "No route available, head back to crash site"; // Default message
+        std::string availableWays = "\t\tNo route available, head back to crash site"; // Default message
 
         // Check if left route is available
         if (!fTreeTarget->left().isEmpty()) {
             availableWays = "Left Route: " + fTreeTarget->left().key()->getName() + "\t\t"; // Update if left route is found
             DecisionInDiscovering.pushBack(Decision("Move left to " + fTreeTarget->left().key()->getName(),
                 "Move to the left route to discover " + fTreeTarget->left().key()->getName(),
-                [this](Player& player) { MoveLeft(); }));
+                [this](Player& player) { PlayerMoveLeft(); }));
         }
 
         // Check if right route is available
@@ -188,13 +194,13 @@ void Game::DiscoverMenu() {
             }
             DecisionInDiscovering.pushBack(Decision("Move right to " + fTreeTarget->right().key()->getName(),
                 "Move to the right route to discover " + fTreeTarget->right().key()->getName(),
-                [this](Player& player) { MoveRight(); }));
+                [this](Player& player) { PlayerMoveRight(); }));
         }
 
         while (inDiscoveringMenu) {
             cout << "-------------------------------- Discover Routes Menu --------------------------------" << endl;
             cout << endl;
-            std::cout << "\t" << availableWays << "\n" << endl;
+            std::cout << "" << availableWays << "\n" << endl;
             cout << "---------------------------------------------------------------------------------------\n";
             int choice = 0;
             cout << "Select an option:" << endl;
@@ -267,8 +273,8 @@ void Game::DisplayInventoryMenu() {
         bool inInventoryMenu = true;
         List<Decision> DecisionInInventory;
         DecisionInInventory.pushBack(Decision("View All Item Details", "Take a look at all of the item details in your inventory", [this](Player& player) { player.ViewItemsDetails(); }));
-        DecisionInInventory.pushBack(Decision("Equip an item", "Equip an item from your inventory", [this](Player& player) { IncreaseTurn(); player.EquipItem(); }));
-        DecisionInInventory.pushBack(Decision("Discard an item", "Discard an item from your inventory", [this](Player& player) { IncreaseTurn(); player.DiscardItem(); }));
+        DecisionInInventory.pushBack(Decision("Equip an item", "Equip an item from your inventory", [this](Player& player) {  if (player.EquipItem()) IncreaseTurn(); }));
+        DecisionInInventory.pushBack(Decision("Discard an item", "Discard an item from your inventory", [this](Player& player) {  if (player.DiscardItem()) IncreaseTurn(); }));
 
         while (inInventoryMenu) {
             cout << "---------------- Inventory Menu ----------------" << endl;

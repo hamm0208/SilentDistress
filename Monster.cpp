@@ -51,8 +51,13 @@ _#/|##########/\######(   /\   )######/\##########|\#_
     system("CLS");
     sound.play();
     bool ChangingColour = true;
-    for (const auto& line : asciiArt) {
-        cout << line;
+    for (int x = 0; x < 20; x++) {
+        cout << asciiArt;
+        this_thread::sleep_for(chrono::milliseconds(200));
+        if (x == 19) {
+            break;
+        }
+        system("CLS");
         if (ChangingColour) {
             system("Color 0A");
         }
@@ -70,7 +75,7 @@ _#/|##########/\######(   /\   )######/\##########|\#_
     cout << "\n\n";
     for (int x = 0; x < 20; x++) {
         if (ChangingColour) {
-            system("Color 0E");
+            system("Color 0A");
         }
         else {
             system("Color 0C");
@@ -78,12 +83,12 @@ _#/|##########/\######(   /\   )######/\##########|\#_
         ChangingColour = !ChangingColour;
         this_thread::sleep_for(chrono::milliseconds(100));
     }
-    system("Color 0E");
     while (sound.getStatus() == sf::Sound::Playing) {
         this_thread::sleep_for(chrono::milliseconds(100));
     }
     system("PAUSE");
     system("CLS");
+    system("Color 0E");
 }
 
 void Monster::Ambush(Player& pPlayer) {

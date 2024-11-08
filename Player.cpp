@@ -142,7 +142,8 @@ void Player::AddItem(Item* pItem) {
 };
 
 //Equip item to be used
-void Player::EquipItem() {
+bool Player::EquipItem() {
+    ViewItems();
     string item_Name = "";
     cout << "Name of item to equip (Case sensitive and leave no blank space): ";
     cin.clear();
@@ -150,11 +151,20 @@ void Player::EquipItem() {
     getline(cin, item_Name);
     Item* searched_Item = fInventory.SearchItem(item_Name);
     if (searched_Item != (Item*)0) {
-        fInventory.setCurrentItem(searched_Item);
-        cout << "You have equipped " << searched_Item->getName() << "!" << endl;
+        if (searched_Item == getCurrentItem()) {
+            cout << "You have already equipped " << getCurrentItem() << endl;
+            return false;
+        }
+        else {
+            fInventory.setCurrentItem(searched_Item);
+            cout << "You have equipped " << searched_Item->getName() << "!" << endl;
+            return true;
+
+        }
     }
     else {
         cout << item_Name << " is not in your inventory" << endl;
+        return  false;
     }
 }
 
@@ -178,7 +188,7 @@ void Player::ViewItemDetails(Item& pItem) {
     fInventory.ViewItemDetails(&pItem);
 }
 
-void Player::DiscardItem() {
+bool Player::DiscardItem() {
     ViewItems();
     string item_Name = "";
     cout << "Name of item to remove (Case sensitive and leave no blank space): ";
@@ -188,9 +198,11 @@ void Player::DiscardItem() {
     Item* searched_Item = fInventory.SearchItem(item_Name);
     if (searched_Item != (Item*)0) {
         fInventory.RemoveItem(searched_Item);
+        return true;
     }
     else {
         cout << item_Name << " is not in your inventory" << endl;
+        return false;
     }
 };
 void Player::SearchItems() {

@@ -41,8 +41,10 @@ class Game{
         void AttachRightScene(Scene* pScene); //Attach to fTreeTarget's right node
         void DettachLeftScene();  //Attach to fTreeTarget's left node
         void DettachRightScene(); //Attach to fTreeTarget's right node
-        void MoveLeft();
-        void MoveRight();
+        void PlayerMoveLeft();
+        void PlayerMoveRight();
+        void Left();
+        void Right();
         void BackToRoot();
         void DiscoverMenu();
 
