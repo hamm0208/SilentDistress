@@ -269,6 +269,7 @@ void Player::ShowAttributes(){
     cout << "Stamina Level:\t " << getCurrentStaminaLevel() << "/" << getMaxStaminaLevel() << endl;
     cout << "Bag Capacity:\t " << getInventory().getCurrentCapacity() << "/" << getInventory().getMaxCapacity() << endl;
     cout << "\n--------------------------------------------------\n";
+    system("PAUSE");
 }
 
 Inventory& Player::getInventory() {

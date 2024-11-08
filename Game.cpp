@@ -144,7 +144,7 @@ void Game::BackToRoot() {
     else {
         fPlayer->DecreaseStamina(1);
         IncreaseTurn();
-        cout << "Moving back to " << fRootScene->key()->getName();
+        cout << "Moving back to " << fRootScene->key()->getName() << endl;
         setTreeTarget(fRootScene);
         PlaySceneEvent();
     }
@@ -230,7 +230,7 @@ void Game::PlaySceneEvent(){
 //fPlayer;
 void Game::DisplayPlayerMenu() {
     if (!getIsGameOver()) {
-        cout << "\n---------------- Inventory Menu ----------------" << endl;
+        cout << "\n---------------- Player Menu ----------------" << endl;
         cout << "Current Location: " << getCurrentScene()->getName() << endl;
         cout << "\nHealth: \t" << fPlayer->getCurrentHealth() << "/" << fPlayer->getHealth() << endl;
         cout << "Hunger: \t" << fPlayer->getCurrentHungerLevel() << "/" << fPlayer->getMaxHungerLevel() << endl;
@@ -257,9 +257,6 @@ void Game::DisplayPlayerMenu() {
         }
         else {
             fPlayer->MakeDecision(fDecisions[index]);
-            cout << "Press Enter to continue...";
-            cin.ignore();
-            cin.ignore();
             system("CLS");
         }
     }
@@ -275,6 +272,7 @@ void Game::DisplayInventoryMenu() {
 
         while (inInventoryMenu) {
             cout << "---------------- Inventory Menu ----------------" << endl;
+            cout << "Current Equiped Item: " << fPlayer->getCurrentItem()->getName() <<endl;
 
             // Display player's inventory
             fPlayer->ViewItems();
@@ -297,11 +295,9 @@ void Game::DisplayInventoryMenu() {
                 }else {
                     // Execute the selected decision
                     fPlayer->MakeDecision(DecisionInInventory[choice]);
-                    cout << "Press Enter to continue back to inventory.";
-                    cin.ignore();
-                    cin.ignore();
+                    system("PAUSE");
                 }
-            }else {
+            }else{
                 system("CLS");
                 cout << "Invalid choice, please try again." << endl;
             }
@@ -409,8 +405,10 @@ void Game::PlayerPickUpLoot() {
             if (currentScene->getLoot().isEmpty()) {
                 cout << "No more loot left!" << endl;
                 continuePicking = 2;
+
             }
             else {
+                this_thread::sleep_for(std::chrono::seconds(1));
                 cout << "\nDo you want to pick up another item?" << endl;
                 cout << "1. Yes\n2. No" << endl;
                 cout << "Enter your choice: ";
