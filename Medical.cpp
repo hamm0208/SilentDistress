@@ -16,7 +16,7 @@ bool Medical::Use(Player& pPlayer){
         return false;
     }else{
         pPlayer.Heal(fHealAmount);   //Increase Player's HP Level to player's max HP
-        cout<< "You have been healed!!" <<endl;
+        cout<< "\nYou have been healed!!" <<endl;
         return true;
     }
 }

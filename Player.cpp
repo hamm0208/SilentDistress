@@ -102,7 +102,7 @@ void Player::IncreaseThirstLevel(int pIncrementValue){
 };
 
 void Player::DecreaseThirstLevel(int pDecrementValue) {
-    if(pDecrementValue>= fMaxThirstLevel){
+    if(pDecrementValue >= fCurrentThirstLevel){
         fCurrentThirstLevel = 0;
     }else{
         fCurrentThirstLevel -= pDecrementValue;
@@ -153,17 +153,20 @@ bool Player::EquipItem() {
     if (searched_Item != (Item*)0) {
         if (searched_Item == getCurrentItem()) {
             cout << "You have already equipped " << getCurrentItem() << endl;
+            system("PAUSE");
             return false;
         }
         else {
             fInventory.setCurrentItem(searched_Item);
             cout << "You have equipped " << searched_Item->getName() << "!" << endl;
+            system("PAUSE");
             return true;
 
         }
     }
     else {
         cout << item_Name << " is not in your inventory" << endl;
+        system("PAUSE");
         return  false;
     }
 }
@@ -225,22 +228,24 @@ Item* Player::getCurrentItem() {
 
 bool Player::UseCurrentItem(){
     if (Weapon* weapon = dynamic_cast<Weapon*>(getCurrentItem())) { //If fCurrentItem is type of Weapon, it will decrease the durability instead of the quantity
-        if (weapon->Use(*this)) {
-            setAttackDamage(getAttackDamage() - weapon->getDamage());
+        if (fInventory.UseCurrentItem(*this)) {
             return true;
         }
         else {
             cout << "You are unable to use " << weapon->getName() << " right now, because you are not fighting" << endl;
+            system("PAUSE");
             return false;
         }
     }
     else if (SleepingBag* sleepingBag = dynamic_cast<SleepingBag*>(getCurrentItem())) {
-        if (sleepingBag->Use(*this)) {
+        if (fInventory.UseCurrentItem(*this)) {
             cout << "Your hunger level and thrist level has been incresed by 1 after your rest" << endl;
+            system("PAUSE");
             return true;
         }
         else {
             cout << "Your stamina level is full!" << endl;
+            system("PAUSE");
             return false;
         }
     }
@@ -292,56 +297,46 @@ void Player::ApplyEffects(Monster& pMonster) {
     if (getCurrentHealth() <= 0) {
         Entity::Die();
         cout << "Your vision fades... Darkness envelops you as life slips away." << endl;
+        return;
     }
-    else {
-        // Hunger effects
-        if (fCurrentHungerLevel >= 8 && fCurrentHungerLevel < 10) {
-            DecreaseStamina(1);
-            IncreaseThirstLevel(1);
-            cout << "Your stomach growls with a fierce emptiness... Every step feels heavier." << endl;
-        }
-        else if (fCurrentHungerLevel == 10) {
-            TakeDamage(5);
-            DecreaseStamina(2);
-            IncreaseThirstLevel(1);
-            cout << "Starvation claws at you mercilessly. Weak and fading, your body is shutting down." << endl;
-        }
 
-        // Thirst effects
-        if (fCurrentThirstLevel >= 8 && fCurrentThirstLevel < 10) {
-            DecreaseStamina(2);
-            cout << "Your mouth is parched, and each breath feels like fire. You desperately need water." << endl;
-        }
-        else if (fCurrentThirstLevel == 10) {
-            TakeDamage(5);
-            DecreaseStamina(2);
-            cout << "Dehydration sets in. Your vision blurs as intense thirst ravages your body." << endl;
-        }
+    // Hunger effects
+    if (fCurrentHungerLevel >= 8) {
+        DecreaseStamina(1);
+        IncreaseThirstLevel(1);
+        cout << (fCurrentHungerLevel == 10
+            ? "Starvation claws at you mercilessly. Weak and fading, your body is shutting down."
+            : "Your stomach growls with a fierce emptiness... Every step feels heavier.") << endl;
+        if (fCurrentHungerLevel == 10) TakeDamage(3);
+    }
 
-        // Stamina effects
-        if (fCurrentStaminaLevel <= 5 && fCurrentStaminaLevel>=1) {
-            IncreaseHungerLevel(2);
-            IncreaseThirstLevel(2);
-            cout << "Fatigue overwhelms you, making survival feel impossible. Hunger and thirst surge as your energy wanes." << endl;
-        }
-        else if (fCurrentStaminaLevel == 0) {
+    // Thirst effects
+    if (fCurrentThirstLevel >= 8) {
+        DecreaseStamina(1);
+        cout << (fCurrentThirstLevel == 10
+            ? "Dehydration sets in. Your vision blurs as intense thirst ravages your body."
+            : "Your mouth is parched, and each breath feels like fire. You desperately need water.") << endl;
+        if (fCurrentThirstLevel == 10) TakeDamage(5);
+    }
+
+    // Stamina effects
+    if (fCurrentStaminaLevel <= 5) {
+        IncreaseHungerLevel(1);
+        IncreaseThirstLevel(1);
+        cout << "Fatigue overwhelms you, making survival feel impossible. Hunger and thirst surge as your energy wanes." << endl;
+
+        if (fCurrentStaminaLevel == 0) {
             if (getIsFighting()) {
                 Entity::Die();
-                cout << "With the last of your strength drained, you collapse in battle."; 
-                this_thread::sleep_for(chrono::seconds(1));
-                cout << ". ";
-                this_thread::sleep_for(chrono::seconds(1));
-                cout << ". ";
-                this_thread::sleep_for(chrono::seconds(1));
-                cout << "The darkness claims you." << endl;
+                cout << "With the last of your strength drained, you collapse in battle... Darkness claims you." << endl;
             }
             else {
-                cout << "Exhaustion finally takes its toll. You collapse, forced into a deep slumber..." << endl;
-                cout << "As you sleep, your hunger and thirst intensify, clawing at your insides. (+2 Hunger, +2 Thirst)" << endl;
+                cout << "Exhaustion takes its toll. You collapse, forced into a deep slumber...\n";
+                cout << "As you sleep, hunger and thirst intensify, clawing at your insides. (+2 Hunger, +2 Thirst)" << endl;
                 setIsResting(true);
                 pMonster.DisturbRest(*this, 100);
-                IncreaseHungerLevel(3);
-                IncreaseThirstLevel(3);
+                IncreaseHungerLevel(2);
+                IncreaseThirstLevel(2);
                 IncreaseStamina(5);
             }
         }

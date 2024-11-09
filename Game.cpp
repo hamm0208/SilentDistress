@@ -3,12 +3,12 @@ typedef BTree<Scene*> TreeScene;
 
 Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPlayer(pPlayer),fMonster(pMonster),fTurn(0), isGameOver(false){
     fTreeTarget = fRootScene;
-    Decision ViewAttributes = Decision("View Character's Attributes","Take a look at all the attributes of your character.",[this](Player& player) { player.ShowAttributes(); });
-    Decision ViewInvetory = Decision("View Inventory", "Take a look at all the items in your inventory.", [this](Player& player) { DisplayInventoryMenu(); });
-    Decision UseItem = Decision("Use Equipped Item", "Use your currently equipped item.", [this](Player& player) {if (player.UseCurrentItem()) IncreaseTurn();  });
-    Decision SearchForLoot = Decision("Search for loot", "Search the area for loot.", [this](Player& player) {IncreaseTurn(); DisplayLootMenu(); });
-    Decision Discover = Decision("Discover more areas", "Moving to next location", [this](Player& player) { DiscoverMenu(); });
-    Decision Exit = Decision("Exit Game", "Exit the game", [this](Player& player) { setIsGameOver(true); });
+    Decision ViewAttributes = Decision("View Character's Attributes","Take a look at all the attributes of your character.",[this](Entity& fEntity) { fPlayer->ShowAttributes(); });
+    Decision ViewInvetory = Decision("View Inventory", "Take a look at all the items in your inventory.", [this](Entity& fEntity) { DisplayInventoryMenu(); });
+    Decision UseItem = Decision("Use Equipped Item", "Use your currently equipped item.", [this](Entity& fEntity) {if (fPlayer->UseCurrentItem()) IncreaseTurn();  });
+    Decision SearchForLoot = Decision("Search for loot", "Search the area for loot.", [this](Entity& fEntity) {IncreaseTurn(); DisplayLootMenu(); });
+    Decision Discover = Decision("Discover more areas", "Moving to next location", [this](Entity& fEntity) { DiscoverMenu(); });
+    Decision Exit = Decision("Exit Game", "Exit the game", [this](Entity& fEntity) { setIsGameOver(true); });
     AddDecisions(ViewAttributes);
     AddDecisions(ViewInvetory);
     AddDecisions(UseItem);
@@ -168,9 +168,7 @@ void Game::DiscoverMenu() {
         system("CLS");
 
         List<Decision> DecisionInDiscovering;
-        DecisionInDiscovering.pushBack(Decision("Head back to plane crashsite",
-            "Take a look at all of the item details in your inventory",
-            [this](Player& player) { BackToRoot(); }));
+        
 
         // Check if there are routes available to the left and right and show them
         std::string availableWays = "\t\tNo route available, head back to crash site"; // Default message
@@ -180,7 +178,7 @@ void Game::DiscoverMenu() {
             availableWays = "Left Route: " + fTreeTarget->left().key()->getName() + "\t\t"; // Update if left route is found
             DecisionInDiscovering.pushBack(Decision("Move left to " + fTreeTarget->left().key()->getName(),
                 "Move to the left route to discover " + fTreeTarget->left().key()->getName(),
-                [this](Player& player) { PlayerMoveLeft(); }));
+                [this](Entity& fEntity) { PlayerMoveLeft(); }));
         }
 
         // Check if right route is available
@@ -194,13 +192,16 @@ void Game::DiscoverMenu() {
             }
             DecisionInDiscovering.pushBack(Decision("Move right to " + fTreeTarget->right().key()->getName(),
                 "Move to the right route to discover " + fTreeTarget->right().key()->getName(),
-                [this](Player& player) { PlayerMoveRight(); }));
+                [this](Entity& fEntity) { PlayerMoveRight(); }));
         }
+        DecisionInDiscovering.pushBack(Decision("Head back to Crash Site",
+            "Take a look at all of the item details in your inventory",
+            [this](Entity& fEntity) { BackToRoot(); }));
 
         while (inDiscoveringMenu) {
             cout << "-------------------------------- Discover Routes Menu --------------------------------" << endl;
             cout << endl;
-            std::cout << "" << availableWays << "\n" << endl;
+            std::cout << "\t" << availableWays << "\n" << endl;
             cout << "---------------------------------------------------------------------------------------\n";
             int choice = 0;
             cout << "Select an option:" << endl;
@@ -263,6 +264,7 @@ void Game::DisplayPlayerMenu() {
         }
         else {
             fPlayer->MakeDecision(fDecisions[index]);
+            system("PAUSE");
             system("CLS");
         }
     }
@@ -272,17 +274,13 @@ void Game::DisplayInventoryMenu() {
     if (!getIsGameOver()) {
         bool inInventoryMenu = true;
         List<Decision> DecisionInInventory;
-        DecisionInInventory.pushBack(Decision("View All Item Details", "Take a look at all of the item details in your inventory", [this](Player& player) { player.ViewItemsDetails(); }));
-        DecisionInInventory.pushBack(Decision("Equip an item", "Equip an item from your inventory", [this](Player& player) {  if (player.EquipItem()) IncreaseTurn(); }));
-        DecisionInInventory.pushBack(Decision("Discard an item", "Discard an item from your inventory", [this](Player& player) {  if (player.DiscardItem()) IncreaseTurn(); }));
+        DecisionInInventory.pushBack(Decision("View All Item Details", "Take a look at all of the item details in your inventory", [this](Entity& pEntity) { fPlayer->ViewItemsDetails(); }));
+        DecisionInInventory.pushBack(Decision("Equip an item", "Equip an item from your inventory", [this](Entity& pEntity) {  if (fPlayer->EquipItem()) IncreaseTurn(); }));
+        DecisionInInventory.pushBack(Decision("Discard an item", "Discard an item from your inventory", [this](Entity& pEntity) {  if (fPlayer->DiscardItem()) IncreaseTurn(); }));
 
         while (inInventoryMenu) {
-            cout << "---------------- Inventory Menu ----------------" << endl;
-            cout << "Current Equiped Item: " << fPlayer->getCurrentItem()->getName() <<endl;
-
             // Display player's inventory
             fPlayer->ViewItems();
-
             cout << "Select an option:" << endl;
             ShowDecisions(DecisionInInventory);
             cout << DecisionInInventory.size() + 1 << ". Go back to previous menu" << endl;
@@ -331,8 +329,8 @@ void Game::DisplayLootMenu() {
             }
             else {
                 currentScene->ShowLoots();
-                DecisionInLoot.pushBack(Decision("View All Item Details", "Take a look at all of the item details in ", [this](Player& player) { ShowLootDetails(); }));
-                DecisionInLoot.pushBack(Decision("Take an item", "Take an item from  the loot to your inventory", [this](Player& player) {PlayerPickUpLoot(); }));
+                DecisionInLoot.pushBack(Decision("View All Item Details", "Take a look at all of the item details in ", [this](Entity& pEntity) { ShowLootDetails(); }));
+                DecisionInLoot.pushBack(Decision("Take an item", "Take an item from  the loot to your inventory", [this](Entity& pEntity) {PlayerPickUpLoot(); }));
             }
             cout << "---------------------------------------------------------" << endl;
             cout << "\nSelect an option:" << endl;
@@ -414,7 +412,6 @@ void Game::PlayerPickUpLoot() {
 
             }
             else {
-                this_thread::sleep_for(chrono::seconds(1));
                 cout << "\nDo you want to pick up another item?" << endl;
                 cout << "1. Yes\n2. No" << endl;
                 cout << "Enter your choice: ";
@@ -444,7 +441,6 @@ void Game::Play() {
     else {
         while (!isGameOver) {
             if (fPlayer->getCurrentHealth() == 0) {
-                cout << "Game Over..." << endl;
                 setIsGameOver(true);
             }else {
                 PlaySceneEvent();

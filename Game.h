@@ -60,7 +60,6 @@ class Game{
         //fMonsters
         void MonsterJumpscare();
         void MonsterAmbush();
-
         void Play();
 };
 

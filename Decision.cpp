@@ -4,8 +4,8 @@
 Decision::Decision() : fName(""), fDescription(""), fEffect(nullptr) {}
 
 // Constructor with name, description, and effect
-Decision::Decision(const string& name, const string& description, function<void(Player&)> effect)
-    : fName(name), fDescription(description), fEffect(effect) {}
+Decision::Decision(const string& name, const string& description, function<void(Entity&)> pEffect)
+    : fName(name), fDescription(description), fEffect(pEffect) {}
 
 // Getter for name
 string Decision::getName() const {

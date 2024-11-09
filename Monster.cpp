@@ -92,10 +92,9 @@ _#/|##########/\######(   /\   )######/\##########|\#_
 }
 
 void Monster::Ambush(Player& pPlayer) {
-
     // Determine the damage to inflict on the player
-    int damage = getAttackDamage() + (rand() % 5); // Base damage + random up to 5
-    int staminaLoss = 1 + (rand() % 3);       // Stamina loss between 10 and 15
+    int damage = 3 + (rand() % 5);  // Base damage + random up to 5
+    int staminaLoss = 1;                            // Stamina loss between 1 and 4
 
     // Reduce the player's health and stamina
     pPlayer.TakeDamage(damage);

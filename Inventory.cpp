@@ -108,8 +108,14 @@ void Inventory::ViewInventoryDetails() {
 void Inventory::ViewInventoryItems() {
 	int count = 0;
 	bool isEmpty = true;							//Is inventory empty flag
-	cout << "--------------------------------------------------\n" << endl;
-	cout << "\t\tItems In Inventory\n" << endl;
+	cout << "---------------- Inventory Menu ----------------" << endl;
+	if (getCurrentItem() == nullptr) {
+		cout << "Equiped Item: \tEmpty Slot" << endl;
+	}
+	else {
+		cout << "Equiped Item: \t" << getCurrentItem()->getName() << endl;
+	}
+	cout << "\nItems In Inventory\n" << endl;
 	for (int i = 0; i < BUCKET_SIZE; ++i) {			//Iterate through the Inventory
 		HNode* node = fInventory.getTable()[i];		//Get the HashNode from the table through the index
 		while (node != &(HNode::NIL)) {				//While HNode is not the sentinel node, display item details
@@ -120,7 +126,7 @@ void Inventory::ViewInventoryItems() {
 		}
 	}
 	if (isEmpty) {
-		cout << "\t\tEmpty Inventory!" << endl;
+		cout << "\n\t\tEmpty Inventory!" << endl;
 	}
 	cout << "\n\t\tWeight: " << fCurrentCapacity << "/" << fMaxCapacity << endl;
 
@@ -171,7 +177,7 @@ void Inventory::DecreaseCurrentItemQuantity(int pDecrementValue){
 	int item_CurrentQuantity = getCurrentItemQuantity();
 	int item_AfterDeduction = item_CurrentQuantity - pDecrementValue;
 	if(item_AfterDeduction<=0){ //If after deduction is less or equal to 0, the item will be removed from inventory
-		cout << fCurrentItem->getName() << " will now be discarded" << endl;
+		cout << fCurrentItem->getName() << " will now be discarded\n" << endl;
 		fInventory.remove(fCurrentItem);
 	}else{
 		fInventory.modifyValue(fCurrentItem, pDecrementValue);
@@ -182,12 +188,12 @@ void Inventory::DecreaseCurrentItemQuantity(int pDecrementValue){
 bool Inventory::UseCurrentItem(Player& pPlayer){
 	if(fCurrentItem != nullptr){
 		if(fCurrentItem->Use(pPlayer)){
-			cout << "You have used " << fCurrentItem->getName() << endl;
+			cout << "\nYou have used " << fCurrentItem->getName() << endl;
 			if(fCurrentItem->getIsConsumable()){
 				DecreaseCurrentItemQuantity(1);
 				if (getCurrentItemQuantity() > 0) {
 					cout << "Decreasing " << fCurrentItem->getName() << "'s quantity by 1" << endl;
-					cout << "You only have " << getCurrentItemQuantity() << " " << getCurrentItem()->getName() << " left!" << endl;
+					cout << "You only have " << getCurrentItemQuantity() << " " << getCurrentItem()->getName() << " left!\n" << endl;
 				}
 				else{
 					setCurrentItem(nullptr);
@@ -198,14 +204,14 @@ bool Inventory::UseCurrentItem(Player& pPlayer){
 				cout << "Decreasing " << fCurrentItem->getName() << "'s durability by 1" << endl;
 				if(weapon->getCurrentDurability() <= 0){ //If durability reaches 0, then it will call DecreaseCurrentItemQuantity(1), which will decrease the current item by 1
 					DecreaseCurrentItemQuantity(1);
-					if (getCurrentItemQuantity() > 0) {	//If there are still extra quantity, then change the CurrentDurability to the max Durability
+					if (getCurrentItemQuantity() >= 0) {	//If there are still extra quantity, then change the CurrentDurability to the max Durability
 						cout << "Decreasing " << fCurrentItem->getName() << "'s quantity by 1" << endl;
-						cout << "You only have " << getCurrentItemQuantity() << " " << getCurrentItem()->getName() << " left!" << endl;
+						cout << "You only have " << getCurrentItemQuantity() << " " << getCurrentItem()->getName() << " left!\n" << endl;
 						weapon->setCurrentDurability(weapon->getDurability());
 					}
-				}
-				else {
-					setCurrentItem(nullptr);
+					else {
+						setCurrentItem(nullptr);
+					}
 				}
 			}
 			return true;
