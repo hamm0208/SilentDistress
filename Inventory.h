@@ -12,7 +12,7 @@ class Inventory{
 		typedef HashNode<Item*, int> HNode;
 		Inventory(int pCapacity);								//Default constructor
 		~Inventory();											//Overload constructor
-		void AddItem(Item* pItem);								//Adding item to inventory
+		bool AddItem(Item* pItem);								//Adding item to inventory
 		bool RemoveItem(Item* pItem);							//Removing an item from inventory
 		Item* SearchItem(string pName);							//Search if item exist in fInventory by name
 		void ViewInventoryDetails();							//View All Item Details

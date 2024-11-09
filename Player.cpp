@@ -137,8 +137,8 @@ void Player::Heal(int pHealValue) {
 };
 
 //Adding item to Inventory
-void Player::AddItem(Item* pItem) {
-    fInventory.AddItem(pItem);
+bool Player::AddItem(Item* pItem) {
+    return fInventory.AddItem(pItem);
 };
 
 //Equip item to be used

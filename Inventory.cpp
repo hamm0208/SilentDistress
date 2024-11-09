@@ -6,12 +6,12 @@ Inventory::Inventory(int pCapacity) : fInventory(BUCKET_SIZE), fMaxCapacity(pCap
 }
 
 //Add  new item to inventory
-void Inventory::AddItem(Item* pItem) {
+bool Inventory::AddItem(Item* pItem) {
 	int item_Weight = pItem->getWeight(); //Item's weight
 	if (!IsFull()) {
-		if ((item_Weight + fCurrentCapacity) >= fMaxCapacity) { //If item's weight + fCurrentCapacity reaches over fMaxCapacity, then you can't add more items
+		if ((item_Weight + fCurrentCapacity) > fMaxCapacity) { //If item's weight + fCurrentCapacity reaches over fMaxCapacity, then you can't add more items
 			cout << pItem->getName() << "'s weight will exceed the inventory limit (" << fCurrentCapacity << "/" << fMaxCapacity << ")! Discard some item in inventory to create space to add new items in." << endl;
-			return; //End function
+			return false; //End function
 		}
 		else {
 			int item_Quantity = fInventory.findValue(pItem);		//Find the item quantity in inventory
@@ -23,9 +23,11 @@ void Inventory::AddItem(Item* pItem) {
 			}
 			cout << "You have added " << pItem->getName() << " into your inventory" << endl;
 			fCurrentCapacity += item_Weight;						//Increase fCurrentCapacity by item's weight
+			return true;
 		}
 	}else{
 		cout << "Inventory is full!" << endl;
+		return false;
 	}
 }
 
@@ -222,6 +224,7 @@ bool Inventory::UseCurrentItem(Player& pPlayer){
 		}
 	}else{
 		cout<<"You have no items equipped"<<endl;
+		system("PAUSE");
 		return false;
 	}
 	return false;

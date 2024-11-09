@@ -405,10 +405,9 @@ void Game::PlayerPickUpLoot() {
             else {
                 // Retrieve the selected item and add it to the player's inventory
                 Item* selectedItem = currentScene->getLoot()[index];
-                fPlayer->AddItem(selectedItem);
-
-                // Remove the item from the scene's loot
-                currentScene->getLoot().popAt(index);
+                if (fPlayer->AddItem(selectedItem)) {
+                    currentScene->getLoot().popAt(index); // Remove the item from the scene's loot
+                }
             }
 
             // Prompt the player if they want to pick up another item
