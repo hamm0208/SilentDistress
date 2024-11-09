@@ -143,7 +143,7 @@ void Scene1Event(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster) {
 int main() {
 	system("Color 0E");
 	//Introduction to the game
-	Introduction();
+	//Introduction();
 
 	//Initialise Variable
 	string playerName = "";
@@ -171,27 +171,43 @@ int main() {
 	player->AddItem(playerDefaultWeapon);	//Add the weapon the the inventory
 	player->getInventory().setCurrentItem(player->getInventory().SearchItem("Bare Hands")); //Set current item to the default weapon
 	system("CLS");
-
+	Scene* AllScenes[] = {
+	   new Scene("Crash Site", "You awaken amid the twisted wreckage of the plane, surrounded by smoke and dense jungle. Disoriented and alone, survival starts here.", 2),
+	   new Scene("Jungle Clearing", "A small clearing opens up before you, dappled sunlight breaking through the trees. The jungle seems deceptively calm here.", 2),
+	   new Scene("Ruins", "You come upon ancient ruins, moss-covered stones hinting at a long-lost civilization. It's quiet, but you feel like you're not alone.", 1),
+	   new Scene("Deep Jungle", "The jungle grows darker and more foreboding.", 2),
+	   new Scene("Abandoned Village", "The village is eerie, silent huts and remnants of fires hint at a hasty departure. You sense something watching you.", 2),
+	   new Scene("Waterfall Cave", "A cave hidden behind a waterfall, echoing with mystery.", 2),
+	   new Scene("Hunting Ground", "A dense area frequented by wild animals, dangerous but resourceful.", 2),
+	   new Scene("Edge of the Island", "You see the rescue helicopter just ahead, its blades chopping through the air. But as you approach, the monster emerges from the jungle.", 3),
+	};
 	Game newGame(player, dreadstalker);
 	//Creating 1st Scene (Crash Site)
-	Scene* crashSiteScene = new Scene("Crash Site", "You awaken amid the twisted wreckage of the plane, surrounded by smoke and dense jungle. Disoriented and alone, survival starts here.", 2);
-	Scene1Event(*crashSiteScene, player, dreadstalker);
-	BTree<Scene*>* rootScene = new BTree<Scene*>(crashSiteScene);
-	Game* ptr;
+	//Scene1Event(*AllScenes[0], player, dreadstalker);
+	BTree<Scene*>* rootScene = new BTree<Scene*>(AllScenes[0]);
 	newGame.setRootScene(rootScene);
 	newGame.setTreeTarget(newGame.getRootScene());
-	
-	Scene* jungleClearingScene = new Scene("Jungle Clearing", "A small clearing opens up before you, dappled sunlight breaking through the trees. The jungle seems deceptively calm here.", 2);
-	Scene* ruinsScene = new Scene("Ruins","You come upon ancient ruins, moss-covered stones hinting at a long-lost civilization. It's quiet, but you feel like you're not alone.",1);
-	Scene* villageScene = new Scene("Abandoned Village","The village is eerie, silent huts and remnants of fires hint at a hasty departure. You sense something watching you.",2);
-	Scene* edgeOfIslandScene = new Scene("Edge of the Island","You see the rescue helicopter just ahead, its blades chopping through the air. But as you approach, the monster emerges from the jungle.",3);
-	newGame.AttachLeftScene(jungleClearingScene);
-	//FIRST THING FIRST COMPLETE ATTACHING
-
+	newGame.AttachLeftScene(AllScenes[1]);
+	newGame.Left();
+	newGame.AttachLeftScene(AllScenes[2]);
+	newGame.AttachRightScene(AllScenes[3]);
+	BTree<Scene*>* ptr = newGame.getTreeTarget();
+	newGame.Left();
+	newGame.AttachLeftScene(AllScenes[4]);
+	newGame.setTreeTarget(ptr);
+	newGame.Right();
+	newGame.AttachLeftScene(AllScenes[5]);
+	newGame.AttachRightScene(AllScenes[6]);
+	newGame.Left();
+	newGame.AttachLeftScene(AllScenes[7]);
 	newGame.setTreeTarget(newGame.getRootScene());
 	newGame.Play();
 
-	delete crashSiteScene;
+	for (Iterator1D<Scene*> iter(AllScenes, 8, 0); iter != iter.end(); ++iter) {
+		if (*iter != nullptr) {
+			delete* iter;
+		}
+	}
 	for (Iterator1D<Item*> iter(AllItems, ALL_ITEM_COUNT, 0); iter != iter.end(); ++iter) {
 		if (*iter != nullptr) {
 			delete *iter;

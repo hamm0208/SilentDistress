@@ -132,7 +132,7 @@ void Game::PlayerMoveRight(){
         cout << ". " << endl;
         this_thread::sleep_for(chrono::seconds(1));
         system("CLS");
-        setTreeTarget(&fTreeTarget->left());
+        setTreeTarget(&fTreeTarget->right());
         PlaySceneEvent();
     }
 };
@@ -140,7 +140,7 @@ void Game::Left() {
     setTreeTarget(&fTreeTarget->left());
 };
 void Game::Right() {
-    setTreeTarget(&fTreeTarget->left());
+    setTreeTarget(&fTreeTarget->right());
 };
 void Game::BackToRoot() {
     if (fTreeTarget == fRootScene) {
