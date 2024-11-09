@@ -146,11 +146,11 @@ int main() {
 	//Introduction();
 
 	//Initialise Variable
-	string playerName = "";
 	Weapon* playerDefaultWeapon = new Weapon("Bare Hands", "Good Ole Bare Knuckles", 0, false, 1, 1000); //Default player weapon
 	Weapon* monsterDefaultWeapon = new Weapon("Claw of the Damned", "A razor-sharp claw imbued with dark energy. It causes deep wounds and instills fear in its victims.", 10, false, 50, 100); //Default monster weapon
 	Player* player;
 	Monster* dreadstalker = new Monster("Scary Monster", 50, 200, monsterDefaultWeapon); //Allocate memory for Monster variable on the heap
+	//All Items of the game
 	Item* AllItems[ALL_ITEM_COUNT] = {
 		new Drinks("Water Bottle", "A lifeline in the wilderness, quench your thirst.", 5, true, 5),
 		new Drinks("Coconut Water", "Natural hydration straight from the source", 7, true, 4),
@@ -165,12 +165,17 @@ int main() {
 	};
 
 	//Dimensionalise Player Object
+	string playerName = "";
 	cout << "Enter your name: ";
 	cin >> playerName;
 	player = new Player(playerName, 10, 100, 0, 0, 10, 100); //Allocate memory for Player variable on the heap
 	player->AddItem(playerDefaultWeapon);	//Add the weapon the the inventory
 	player->getInventory().setCurrentItem(player->getInventory().SearchItem("Bare Hands")); //Set current item to the default weapon
 	system("CLS");
+
+	//Dimensionalise Game object
+	Game newGame(player, dreadstalker);
+	//All available scenes in the game
 	Scene* AllScenes[] = {
 	   new Scene("Crash Site", "You awaken amid the twisted wreckage of the plane, surrounded by smoke and dense jungle. Disoriented and alone, survival starts here.", 2),
 	   new Scene("Jungle Clearing", "A small clearing opens up before you, dappled sunlight breaking through the trees. The jungle seems deceptively calm here.", 2),
@@ -181,28 +186,31 @@ int main() {
 	   new Scene("Hunting Ground", "A dense area frequented by wild animals, dangerous but resourceful.", 2),
 	   new Scene("Edge of the Island", "You see the rescue helicopter just ahead, its blades chopping through the air. But as you approach, the monster emerges from the jungle.", 3),
 	};
-	Game newGame(player, dreadstalker);
-	//Creating 1st Scene (Crash Site)
-	//Scene1Event(*AllScenes[0], player, dreadstalker);
-	BTree<Scene*>* rootScene = new BTree<Scene*>(AllScenes[0]);
-	newGame.setRootScene(rootScene);
-	newGame.setTreeTarget(newGame.getRootScene());
-	newGame.AttachLeftScene(AllScenes[1]);
-	newGame.Left();
-	newGame.AttachLeftScene(AllScenes[2]);
-	newGame.AttachRightScene(AllScenes[3]);
-	BTree<Scene*>* ptr = newGame.getTreeTarget();
-	newGame.Left();
-	newGame.AttachLeftScene(AllScenes[4]);
-	newGame.setTreeTarget(ptr);
-	newGame.Right();
-	newGame.AttachLeftScene(AllScenes[5]);
-	newGame.AttachRightScene(AllScenes[6]);
-	newGame.Left();
-	newGame.AttachLeftScene(AllScenes[7]);
-	newGame.setTreeTarget(newGame.getRootScene());
-	newGame.Play();
+	Scene1Event(*AllScenes[0], player, dreadstalker);	//Adding Scene1's event
+	
+	//Attach all the scene to the binary tree of scene in newGame
+	BTree<Scene*>* rootScene = new BTree<Scene*>(AllScenes[0]); //Root Scene of the game
+	newGame.setRootScene(rootScene);							//Setting root scene
+	newGame.setTreeTarget(newGame.getRootScene());				//Set tree target to point to the new root scene
+	newGame.AttachLeftScene(AllScenes[1]);						//Attach Jungle Clearing  to Crash Site
+	newGame.Left();												//Move to Jungle Clearing Scene
+	newGame.AttachLeftScene(AllScenes[2]);						//Attach Ruins the left child of Jungle Clearing
+	newGame.AttachRightScene(AllScenes[3]);						//Attach Deep Jungle to the right child of Jungle Clearing
+	BTree<Scene*>* ptr = newGame.getTreeTarget();				//BTree pointer that points to the current TargetNode of newGame
+	newGame.Left();												//Move to Left Child (Ruins)
+	newGame.AttachLeftScene(AllScenes[4]);						//Attach Abandoned Village to the left child of Ruins
+	newGame.setTreeTarget(ptr);									//Move TreeTarget back to ptr
+	newGame.Right();											//Move to Right Child (Deep Jungle)
+	newGame.AttachLeftScene(AllScenes[5]);						//Attach Waterfall Cave to Left Child of Deep Jungle
+	newGame.AttachRightScene(AllScenes[6]);						//Attach Hunting Grounds to Right Child of Deep Jungle
+	newGame.Left();												//Move to Left Child (Waterfall Cave)
+	newGame.AttachLeftScene(AllScenes[7]);						//Attach Edge of the Island to Waterfall Cave
+	newGame.setTreeTarget(newGame.getRootScene());				//Set the TreeTarget back to the RootScene
+	
+	newGame.Play();												//Play the game
 
+
+	//Delete the allocated memory
 	for (Iterator1D<Scene*> iter(AllScenes, 8, 0); iter != iter.end(); ++iter) {
 		if (*iter != nullptr) {
 			delete* iter;

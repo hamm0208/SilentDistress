@@ -1,7 +1,3 @@
-/*
-Remove this when youre done broooo
-Maybe sleeping will count as 2 turns, and will increase hunger and thirst
-*/
 #pragma once
 #include "Entity.h"
 #include "Inventory.h"
