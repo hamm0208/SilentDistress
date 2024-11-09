@@ -68,6 +68,13 @@ bool Game::getIsGameOver() {
 void Game::setIsGameOver(bool pFlag) {
     isGameOver = pFlag;
 };
+bool Game::getIsWin() {
+    return isWin;
+};
+void Game::setIsWin(bool pFlag) {
+    isWin = pFlag;
+};
+
 //Adding Decision into fDecisions
 void Game::AddDecisions(Decision& pDecision){
     fDecisions.pushBack(pDecision);
@@ -264,7 +271,6 @@ void Game::DisplayPlayerMenu() {
         }
         else {
             fPlayer->MakeDecision(fDecisions[index]);
-            system("PAUSE");
             system("CLS");
         }
     }
@@ -299,7 +305,6 @@ void Game::DisplayInventoryMenu() {
                 }else {
                     // Execute the selected decision
                     fPlayer->MakeDecision(DecisionInInventory[choice]);
-                    system("PAUSE");
                 }
             }else{
                 system("CLS");
@@ -319,9 +324,9 @@ void Game::DisplayLootMenu() {
         this_thread::sleep_for(chrono::seconds(1));
         cout << ". " << endl;
         this_thread::sleep_for(chrono::seconds(1));
-        List<Decision> DecisionInLoot;
         while (inLootMenu) {
             system("CLS");
+            List<Decision> DecisionInLoot;
             int choice;
             cout << "---------------- " << currentScene->getName() << "'s loot ----------------" << endl;
             if (currentScene->getLoot().isEmpty()) {
@@ -357,6 +362,7 @@ void Game::DisplayLootMenu() {
 void Game::ShowLootDetails() {
     Scene* currentScene = getCurrentScene();
     currentScene->ShowLootsDetails();
+    system("PAUSE");
 }
 void Game::CheckReduceResources() {
     
@@ -427,8 +433,8 @@ void Game::PlayerPickUpLoot() {
 }
 
 //fMonsters
-void Game::MonsterJumpscare() {
-    fMonster->Jumpscare();
+void Game::MonsterJumpscare1() {
+    fMonster->Jumpscare1();
 };
 void Game::MonsterAmbush() {
     fMonster->Ambush(*fPlayer);
@@ -439,16 +445,24 @@ void Game::Play() {
         cout << "There's no scene in the game!" << endl;
     }
     else {
-        while (!isGameOver) {
+        while (!isGameOver && !isWin) {
             if (fPlayer->getCurrentHealth() == 0) {
                 setIsGameOver(true);
+            }
+            else if (fMonster->getCurrentHealth() == 0) {
+                setIsWin(true);
             }else {
                 PlaySceneEvent();
                 CheckReduceResources();
                 DisplayPlayerMenu();
             }
         }
-        cout << "Game Over..." << endl;
+        if (isWin) {
+            cout << "Congratulation " << fPlayer->getName() << ", you have survived the silent distress... for now" << endl;
+        }
+        if (isGameOver) {
+            cout << "Game Over...You were always meant to lose..." << endl;
+        }
     }
 };
 

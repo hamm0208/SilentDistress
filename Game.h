@@ -17,6 +17,7 @@ class Game{
         TreeScene* fTreeTarget;
         int fTurn;
         bool isGameOver;
+        bool isWin;
     public:
         Game(Player* pPlayer, Monster* pMonster);
         ~Game();
@@ -28,6 +29,8 @@ class Game{
         void IncreaseTurn();
         bool getIsGameOver();
         void setIsGameOver(bool pFlag);
+        bool getIsWin();
+        void setIsWin(bool pFlag);
         TreeScene* getTreeTarget();
         void setTreeTarget(TreeScene* pNewTarget);
         TreeScene* getRootScene() const;
@@ -58,19 +61,7 @@ class Game{
         void ShowLootDetails();
         void CheckReduceResources();
         //fMonsters
-        void MonsterJumpscare();
+        void MonsterJumpscare1();
         void MonsterAmbush();
         void Play();
 };
-
-/*
-fDecisions.pushBack(Decision("View Character's Attributes",
-        "Take a look at all the attributes of your character.",
-        [this](Player& player) { player.ShowAttributes(); })); //Calling this fPlayer's ShowAttributes() method
-    fDecisions.pushBack(Decision("View Inventory",
-        "Take a look at all the items in your inventory.",
-        [this](Player& player) { DisplayInventoryMenu(); })); //Calling this fPlayer's ViewItems() method
-    fDecisions.pushBack(Decision("Exit Game",
-        "Exit the game",
-        [this](Player& player) { exit(0); })); //Exit Program
-*/

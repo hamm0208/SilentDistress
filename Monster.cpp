@@ -20,7 +20,7 @@ Weapon* Monster::getWeapon(){
     return fWeapon;
 }
 
-void Monster::Jumpscare(){
+void Monster::Jumpscare1(){
     sf::SoundBuffer buffer;
     if (!buffer.loadFromFile("jumpscare.wav")) {
         std::cerr << "Error loading sound file!" << std::endl;
@@ -91,9 +91,53 @@ _#/|##########/\######(   /\   )######/\##########|\#_
     system("Color 0E");
 }
 
+void Monster::Jumpscare2() {
+    sf::SoundBuffer buffer;
+    if (!buffer.loadFromFile("jumpscare2.wav")) {
+        std::cerr << "Error loading sound file!" << std::endl;
+        return;
+    }
+    sf::Sound sound;
+    sound.setBuffer(buffer);
+    sound.setVolume(100);  // Adjust volume as needed
+    string asciiArt = R"(
+                                              ,--,  ,.-.
+                ,                   \,       '-,-`,'-.' | ._
+               /|           \    ,   |\         }  )/  / `-,',
+               [ '          |\  /|   | |        /  \|  |/`  ,`
+               | |       ,.`  `,` `, | |  _,...(   (      _',
+   -ART BY-    \  \  __ ,-` `  ,  , `/ |,'      Y     (   \_L\
+    -ZEUS-      \  \_\,``,   ` , ,  /  |         )         _,/
+                 \  '  `  ,_ _`_,-,<._.<        /         /
+                  ', `>.,`  `  `   ,., |_      |         /
+                    \/`  `,   `   ,`  | /__,.-`    _,   `\
+                -,-..\  _  \  `  /  ,  / `._) _,-\`       \
+                 \_,,.) /\    ` /  / ) (-,, ``    ,        |
+                ,` )  | \_\       '-`  |  `(               \
+               /  /```(   , --, ,' \   |`<`    ,            |
+              /  /_,--`\   <\  V /> ,` )<_/)  | \      _____)
+        ,-, ,`   `   (_,\ \    |   /) / __/  /   `----`
+       (-, \           ) \ ('_.-._)/ /,`    /
+       | /  `          `/ \\ V   V, /`     /
+    ,--\(        ,     <_/`\\     ||      /
+   (   ,``-     \/|         \-A.A-`|     /
+  ,>,_ )_,..(    )\          -,,_-`  _--`
+ (_ \|`   _,/_  /  \_            ,--`
+  \( `   <.,../`     `-.._   _,-`
+   `           
+    )";
+    system("CLS");
+    system("Color 0C");
+    sound.play();
+    cout << asciiArt;
+    while (sound.getStatus() == sf::Sound::Playing) {
+    }
+    system("Color 0E");
+}
+
 void Monster::Ambush(Player& pPlayer) {
     // Determine the damage to inflict on the player
-    int damage = 3 + (rand() % 5);  // Base damage + random up to 5
+    int damage = 8 + (rand() % 5);  // Base damage + random up to 5
     int staminaLoss = 1;                            // Stamina loss between 1 and 4
 
     // Reduce the player's health and stamina
@@ -117,6 +161,7 @@ bool Monster::DisturbRest(Player& pPlayer, int pChance) {
     srand(static_cast<unsigned int>(time(0)));
     if (rand() % 100 < pChance) {
         if (pPlayer.getfIsResting()) {
+            system("CLS");
             cout << "\nAs you attempt to rest, you hear rustling in the bushes...\n";
             this_thread::sleep_for(chrono::milliseconds(1500));
             cout << "Suddenly, the shadows shift, and you sense a presence lurking nearby!\n";
@@ -137,8 +182,6 @@ bool Monster::DisturbRest(Player& pPlayer, int pChance) {
             pPlayer.DecreaseStamina(1);
             pPlayer.setIsResting(false);
             cout << endl;
-            system("PAUSE");
-            system("CLS");
             return true;
         }
         else {

@@ -20,11 +20,13 @@ bool Food::Use(Player& pPlayer){
     int hunger_decreaseValue = fIsCooked?(fNutrition+2):fNutrition;  //If fIsCooked is true, +2 nutrition value
     if(pPlayer.getCurrentHungerLevel() == 0){
         cout<< "You're full right now" <<endl;
+        system("PAUSE");
         return false;
     }else{
         pPlayer.DecreaseHungerLevel(hunger_decreaseValue);  //Decrease player's hunger level
         pPlayer.IncreaseStamina(fStaminaValue);             //Increase player's stamina
         pPlayer.Heal(fHealthRestorationValue);              //Increase player's health
+        system("PAUSE");
         return true;
     }
 }

@@ -14,9 +14,11 @@ fHydrationValue(pHydrationValue){};
 bool Drinks::Use(Player& pPlayer){
     if(pPlayer.getCurrentThirstLevel() == 0){ //If player's current thirst level equals to player
         cout<< "You're not thirsty right now" <<endl;
+        system("PAUSE");
         return false;
     }else{
         pPlayer.DecreaseThirstLevel(fHydrationValue);   //Decrease Player's Thirst Level
+        system("PAUSE");
         return true;
     }
 }

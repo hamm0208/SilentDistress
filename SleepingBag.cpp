@@ -12,8 +12,10 @@ SleepingBag::SleepingBag(string pName, string pDescription, int pWeight, bool pI
 bool SleepingBag::Use(Player& pPlayer) {
     if(pPlayer.getCurrentStaminaLevel() != pPlayer.getMaxStaminaLevel()){ //If player's current stamina is lower or equal than player's max stamina then...
         pPlayer.IncreaseStamina(fRecoveryAmount);   //Increase stamina
+        pPlayer.setIsResting(true);
         fMonster->DisturbRest(pPlayer, 20);
         cout << "Your stamina has increased by " << fRecoveryAmount << endl;
+        pPlayer.setIsResting(false);
         //you get hungry and thirsty when you wake up
         pPlayer.IncreaseHungerLevel(1);             //Increase hunger level 
         pPlayer.IncreaseThirstLevel(1);             //Increase thirst level

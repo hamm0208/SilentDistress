@@ -169,5 +169,8 @@
     <Media Include="jumpscare.wav">
       <Filter>Resource Files</Filter>
     </Media>
+    <Media Include="jumpscare2.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

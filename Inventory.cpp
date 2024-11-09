@@ -102,6 +102,7 @@ void Inventory::ViewInventoryDetails() {
 		cout << "\t\t\tEmpty Inventory!" << endl;
 	}
 	cout << "------------------------------------------------------------------" << endl;
+	system("PAUSE");
 }
 
 //View all the items in fInventory
@@ -179,8 +180,11 @@ void Inventory::DecreaseCurrentItemQuantity(int pDecrementValue){
 	if(item_AfterDeduction<=0){ //If after deduction is less or equal to 0, the item will be removed from inventory
 		cout << fCurrentItem->getName() << " will now be discarded\n" << endl;
 		fInventory.remove(fCurrentItem);
+		setCurrentCapacity(fCurrentCapacity - (fCurrentItem->getWeight()));
+
 	}else{
 		fInventory.modifyValue(fCurrentItem, pDecrementValue);
+		setCurrentCapacity(fCurrentCapacity - (fCurrentItem->getWeight() * pDecrementValue));
 	}
 };
 

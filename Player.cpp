@@ -85,7 +85,7 @@ void Player::IncreaseHungerLevel(int pIncrementValue) {
     }
 };
 void Player::DecreaseHungerLevel(int pDecrementValue) {
-    if(pDecrementValue>= fMaxHungerLevel){
+    if(pDecrementValue>= fCurrentThirstLevel){
         fCurrentHungerLevel = 0;
     }else{
         fCurrentHungerLevel -= pDecrementValue;
@@ -201,10 +201,12 @@ bool Player::DiscardItem() {
     Item* searched_Item = fInventory.SearchItem(item_Name);
     if (searched_Item != (Item*)0) {
         fInventory.RemoveItem(searched_Item);
+        system("PAUSE");
         return true;
     }
     else {
         cout << item_Name << " is not in your inventory" << endl;
+        system("PAUSE");
         return false;
     }
 };
