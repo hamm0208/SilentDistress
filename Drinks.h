@@ -9,6 +9,7 @@ class Drinks :public Item{
         bool Use(Player& pPlayer) override; //Use drinks to lower thirst level
         void Inspect(); //Inspect drink item
         Item* clone() const; //Clone drink item
+        
         //Getter and setter for fHydrationValue
         int getHydrationValue();
         void setHydrationValue(int pHydrationValue);
