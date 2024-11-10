@@ -16,10 +16,16 @@ class SinglyLinkedList{
         //Destructor
         ~SinglyLinkedList(){
 			Iterator it = getIteratorHead();
-            while (it != it.end()) {
-				Node* toDelete = it.getCurrent();
-				++it;
-                delete toDelete;
+			if (!isEmpty()) {
+				while (it != it.end()) {
+					Node* toDelete = it.getCurrent();
+					if (toDelete != &(Node::NIL)) {
+						++it;
+						delete toDelete;
+						count--;
+						toDelete = &(Node::NIL);
+					}
+				}
 			}
         }
         

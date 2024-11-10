@@ -48,7 +48,7 @@ public:
 	//Remove this node
 	void remove() {
 		if (this->previous != &NIL) {  // If current node has a previous node.
-		this->previous->next = this->next;  // Link previous node's next to current node's next.
+			this->previous->next = this->next;  // Link previous node's next to current node's next.
 		}
 
 		if (this->next != &NIL) {  // If current node has a next node.
@@ -69,7 +69,7 @@ public:
 	
 	//Getter for value
 	Node* getPrevious() const {
-		return next;
+		return previous;
 	}
 };
 

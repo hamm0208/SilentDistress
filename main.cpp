@@ -21,7 +21,7 @@ const int ALL_SCENE_COUNT = 5;
 void PlayPlaneCrashSound() {
 	sf::SoundBuffer buffer;
 	if (!buffer.loadFromFile("plane_crash.wav")) {
-		std::cerr << "Error loading plane_crash.wav" << std::endl;
+		cerr << "Error loading plane_crash.wav" << endl;
 		return;
 	}
 
@@ -41,33 +41,10 @@ void DisplayDelayText(string fDialogue, int seconds) {
 	this_thread::sleep_for(chrono::seconds(seconds));
 }
 
-//Introduction to the game
-void Introduction() {
-	string GameTittle =
-		"|\t\t _____ _____ _      _____ _   _ _____              |\n"
-		"|\t\t/  ___|_   _| |    |  ___| \\ | |_   _|             |\n"
-		"|\t\t\\ `--.  | | | |    | |__ |  \\| | | |               |\n"
-		"|\t\t `--. \\ | | | |    |  __|| . ` | | |               |\n"
-		"|\t\t/\\__/ /_| |_| |____| |___| |\\  | | |               |\n"
-		"|\t\t\\____/ \\___/\\_____\\/____/\\_| \\_/ \\_/	   \t   |\n"
-		"|\t                                                           |\n"
-		"|\t______ _____ _____ ___________ _____ _____ _____           |\n"
-		"|\t|  _  \\_   _/  ___|_   _| ___ \\  ___/  ___/  ___|          |\n"
-		"|\t| | | | | | \\ `--.  | | | |_/ / |__ \\ `--.\\ `--.           |\n"
-		"|\t| | | | | |  `--. \\ | | |    /|  __| `--. \\`--. \\          |\n"
-		"|\t| |/ / _| |_\\/__/ / | | | |\\ \\| |___\\/__/ /\\__/ /          |\n"
-		"|\t|___/  \\___/\\____/  \\_/ \\_| \\_\\____/\\____/\\____/           |\n";
-	cout << "+------------------------------------------------------------------+" << endl;
-	cout << GameTittle;
-	cout << "+------------------------------------------------------------------+" << endl;
-	cout << "\nSilent Distress is a horror survival text game where the player,\n"
-		<< "as the lone survivor of a plane crash, must navigate a dark jungle,\n"
-		<< "manage resources, and survive encounters with a lurking monster.\n" << endl;
-
+void RulesOfTheGame() {
+	/*
 	system("PAUSE");
 	system("CLS");
-
-	//Rules and goals of the game
 	cout << "Goal:\nPlayer needs to survive the aftermath of a plane crash in a hostile jungle by gathering resources,\n"
 		<< "managing hunger and stamina. Players must explore the jungle to find the end of the jungle to meet the rescue team\n" << endl;
 
@@ -90,10 +67,73 @@ void Introduction() {
 	DisplayDelayText("3. Stamina Effects: Low stamina affects hunger, thirst, and may result in death if stamina reaches zero:\n", 1);
 	system("PAUSE");
 	system("CLS");
+	*/
+}
+
+//Introduction to the game
+bool Introduction(Game& pGame) {
+	string GameTittle =
+		"|\t\t _____ _____ _      _____ _   _ _____              |\n"
+		"|\t\t/  ___|_   _| |    |  ___| \\ | |_   _|             |\n"
+		"|\t\t\\ `--.  | | | |    | |__ |  \\| | | |               |\n"
+		"|\t\t `--. \\ | | | |    |  __|| . ` | | |               |\n"
+		"|\t\t/\\__/ /_| |_| |____| |___| |\\  | | |               |\n"
+		"|\t\t\\____/ \\___/\\_____\\/____/\\_| \\_/ \\_/	   \t   |\n"
+		"|\t                                                           |\n"
+		"|\t______ _____ _____ ___________ _____ _____ _____           |\n"
+		"|\t|  _  \\_   _/  ___|_   _| ___ \\  ___/  ___/  ___|          |\n"
+		"|\t| | | | | | \\ `--.  | | | |_/ / |__ \\ `--.\\ `--.           |\n"
+		"|\t| | | | | |  `--. \\ | | |    /|  __| `--. \\`--. \\          |\n"
+		"|\t| |/ / _| |_\\/__/ / | | | |\\ \\| |___\\/__/ /\\__/ /          |\n"
+		"|\t|___/  \\___/\\____/  \\_/ \\_| \\_\\____/\\____/\\____/           |\n";
+
+	bool exitMenu = false;
+
+	while (!exitMenu) {
+		system("CLS");
+		cout << "+------------------------------------------------------------------+" << endl;
+		cout << GameTittle;
+		cout << "+------------------------------------------------------------------+" << endl;
+		cout << "\nSilent Distress is a horror survival text game where the player,\n"
+			<< "as the lone survivor of a plane crash, must navigate a dark jungle,\n"
+			<< "manage resources, and survive encounters with a lurking monster.\n" << endl;
+		cout << "\nPlease select an option:\n";
+		cout << "1. Start New Game\n";
+		cout << "2. View Previous Decisions\n";
+		cout << "3. Exit\n";
+		cout << "Enter your choice: ";
+
+		int choice;
+		cin >> choice;
+
+		switch (choice) {
+		case 1:
+			cout << "\nStarting a new game...\n";
+			exitMenu = true;  // Exit menu loop and start the game
+			RulesOfTheGame();
+			return true;  // Proceed to the game
+			break;
+		case 2:
+			cout << "\nLoading previous decisions...\n";
+			pGame.LoadPlayerDecisions();
+			system("PAUSE");
+			break;
+		case 3:
+			cout << "Exiting the game. Goodbye!\n";
+			exitMenu = true;
+			return false;  // Exit the game
+			break;
+		default:
+			cout << "Invalid option. Please try again.\n";
+			system("PAUSE");
+			break;
+		}
+	}
+	return false;
 }
 
 //Fight Scene
-int FightScene(Player& pPlayer, Monster& pMonster) {
+int FightScene(Player& pPlayer, Monster& pMonster){
 	pPlayer.setIsFighting(true);	//Player is now fighting
 	int choice = 0;					//What choice would the player do
 	bool turnFinish = false;		//Is turn finish
@@ -211,7 +251,9 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 	pCrashSiteScene.AddLoot(AllItems[4]);  // Survival Knife
 	pCrashSiteScene.AddLoot(AllItems[8]);  // Sleeping Bag
 	//Events for scene1
+	/*
 	Event* event1 = new Event(pPlayer, [pPlayer](Entity& e) {
+		system("CLS");
 		DisplayDelayText("You board the plane, settle into your seat, and stow your bag, feeling both excitement and fatigue.\n"
                      "As you buckle up, you sigh in relief, home is just a flight away.\n", 1);
 		DisplayDelayText("The plane's engines roar as it ascends. You gaze out the window, watching the city shrink below.\n", 1);
@@ -259,8 +301,10 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 	//Add events to the scene
 	pCrashSiteScene.AddEvent(event1);
 	pCrashSiteScene.AddEvent(event2);
+	*/
 }
 void InitScene2(Scene& pJungleClearingScene, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
+	pJungleClearingScene.AddLoot(AllItems[11]); // Bamboo Water
 	pJungleClearingScene.AddLoot(AllItems[11]); // Bamboo Water
 	pJungleClearingScene.AddLoot(AllItems[3]);  // Bananas
 	pJungleClearingScene.AddLoot(AllItems[10]); // Jungle Roots
@@ -413,8 +457,6 @@ void InitScene5(Scene& pHelicopterRescue, Player* pPlayer, Monster* pMonster, It
 
 int main() {
 	system("Color 0E");
-	//Introduction to the game
-	Introduction();
 
 	//Initialise Variable
 	Weapon* playerDefaultWeapon = new Weapon("Bare Hands", "Good Ole Bare Knuckles", 0, false, 1, 1000); //Default player weapon
@@ -438,20 +480,7 @@ int main() {
 		new SleepingBag("Hammock", "A lightweight hammock, provides less stamina restoration than the sleeping bag.", 10, false, 6, dreadstalker),
 		new Food("Cooked Meat", "This freshly cooked meat provides a hearty meal, rich in protein to restore your strength.", 10, true, 10, false, false, 30, 6),
 	};
-
-	//Dimensionalise Player Object
-	string playerName = "";
-	cout << "Enter your name: ";
-	cin >> playerName;
-	player = new Player(playerName, 200, 10, 0, 0, 10, 100); //Allocate memory for Player variable on the heap
 	
-	player->AddItem(playerDefaultWeapon);	//Add the weapon the the inventory
-	player->getInventory().setCurrentItem(player->getInventory().SearchItem("Bare Hands")); //Set current item to the default weapon
-	system("CLS");
-
-	//Dimensionalise Game object
-	Game newGame(player, dreadstalker);
-	//All available scenes in the game
 	Scene* AllScenes[ALL_SCENE_COUNT] = {
 	   new Scene("Crash Site", "You awaken amid the twisted wreckage of the plane, surrounded by smoke and dense jungle. Disoriented and alone, survival starts here.", 2),
 	   new Scene("Jungle Clearing", "A small clearing opens up before you, dappled sunlight breaking through the trees. The jungle seems deceptively calm here.", 1),
@@ -459,24 +488,47 @@ int main() {
 	   new Scene("Deep Jungle", "The jungle grows darker and more foreboding.", 1),
 	   new Scene("Edge of the Island", "You see the rescue helicopter just ahead, its blades chopping through the air. But as you approach, the monster emerges from the jungle.", 3),
 	};
-	InitScene1(*AllScenes[0], player, dreadstalker, AllItems);	//Initialise Scene1
-	InitScene2(*AllScenes[1], player, dreadstalker, AllItems);	//Initialise Scene2
-	InitScene3(*AllScenes[2], player, dreadstalker, AllItems);	//Initialise Scene3
-	InitScene4(*AllScenes[3], player, dreadstalker, AllItems);	//Initialise Scene4
-	InitScene5(*AllScenes[4], player, dreadstalker, AllItems);	//Initialise Scene5
-	//Attach all the scene to the binary tree of scene in newGame
-	BTree<Scene*>* rootScene = new BTree<Scene*>(AllScenes[0]); //Root Scene of the game
-	newGame.setRootScene(rootScene);							//Setting root scene
-	newGame.setTreeTarget(newGame.getRootScene());				//Set tree target to point to the new root scene
-	newGame.AttachLeftScene(AllScenes[1]);						//Attach Jungle Clearing  to Crash Site
-	newGame.Left();												//Move to Jungle Clearing Scene
-	newGame.AttachLeftScene(AllScenes[2]);						//Attach Abandoned Village the left child of Jungle Clearing
-	newGame.AttachRightScene(AllScenes[3]);						//Attach Deep Jungle to the right child of Jungle Clearing
-	newGame.Right();											//Move to Right Child (Deep Jungle)
-	newGame.AttachLeftScene(AllScenes[4]);						//Attach Waterfall Cave to Left Child of Deep Jungle
-	newGame.setTreeTarget(newGame.getRootScene());				//Set the TreeTarget back to the RootScene
-	//Play the game
-	newGame.Play();
+
+	//Dimensionalise Player Object
+	
+	player = new Player("empty", 200, 10, 0, 0, 10, 100); //Allocate memory for Player variable on the heap
+	
+	player->AddItem(playerDefaultWeapon);	//Add the weapon the the inventory
+	player->getInventory().setCurrentItem(player->getInventory().SearchItem("Bare Hands")); //Set current item to the default weapon
+	system("CLS");
+
+	//Dimensionalise Game object
+	Game newGame(player, dreadstalker);
+	//Introduction to the game
+	if (Introduction(newGame)) {
+		string playerName = "";
+		cout << "Enter your name: ";
+		cin >> playerName;
+		newGame.getPlayer()->setName(playerName);
+
+		//All available scenes in the game
+		InitScene1(*AllScenes[0], player, dreadstalker, AllItems);	//Initialise Scene1
+		InitScene2(*AllScenes[1], player, dreadstalker, AllItems);	//Initialise Scene2
+		InitScene3(*AllScenes[2], player, dreadstalker, AllItems);	//Initialise Scene3
+		InitScene4(*AllScenes[3], player, dreadstalker, AllItems);	//Initialise Scene4
+		InitScene5(*AllScenes[4], player, dreadstalker, AllItems);	//Initialise Scene5
+		//Attach all the scene to the binary tree of scene in newGame
+		BTree<Scene*>* rootScene = new BTree<Scene*>(AllScenes[0]); //Root Scene of the game
+		newGame.setRootScene(rootScene);							//Setting root scene
+		newGame.setTreeTarget(newGame.getRootScene());				//Set tree target to point to the new root scene
+		newGame.AttachLeftScene(AllScenes[1]);						//Attach Jungle Clearing  to Crash Site
+		newGame.Left();												//Move to Jungle Clearing Scene
+		newGame.AttachLeftScene(AllScenes[2]);						//Attach Abandoned Village the left child of Jungle Clearing
+		newGame.AttachRightScene(AllScenes[3]);						//Attach Deep Jungle to the right child of Jungle Clearing
+		newGame.Right();											//Move to Right Child (Deep Jungle)
+		newGame.AttachLeftScene(AllScenes[4]);						//Attach Waterfall Cave to Left Child of Deep Jungle
+		newGame.setTreeTarget(newGame.getRootScene());				//Set the TreeTarget back to the RootScene
+
+		//Play the game
+		newGame.Play();
+		newGame.SavePlayerDecisions();
+
+	}
 
 	//Delete the allocated memory
 	for (Iterator1D<Scene*> iter(AllScenes, ALL_SCENE_COUNT, 0); iter != iter.end(); ++iter) {

@@ -5,65 +5,60 @@
 #include "Scene.h"
 #include "Decision.h"
 
-
 class Game{
     public:
         typedef BTree<Scene*> TreeScene;
 	private:
-		Player* fPlayer;				
-		Monster* fMonster;
-		List<Decision> fDecisions;
-        TreeScene* fRootScene;
-        TreeScene* fTreeTarget;
-        int fTurnHunger;
-        int fTurnThirst;
-        int fTurnStamina;
-        bool isGameOver;
-        bool isWin;
+		Player* fPlayer;		        //pointer to Player in the Game		
+		Monster* fMonster;              //pointer to Monster in the Game
+		List<Decision> fDecisions;      //List of Decisions available in the game
+        TreeScene* fRootScene;          //RootNode of the Binary Tree
+        TreeScene* fTreeTarget;         //TargetNode that points to the current node that the user is at
+        int fTurnHunger;                //Number of hunger turns to increase the Hunger Level
+        int fTurnThirst;                //Number of thirst turns to increase the thirst Level
+        int fTurnStamina;               //Number of stamina turns to decrease the stamina Level
+        bool isGameOver;                //Is game over
+        bool isWin;                     //Is player win
     public:
-        Game(Player* pPlayer, Monster* pMonster);
-        ~Game();
-        Player* getPlayer();
+        Game(Player* pPlayer, Monster* pMonster);   //Constructor
+        ~Game();                                    //Destructor
+        //Getters
+        Player* getPlayer();                        
         Monster* getMonster();
 		List<Decision> getDecisions() const;
         Scene* getCurrentScene();
-        int getTurn();
-        void IncreaseTurn();
         bool getIsGameOver();
-        void setIsGameOver(bool pFlag);
         bool getIsWin();
-        void setIsWin(bool pFlag);
         TreeScene* getTreeTarget();
-        void setTreeTarget(TreeScene* pNewTarget);
         TreeScene* getRootScene() const;
+
+        //Setters
+        void setIsWin(bool pFlag);
+        void setTreeTarget(TreeScene* pNewTarget);
         void setRootScene(TreeScene* pNewRoot);
-        //fDecisions
-        void AddDecisions(Decision& pDecision);
-        void ShowDecisions(List<Decision>& pDecision);
+        void setIsGameOver(bool pFlag);
 
-        //fRootScene & fTreeTarget
-        void AttachLeftScene(Scene* pScene);  //Attach to fTreeTarget's left node
-        void AttachRightScene(Scene* pScene); //Attach to fTreeTarget's right node
-        void DettachLeftScene();  //Attach to fTreeTarget's left node
-        void DettachRightScene(); //Attach to fTreeTarget's right node
-        void PlayerMoveLeft();
-        void PlayerMoveRight();
-        void Left();
-        void Right();
-        void BackToRoot();
-        void DiscoverMenu();
-
-        void PlaySceneEvent();
-
-        //fPlayer;
-        void DisplayPlayerMenu();
-        void DisplayInventoryMenu();
-        void DisplayLootMenu();
-        void PlayerPickUpLoot();
-        void ShowLootDetails();
-        void CheckReduceResources();
-        //fMonsters
-        void MonsterJumpscare1();
-        void MonsterAmbush();
-        void Play();
+        void IncreaseTurn();                            //Increase turn
+        void AddDecisions(Decision& pDecision);         //Add decisions into the Game
+        void ShowDecisions(List<Decision>& pDecision);  //Show decisions available in the game
+        void AttachLeftScene(Scene* pScene);            //Attach to fTreeTarget's left node
+        void AttachRightScene(Scene* pScene);           //Attach to fTreeTarget's right node
+        void DettachLeftScene();                        //Detach from fTreeTarget's left node
+        void DettachRightScene();                       //Detach from fTreeTarget's right node
+        void PlayerMoveLeft();                          //Player Move Left
+        void PlayerMoveRight();                         //Player Move Right
+        void Left();                                    //Move Left for debugging purposes
+        void Right();                                   //Move Right for debugging purposes
+        void BackToRoot();                              //Move TargetNode back to Root
+        void DiscoverMenu();                            //Discover new scene menu
+        void PlaySceneEvent();                          //Play scene's event
+        void DisplayPlayerMenu();                       //Player's default menu
+        void DisplayInventoryMenu();                    //Player's inventory menu
+        void PlayerPickUpLoot();                        //Player Pick up Loot
+        void DisplayLootMenu();                         //Loot Menu
+        void ShowLootDetails();                         //Show loot details
+        void CheckReduceResources();                    //Reduce player's resources based on turns
+        void Play();                                    //Start the game
+        void SavePlayerDecisions();                     //Save the decisions made by player into a file
+        void LoadPlayerDecisions();                     //Load the decisions made by player
 };

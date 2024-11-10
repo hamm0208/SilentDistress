@@ -9,7 +9,7 @@
 #include <chrono>
 
 //Default constructor
-Player::Player():Entity(),  fInventory(100){
+Player::Player():Entity(),  fInventory(100), fDecisionsMade(new SinglyLinkedList<Decision>()) {
     fMaxHungerLevel = 0;
     fMaxThirstLevel = 0;
     fMaxStaminaLevel = 0;
@@ -21,11 +21,18 @@ Player::Player():Entity(),  fInventory(100){
 
 //Initialise all the parameter into the class's attributes
 Player::Player(string pName, int pAttackDamage, int pHealth, int pHungerLevel, int pThirstLevel, int pStamina, int pInventoryCapacity) :
-Entity(pName, pAttackDamage, pHealth), fCurrentHungerLevel(pHungerLevel), fCurrentThirstLevel(pThirstLevel), fCurrentStaminaLevel(pStamina), fIsResting(false), fInventory(pInventoryCapacity){
+Entity(pName, pAttackDamage, pHealth), fCurrentHungerLevel(pHungerLevel), fCurrentThirstLevel(pThirstLevel), fCurrentStaminaLevel(pStamina), fIsResting(false), fInventory(pInventoryCapacity), fDecisionsMade(new SinglyLinkedList<Decision>()) {
     fMaxHungerLevel = 10;
     fMaxThirstLevel = 10;
     fMaxStaminaLevel = 10;
 };
+
+Player::~Player(){
+    if (fDecisionsMade != nullptr) {
+        delete fDecisionsMade;
+        fDecisionsMade = nullptr; // Set to nullptr to avoid dangling pointers
+    }
+}
 
 //Getter and setter for fMaxHungerLevel
 int Player::getMaxHungerLevel() {
@@ -71,6 +78,11 @@ int Player::getCurrentStaminaLevel() {
 };
 void Player::setCurrentStaminaLevel(int pStamina) {
     fCurrentStaminaLevel = pStamina;
+};
+
+//Getter and setter for fDecisionsMade
+SinglyLinkedList<Decision>* Player::getDecisionsMade() {
+    return fDecisionsMade;
 };
 
 //Getter and setter for fIsresting
@@ -280,16 +292,8 @@ bool Player::UseCurrentItem() {
 
 // Record decision made by player
 void Player::MakeDecision(Decision& pDecision) {
-    fDecisionsMade.pushBack(pDecision);  // Add decision to list of decisions
+    fDecisionsMade->pushBack(pDecision);  // Add decision to list of decisions
     pDecision.applyEffect(*this);  // Apply the effects of the decision on the player
-};
-
-// Display list of decisions made by player
-void Player::ShowDecision() {
-    cout << "List of decisions made by " << getName() << endl;
-    for (int x = 0; x < fDecisionsMade.size(); x++) {
-        cout << x + 1 << ". " << fDecisionsMade[x].getName() << endl;
-    }
 };
 
 // Show player's attributes (health, hunger, thirst, etc.)

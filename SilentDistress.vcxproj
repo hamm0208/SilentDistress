@@ -35,7 +35,6 @@
     <ClInclude Include="List.h" />
     <ClInclude Include="Medical.h" />
     <ClInclude Include="Monster.h" />
-    <ClInclude Include="NTree.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="Scene.h" />

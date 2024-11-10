@@ -30,7 +30,7 @@ public:
             return temp;
         }
         // If queue is empty, output a message and exit
-        std::cout << "List is empty" << std::endl;
+        cout << "List is empty" << endl;
         exit(0);
     }
 
@@ -52,18 +52,18 @@ public:
     // View the contents of the queue
     void View() const {
         for (Iterator iter = fQueue.getIteratorHead(); iter != iter.end(); ++iter) {
-            std::cout << *iter;
+            cout << *iter;
             if (iter != fQueue.getIteratorLast()) {
-                std::cout << ", ";
+                cout << ", ";
             }
         }
-        std::cout << std::endl;
+        cout << endl;
     }
 
     // Overload operator[] to access element at index
     T& operator[](int pIndex) {
         if (pIndex >= fQueue.size() || pIndex < 0) {
-            std::cout << "Error: List index out of bound";
+            cout << "Error: List index out of bound";
             exit(0);
         }
         return fQueue.findAt(pIndex)->getValue();  // Access value at specific index
@@ -72,7 +72,7 @@ public:
     // Remove element at specified index
     T RemoveAt(int pIndex) {
         if (pIndex >= fQueue.size() || pIndex < 0) {
-            std::cout << "Error: List index out of bound";
+            cout << "Error: List index out of bound";
             exit(0);
         }
         return fQueue.popAt(pIndex);  // Remove element at index and return its value

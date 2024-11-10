@@ -1,4 +1,6 @@
 #include "Game.h"
+#include "SinglyLinkedNodeIterator.h"
+#include <fstream>
 typedef BTree<Scene*> TreeScene;
 
 Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPlayer(pPlayer),fMonster(pMonster), fTurnHunger(0), fTurnStamina(0), fTurnThirst(0), isGameOver(false) {
@@ -178,7 +180,7 @@ void Game::DiscoverMenu() {
         
 
         // Check if there are routes available to the left and right and show them
-        std::string availableWays = "\t\tNo route available, head back to crash site"; // Default message
+        string availableWays = "\t\tNo route available, head back to crash site"; // Default message
 
         // Check if left route is available
         if (!fTreeTarget->left().isEmpty()) {
@@ -208,7 +210,7 @@ void Game::DiscoverMenu() {
         while (inDiscoveringMenu) {
             cout << "-------------------------------- Discover Routes Menu --------------------------------" << endl;
             cout << endl;
-            std::cout << "\t" << availableWays << "\n" << endl;
+            cout << "\t" << availableWays << "\n" << endl;
             cout << "---------------------------------------------------------------------------------------\n";
             int choice = 0;
             cout << "Select an option:" << endl;
@@ -469,6 +471,52 @@ void Game::Play() {
     }
 };
 
+void Game::SavePlayerDecisions() {
+    // Open a file to save decisions
+    ofstream outFile("PlayerDecisions.txt");
+    if (!outFile) {
+        cerr << "Error opening file to save decisions!" << endl;
+        return;
+    }
+    outFile << fPlayer->getName() << "'s Decisions Log:\n\n";
+    SinglyLinkedList<Decision>* decisions = fPlayer->getDecisionsMade(); // Assuming this method exists
+    for (SinglyLinkedNodeIterator<Decision> iter = decisions->getIteratorHead(); iter != iter.end(); ++iter) {
+        Decision currentDecision = *iter;
+        outFile << "Decision: " << currentDecision.getName() << "\n";
+        outFile << "Description: " << currentDecision.getDescription() << "\n\n";
+    }
+    outFile << "End of decisions.\n";
+    outFile.close();
+    cout << "All decisions have been saved to PlayerDecisions.txt" << endl;
+}
+
+void Game::LoadPlayerDecisions() {
+    system("CLS");
+    ifstream inFile("PlayerDecisions.txt");
+
+    // Check if the file opened successfully
+    if (!inFile) {
+        cout << "No previous decisions found.\n";
+        return;
+    }
+
+    // Check if the file is empty
+    inFile.seekg(0, ios::end);  // Move to the end of the file
+    if (inFile.tellg() == 0) {       // Check if the position is at 0 (meaning it's empty)
+        cout << "Decision file exists but is empty.\n";
+        inFile.close();
+        return;
+    }
+    inFile.seekg(0, ios::beg);  // Move back to the start of the file
+
+    string line;
+    // Read each line from the file and display it
+    while (getline(inFile, line)) {
+        cout << line << endl;
+    }
+
+    inFile.close();
+}
 Game::~Game() {
     if (fRootScene != &TreeScene::NIL) {
         delete fRootScene; // This deletes the allocated TreeScene

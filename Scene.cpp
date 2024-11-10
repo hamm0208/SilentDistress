@@ -4,10 +4,10 @@
 #include <chrono>
 
 //Default constructor
-Scene::Scene(): fName(""), fDescription(""), fEvents(5){
+Scene::Scene(): fName(""), fDescription(""), fEvents(5), fLoot(){
 }
 //Overloaded constructor
-Scene::Scene(string pName, string pDescription, int pMaxNumberOfEvent) : fName(pName), fDescription(pDescription), fEvents(pMaxNumberOfEvent) {
+Scene::Scene(string pName, string pDescription, int pMaxNumberOfEvent) : fName(pName), fDescription(pDescription), fEvents(pMaxNumberOfEvent), fLoot() {
 }
 //Destructor
 Scene::~Scene() {

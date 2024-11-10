@@ -1,0 +1,6 @@
+Beckham's Decisions Log:
+
+Decision: Exit Game
+Description: Exit the game
+
+End of decisions.

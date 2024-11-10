@@ -25,7 +25,7 @@ Weapon* Monster::getWeapon(){
 void Monster::Jumpscare1(){
     sf::SoundBuffer buffer;
     if (!buffer.loadFromFile("jumpscare.wav")) {
-        std::cerr << "Error loading sound file!" << std::endl;
+        cerr << "Error loading sound file!" << endl;
         return;
     }
     sf::Sound sound;
@@ -98,7 +98,7 @@ _#/|##########/\######(   /\   )######/\##########|\#_
 void Monster::Jumpscare2() {
     sf::SoundBuffer buffer;
     if (!buffer.loadFromFile("jumpscare2.wav")) {
-        std::cerr << "Error loading sound file!" << std::endl;
+        cerr << "Error loading sound file!" << endl;
         return;
     }
     sf::Sound sound;

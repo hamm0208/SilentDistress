@@ -2,29 +2,44 @@
 #include <stdexcept>
 using namespace std;
 
+// Template class for a Binary Tree (BTree)
 template <class T>
 class BTree {
 public:
+	// Static NIL node to represent empty trees or subtrees
 	static BTree<T> NIL;
 private:
+	// Pointer to the key of the node
 	T* fKey;
+	// Pointers to the left and right children
 	BTree<T>* fLeft;
 	BTree<T>* fRight;
 public:
-	BTree() :fKey() {
-		fKey = new T();;
+	// Default constructor: Initializes an empty node
+	BTree() : fKey() {
+		// Allocates memory for the key
+		fKey = new T();
+		// Sets left and right children to NIL
 		fLeft = &NIL;
 		fRight = &NIL;
 	}
-	BTree(const T& aKey){
+
+	// Constructor that initializes the node with a given key
+	BTree(const T& aKey) {
+		// Allocates memory for the key and assigns it
 		fKey = new T(aKey);
+		// Sets left and right children to NIL
 		fLeft = &NIL;
 		fRight = &NIL;
 	}
-	~BTree(){
+
+	// Destructor to clean up allocated memory
+	~BTree() {
+		// Deletes the key if it's not nullptr
 		if (fKey != nullptr) {
 			delete fKey;
 		}
+		// Deletes left and right subtrees if they are not NIL
 		if (fLeft != &NIL) {
 			delete fLeft;
 		}
@@ -32,62 +47,87 @@ public:
 			delete fRight;
 		}
 	}
-	bool  isEmpty() const{
+
+	// Checks if the current node is empty (i.e., if it is NIL)
+	bool isEmpty() const {
 		return this == &NIL;
 	}
-	const T& key() const{
-		if(isEmpty()){
-			throw std::domain_error("Empty node!");
+
+	// Returns the key of the current node
+	const T& key() const {
+		// Throws an error if trying to access the key of an empty node
+		if (isEmpty()) {
+			throw domain_error("Empty node!");
 		}
 		return *fKey;
 	}
+
+	// Sets the key of the current node
 	void setKey(const T& k) {
 		*fKey = k;
 	}
-	BTree& left() const{
+
+	// Returns the left child of the current node
+	BTree& left() const {
 		return *fLeft;
 	}
-	BTree& right() const{
+
+	// Returns the right child of the current node
+	BTree& right() const {
 		return *fRight;
 	}
-	void attachLeft(BTree<T>* aBTree){
-		if (isEmpty()){
-			throw std::domain_error("Empty BTree");
+
+	// Attaches a subtree as the left child of the current node
+	void attachLeft(BTree<T>* aBTree) {
+		// Throws an error if the current node is empty
+		if (isEmpty()) {
+			throw domain_error("Empty BTree");
 		}
-		if (fLeft != &NIL){
-			throw std::domain_error("Non-empty sub tree");
+		// Throws an error if the left child is not empty
+		if (fLeft != &NIL) {
+			throw domain_error("Non-empty sub tree");
 		}
 		fLeft = aBTree;
 	}
 
-	void attachRight(BTree<T>* aBTree){
-		if (isEmpty()){
-			throw std::domain_error("Empty BTree");
+	// Attaches a subtree as the right child of the current node
+	void attachRight(BTree<T>* aBTree) {
+		// Throws an error if the current node is empty
+		if (isEmpty()) {
+			throw domain_error("Empty BTree");
 		}
-		if (fRight  != &NIL){
-			throw std::domain_error("Non-empty sub tree");
+		// Throws an error if the right child is not empty
+		if (fRight != &NIL) {
+			throw domain_error("Non-empty sub tree");
 		}
-		fRight  = aBTree;
+		fRight = aBTree;
 	}
 
-	BTree* detachLeft(){
-		if(isEmpty()){
-			throw std::domain_error("Empty BTree");
+	// Detaches the left child of the current node and returns it
+	BTree* detachLeft() {
+		// Throws an error if the current node is empty
+		if (isEmpty()) {
+			throw domain_error("Empty BTree");
 		}
+		// Stores the left child in Result and sets the left child to NIL
 		BTree<T>& Result = *fLeft;
 		fLeft = &NIL;
 		return &Result;
 	}
 
-	BTree* detachRight(){
-		if(isEmpty()){
-			throw std::domain_error("Empty BTree");
+	// Detaches the right child of the current node and returns it
+	BTree* detachRight() {
+		// Throws an error if the current node is empty
+		if (isEmpty()) {
+			throw domain_error("Empty BTree");
 		}
+		// Stores the right child in Result and sets the right child to NIL
 		BTree<T>& Result = *fRight;
 		fRight = &NIL;
 		return &Result;
 	}
 };
 
+// Static member initialization for NIL, which represents an empty node
 template <class T>
 BTree<T> BTree<T>::NIL;

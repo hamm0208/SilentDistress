@@ -1,9 +1,8 @@
 #pragma once
 #include "Queue.h"
 #include "Event.h"
-class Item;
-class Scene
-{
+class Item; //Foward Declaration
+class Scene{
 	private:
 		string fName;					//Name of scene
 		string fDescription;			//Description of the scene

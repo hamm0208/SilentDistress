@@ -20,10 +20,11 @@ class Player :public Entity{
         int fCurrentThirstLevel;                //Current Thirst Level
         int fCurrentStaminaLevel;               //Current Stamina Level
         Inventory fInventory;                   //Player's Inventory
-        SinglyLinkedList<Decision> fDecisionsMade;  //Decisions made by the player
+        SinglyLinkedList<Decision>* fDecisionsMade;  //Decisions made by the player
     public:
         Player();
         Player(string pName, int pAttackDamage, const int pHealth = 100, const int pHungerLevel = 10, const int pThirstLevel = 10 , const int pStamina = 10, const int pInventoryCapacity = 100);
+        ~Player();
         //Getter and setter for fMaxHungerLevel
         int getMaxHungerLevel();
         void setMaxHungerLevel(int pHungerLevel);
@@ -48,6 +49,10 @@ class Player :public Entity{
         int getCurrentStaminaLevel();
         void setCurrentStaminaLevel(int pStamina);
 
+        //Getter for fDecisionsMade
+        SinglyLinkedList<Decision>* getDecisionsMade();
+
+        //Getter for fInventory
         Inventory& getInventory();
 
         //Getter and setter for fIsresting
@@ -74,6 +79,5 @@ class Player :public Entity{
         Item* getCurrentItem();                         //Get currently equiped item
         bool UseCurrentItem();                          //Use currently equiped item
         void MakeDecision(Decision& pDecision);         //Player makes a decision
-        void ShowDecision();                            //Player show all the decisions made
         void ApplyEffects(Monster& pMonster);           //Check for player's attributes and apply it's effect
 };
