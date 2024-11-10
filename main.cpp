@@ -42,7 +42,6 @@ void DisplayDelayText(string fDialogue, int seconds) {
 }
 
 void RulesOfTheGame() {
-	/*
 	system("PAUSE");
 	system("CLS");
 	cout << "Goal:\nPlayer needs to survive the aftermath of a plane crash in a hostile jungle by gathering resources,\n"
@@ -67,7 +66,6 @@ void RulesOfTheGame() {
 	DisplayDelayText("3. Stamina Effects: Low stamina affects hunger, thirst, and may result in death if stamina reaches zero:\n", 1);
 	system("PAUSE");
 	system("CLS");
-	*/
 }
 
 //Introduction to the game
@@ -251,7 +249,6 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 	pCrashSiteScene.AddLoot(AllItems[4]);  // Survival Knife
 	pCrashSiteScene.AddLoot(AllItems[8]);  // Sleeping Bag
 	//Events for scene1
-	/*
 	Event* event1 = new Event(pPlayer, [pPlayer](Entity& e) {
 		system("CLS");
 		DisplayDelayText("You board the plane, settle into your seat, and stow your bag, feeling both excitement and fatigue.\n"
@@ -301,7 +298,6 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 	//Add events to the scene
 	pCrashSiteScene.AddEvent(event1);
 	pCrashSiteScene.AddEvent(event2);
-	*/
 }
 void InitScene2(Scene& pJungleClearingScene, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
 	pJungleClearingScene.AddLoot(AllItems[11]); // Bamboo Water
