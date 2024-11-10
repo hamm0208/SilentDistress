@@ -69,7 +69,6 @@
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="creepy.wav" />
     <Media Include="jumpscare.wav" />
     <Media Include="jumpscare2.wav" />
     <Media Include="plane_crash.wav" />
