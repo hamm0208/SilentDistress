@@ -1,5 +1,20 @@
 Beckham's Decisions Log:
 
+Decision: Discover more areas
+Description: Moving to next location
+
+Decision: Move left to Jungle Clearing
+Description: Move to the left route to discover Jungle Clearing
+
+Decision: Discover more areas
+Description: Moving to next location
+
+Decision: Move left to Abandoned Village
+Description: Move to the left route to discover Abandoned Village
+
+Decision: Discover more areas
+Description: Moving to next location
+
 Decision: Exit Game
 Description: Exit the game
 

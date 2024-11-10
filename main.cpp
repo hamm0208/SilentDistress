@@ -216,9 +216,9 @@ void VillageFightScene(Player* pPlayer, Monster* pMonster) {
 
 		//If result is not -1, then the monster will deal damage to the player
 		if (result == 0) {
-			string message = pMonster->getName() + " has dealt " + to_string(pMonster->getAttackDamage() + pMonster->getWeapon()->getDamage()) + " to you!";
-			DisplayDelayText(message, 1);
-			pPlayer->TakeDamage(pMonster->getAttackDamage() + pMonster->getWeapon()->getDamage());
+			DisplayDelayText("", 1);
+			pMonster->selectRandomCombo();
+			pMonster->executeCombo(*pPlayer);
 			system("PAUSE");
 		}
 	} while (result != -1);
@@ -491,7 +491,7 @@ int main() {
 
 	//Dimensionalise Player Object
 	
-	player = new Player("empty", 200, 10, 0, 0, 10, 100); //Allocate memory for Player variable on the heap
+	player = new Player("empty", 10, 100, 0, 0, 10, 100); //Allocate memory for Player variable on the heap
 	
 	player->AddItem(playerDefaultWeapon);	//Add the weapon the the inventory
 	player->getInventory().setCurrentItem(player->getInventory().SearchItem("Bare Hands")); //Set current item to the default weapon

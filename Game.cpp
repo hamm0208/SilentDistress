@@ -437,14 +437,6 @@ void Game::PlayerPickUpLoot() {
     }
 }
 
-//fMonsters
-void Game::MonsterJumpscare1() {
-    fMonster->Jumpscare1();
-};
-void Game::MonsterAmbush() {
-    fMonster->Ambush(*fPlayer);
-};
-
 void Game::Play() {
     if (fRootScene->isEmpty()) {
         cout << "There's no scene in the game!" << endl;
@@ -479,6 +471,12 @@ void Game::SavePlayerDecisions() {
         return;
     }
     outFile << fPlayer->getName() << "'s Decisions Log:\n\n";
+    if (isWin) {
+        outFile << "Status: Win\n\n";
+    }
+    if (isGameOver) {
+        outFile << "Status: Lose\n\n";
+    }
     SinglyLinkedList<Decision>* decisions = fPlayer->getDecisionsMade(); // Assuming this method exists
     for (SinglyLinkedNodeIterator<Decision> iter = decisions->getIteratorHead(); iter != iter.end(); ++iter) {
         Decision currentDecision = *iter;

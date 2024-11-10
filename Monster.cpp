@@ -4,11 +4,24 @@
 #include <chrono>
 
 //Default constructor
-Monster::Monster():Entity(){
+Monster::Monster():Entity(), fComboAttack(3) {
     fWeapon = nullptr;
+    fSkillSet[0] = { "Claw Swipe", 5 };
+    fSkillSet[1] = { "Bite", 8 };
+    fSkillSet[2] = { "Claw of the damned", fWeapon->getDamage() };
+    fSkillSet[3] = { "Fatal Lunge", 15 };
+    fSkillSet[4] = { "Tail Sweep", 7 };
+    fSkillSet[5] = { "Charge", 10 };
 }
 //Overloaded constructor
-Monster::Monster(string pName, int pAttackDamage, int pHealth, Weapon* pWeapon):Entity(pName, pAttackDamage, pHealth), fWeapon(pWeapon){};
+Monster::Monster(string pName, int pAttackDamage, int pHealth, Weapon* pWeapon):Entity(pName, pAttackDamage, pHealth), fWeapon(pWeapon), fComboAttack(3) {
+    fSkillSet[0] = { "Claw Swipe", 5 };
+    fSkillSet[1] = { "Bite", 8 };
+    fSkillSet[2] = { "Claw of the damned", fWeapon->getDamage()};
+    fSkillSet[3] = { "Fatal Lunge", 15 };
+    fSkillSet[4] = { "Tail Sweep", 7 };
+    fSkillSet[5] = { "Charge", 10 };
+};
 
 //Destructor
 Monster::~Monster() {
@@ -19,6 +32,45 @@ Monster::~Monster() {
 //Getter for fWeapons
 Weapon* Monster::getWeapon(){
     return fWeapon;
+}
+
+void Monster::addComboAttack(const string& actionName, int damage) {
+    Attacks newAttack = { actionName, damage };
+    fComboAttack.Push(newAttack);  // Adds the attack to the stack
+}
+
+void Monster::selectRandomCombo() {
+    // Clear previous combo stack
+    while (!fComboAttack.IsEmpty()) {
+        fComboAttack.Pop();
+    }
+
+    // Seed random number generator
+    srand(static_cast<unsigned int>(time(0)));
+
+    // Array to keep track of selected attacks to avoid duplicates
+    bool selected[6] = { false, false, false, false, false, false };
+
+    // Randomly select 3 different attacks from the skillset
+    for (int i = 0; i < 3; ++i) {
+        int index;
+        do {
+            index = rand() % 6;  // Randomly pick an index from 0 to 5
+        } while (selected[index]); // Ensure it's not already selected
+
+        selected[index] = true; // Mark this attack as selected
+        addComboAttack(fSkillSet[index].name, fSkillSet[index].damage); // Add attack to combo stack
+    }
+}
+
+void Monster::executeCombo(Player& pPlayer) {
+    while (!fComboAttack.IsEmpty()) {
+        Attacks action = fComboAttack.Pop();
+        cout << "Monster performs: " << action.name << " with damage: " << action.damage << endl;
+        pPlayer.TakeDamage(action.damage);
+        this_thread::sleep_for(chrono::milliseconds(1000));
+
+    }
 }
 
 //Jumpscare 1
@@ -201,3 +253,4 @@ bool Monster::DisturbRest(Player& pPlayer, int pChance) {
         return false;  // Disturbance chance did not trigger
     }
 }
+
