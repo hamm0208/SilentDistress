@@ -1,7 +1,7 @@
 #include "Game.h"
 typedef BTree<Scene*> TreeScene;
 
-Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPlayer(pPlayer),fMonster(pMonster),fTurn(0), isGameOver(false){
+Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPlayer(pPlayer),fMonster(pMonster), fTurnHunger(0), fTurnStamina(0), fTurnThirst(0), isGameOver(false) {
     fTreeTarget = fRootScene;
     Decision ViewAttributes = Decision("View Character's Attributes","Take a look at all the attributes of your character.",[this](Entity& fEntity) { fPlayer->ShowAttributes(); });
     Decision ViewInvetory = Decision("View Inventory", "Take a look at all the items in your inventory.", [this](Entity& fEntity) { DisplayInventoryMenu(); });
@@ -56,11 +56,11 @@ void Game::setRootScene(TreeScene* pNewRoot) {
     fRootScene = pNewRoot;
 };
 
-int Game::getTurn() {
-    return fTurn;
-};
+
 void Game::IncreaseTurn() {
-    fTurn++;
+    fTurnStamina++;
+    fTurnThirst++;
+    fTurnHunger++;
 };
 bool Game::getIsGameOver() {
     return isGameOver;
@@ -365,13 +365,17 @@ void Game::ShowLootDetails() {
     system("PAUSE");
 }
 void Game::CheckReduceResources() {
-    
-    if (fTurn % 3 == 0 && fTurn != 0) {
-        fPlayer->IncreaseHungerLevel(1);
+    if (fTurnThirst % 3 == 0 && fTurnThirst != 0) {
         fPlayer->IncreaseThirstLevel(1);
+        fTurnThirst = 0;
     }
-    if (fTurn % 4 == 0 && fTurn != 0) {
+    if (fTurnHunger % 5 == 0 && fTurnHunger != 0) {
+        fPlayer->IncreaseHungerLevel(1);
+        fTurnHunger = 0;
+    }
+    if (fTurnStamina % 4 == 0 && fTurnStamina != 0) {
         fPlayer->DecreaseStamina(1);
+        fTurnStamina = 0;
     }
     fPlayer->ApplyEffects(*fMonster);
     if (!fPlayer->getIsAlive()) {

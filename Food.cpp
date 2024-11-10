@@ -33,6 +33,7 @@ bool Food::Use(Player& pPlayer){
 //Display Food's attributes
 void Food::Inspect(){
     Item::Inspect();
+    cout << "Nutrition:\t\t\t" << fNutrition << endl;
     cout << "Is Cookable:\t\t\t" << (fIsCookable ? "Yes" : "No") << endl;
     cout << "Health Restoration Value:\t" << fHealthRestorationValue << endl;
     cout << "Stamina Restoration Value:\t" << fStaminaValue << endl;

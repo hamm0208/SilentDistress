@@ -337,11 +337,13 @@ void LastFightScene(Player* pPlayer, Monster* pMonster) {
 		if (pPlayer->getCurrentHealth() == 0) {
 			break;
 		}
-		if (pMonster->getCurrentHealth() <= 170) {
+		if (pMonster->getCurrentHealth() == 0) {
 			system("CLS");
-			DisplayDelayText("Suddenly, the monster lets out a guttural roar, its massive form staggering back!\n", 2);
-			DisplayDelayText("With a final terrifying growl, the creature turns and begins to retreat into the jungle.\n", 2);
-			DisplayDelayText("An uneasy chill settles over you. You know, deep down, that this creature will be back.\n", 2);
+			DisplayDelayText("The monster lets out a pained roar, staggering back from the fight!\n", 2);
+			DisplayDelayText("Seizing the opportunity, the creature turns and quickly retreats into the jungle.\n", 2);
+			DisplayDelayText("Not wasting any time, you sprint towards the helicopter awaiting your escape.\n", 2);
+			DisplayDelayText("As the rotors spin up, you feel a rush of relief. You've been rescued, for now...\n", 2);
+			system("PAUSE");
 			break;
 		}
 		result = FightScene(*pPlayer, *pMonster);
@@ -368,14 +370,15 @@ void LastFightScene(Player* pPlayer, Monster* pMonster) {
 }
 void InitScene5(Scene& pHelicopterRescue, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
 	Event* event1 = new Event(pPlayer, false, [pPlayer, pMonster](Entity& e) {
-		DisplayDelayText("As you push through the dense jungle, your ears catch the faint sound of helicopter blades cutting through the air.", 2);
-		DisplayDelayText("You force your legs to move faster, adrenaline kicking in as the sound becomes unmistakable.", 2);
-		DisplayDelayText("Then, suddenly, a figure steps out from the shadows, blocking your path. The monster stands tall, its eyes locked on you.", 2);
-		DisplayDelayText("With no choice left, you prepare for the final battle. It's him or you. You must fight to survive.", 2);
+		DisplayDelayText("As you push through the dense jungle, your ears catch the faint sound of helicopter blades cutting through the air.\n", 2);
+		DisplayDelayText("You force your legs to move faster, adrenaline kicking in as the sound becomes unmistakable.\n", 2);
+		DisplayDelayText("Then, suddenly, a figure steps out from the shadows, blocking your path. The monster stands tall, its eyes locked on you.\n", 2);
+		DisplayDelayText("With no choice left, you prepare for the final battle. It's him or you. You must fight to survive.\n", 2);
 		system("PAUSE");
 		system("CLS");
 		LastFightScene(pPlayer, pMonster);
 	});
+	pHelicopterRescue.AddEvent(event1);
 }
 
 int main() {
@@ -410,7 +413,7 @@ int main() {
 	string playerName = "";
 	cout << "Enter your name: ";
 	cin >> playerName;
-	player = new Player(playerName, 10, 100, 0, 0, 10, 100); //Allocate memory for Player variable on the heap
+	player = new Player(playerName, 200, 10, 0, 0, 10, 100); //Allocate memory for Player variable on the heap
 	
 	player->AddItem(playerDefaultWeapon);	//Add the weapon the the inventory
 	player->getInventory().setCurrentItem(player->getInventory().SearchItem("Bare Hands")); //Set current item to the default weapon

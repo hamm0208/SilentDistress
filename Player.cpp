@@ -85,7 +85,7 @@ void Player::IncreaseHungerLevel(int pIncrementValue) {
     }
 };
 void Player::DecreaseHungerLevel(int pDecrementValue) {
-    if(pDecrementValue>= fCurrentThirstLevel){
+    if(pDecrementValue >= fCurrentHungerLevel){
         fCurrentHungerLevel = 0;
     }else{
         fCurrentHungerLevel -= pDecrementValue;

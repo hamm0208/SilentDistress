@@ -15,7 +15,9 @@ class Game{
 		List<Decision> fDecisions;
         TreeScene* fRootScene;
         TreeScene* fTreeTarget;
-        int fTurn;
+        int fTurnHunger;
+        int fTurnThirst;
+        int fTurnStamina;
         bool isGameOver;
         bool isWin;
     public:
