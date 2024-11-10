@@ -8,6 +8,7 @@
 #include <thread>
 #include <chrono>
 
+//Default constructor
 Player::Player():Entity(),  fInventory(100){
     fMaxHungerLevel = 0;
     fMaxThirstLevel = 0;
@@ -47,6 +48,8 @@ int Player::getMaxThirstLevel() {
 void Player::setMaxThirstLevel(int pThirstLevel) {
     fMaxThirstLevel = pThirstLevel;
 };
+
+//Getter and setter for fCurrentThirstLevel
 int Player::getCurrentThirstLevel() {
     return fCurrentThirstLevel;
 };
@@ -61,6 +64,8 @@ int Player::getMaxStaminaLevel() {
 void Player::setMaxStaminaLevel(int pStamina) {
     fMaxStaminaLevel = pStamina;
 };
+
+//Getter and setter for fCurrentStaminaLevel
 int Player::getCurrentStaminaLevel() {
     return fCurrentStaminaLevel;
 };
@@ -78,99 +83,107 @@ void Player::setIsResting(bool pIsResting) {
 
 //Increase and decreasing Hunger Level
 void Player::IncreaseHungerLevel(int pIncrementValue) {
-    if(fCurrentHungerLevel + pIncrementValue >= fMaxHungerLevel){
-        fCurrentHungerLevel = fMaxHungerLevel;
-    }else{
-        fCurrentHungerLevel += pIncrementValue;
+    if(fCurrentHungerLevel + pIncrementValue >= fMaxHungerLevel){   //If new hunger value is greater than the fMaxHungerLevel, then...
+        fCurrentHungerLevel = fMaxHungerLevel;                      //fCurrentHungerLevel has reached the max hunger level
+    }else{                                                          //else
+        fCurrentHungerLevel += pIncrementValue;                     //Increase fCurrentHungerLevel by the increment
     }
 };
-void Player::DecreaseHungerLevel(int pDecrementValue) {
-    if(pDecrementValue >= fCurrentHungerLevel){
-        fCurrentHungerLevel = 0;
-    }else{
-        fCurrentHungerLevel -= pDecrementValue;
-    }
-};
-
-//Increase and decreasing Thirst Level
-void Player::IncreaseThirstLevel(int pIncrementValue){
-    if(fCurrentThirstLevel + pIncrementValue >= fMaxThirstLevel){
-        fCurrentThirstLevel = fMaxThirstLevel;
-    }else{
-        fCurrentThirstLevel += pIncrementValue;
+void Player::DecreaseHungerLevel(int pDecrementValue) {     
+    // Check if decrement value is greater than or equal to the current hunger level
+    if (pDecrementValue >= fCurrentHungerLevel) {     
+        fCurrentHungerLevel = 0;  // Set current hunger level to 0 if decrement value is too large
+    } else {                                          
+        fCurrentHungerLevel -= pDecrementValue;  // Otherwise, decrease hunger level by the decrement value
     }
 };
 
+// Increase Thirst Level
+void Player::IncreaseThirstLevel(int pIncrementValue) {
+    // Check if thirst level after increment exceeds maximum thirst level
+    if (fCurrentThirstLevel + pIncrementValue >= fMaxThirstLevel) {
+        fCurrentThirstLevel = fMaxThirstLevel;  // Set thirst level to maximum if it exceeds the limit
+    } else {
+        fCurrentThirstLevel += pIncrementValue;  // Otherwise, increase thirst level by the increment value
+    }
+};
+
+// Decrease Thirst Level
 void Player::DecreaseThirstLevel(int pDecrementValue) {
-    if(pDecrementValue >= fCurrentThirstLevel){
-        fCurrentThirstLevel = 0;
-    }else{
-        fCurrentThirstLevel -= pDecrementValue;
+    // Check if decrement value is greater than or equal to the current thirst level
+    if (pDecrementValue >= fCurrentThirstLevel) {
+        fCurrentThirstLevel = 0;  // Set thirst level to 0 if decrement value is too large
+    } else {
+        fCurrentThirstLevel -= pDecrementValue;  // Otherwise, decrease thirst level by the decrement value
     }
 };
 
-//Increase and decreasing Stamina Level
+// Increase and decrease Stamina Level
 void Player::IncreaseStamina(int pIncrementValue) {
-    if(fCurrentStaminaLevel + pIncrementValue >= fMaxStaminaLevel){
-        fCurrentStaminaLevel = fMaxStaminaLevel;
-    }else{
-        fCurrentStaminaLevel += pIncrementValue;
+    // Check if stamina level after increment would exceed maximum stamina level
+    if (fCurrentStaminaLevel + pIncrementValue >= fMaxStaminaLevel) {
+        fCurrentStaminaLevel = fMaxStaminaLevel;  // Set stamina to max if it exceeds the limit
+    } else {
+        fCurrentStaminaLevel += pIncrementValue;  // Otherwise, increase by increment value
     }
 };
+
 void Player::DecreaseStamina(int pDecrementValue) {
-    if(fCurrentStaminaLevel != 0){
+    if (fCurrentStaminaLevel != 0) {  // Only decrease if stamina is not already zero
+        // Check if decrement value would reduce stamina below zero
         if (pDecrementValue >= fCurrentStaminaLevel) {
-            fCurrentStaminaLevel = 0;
-        }else{
-            fCurrentStaminaLevel -= pDecrementValue;
+            fCurrentStaminaLevel = 0;  // Set to zero if decrement is too large
+        } else {
+            fCurrentStaminaLevel -= pDecrementValue;  // Otherwise, decrease by decrement value
         }
     }
 };
 
-//Heal player
+// Heal player
 void Player::Heal(int pHealValue) {
-    if(getCurrentHealth() + pHealValue >= getHealth()){ //If new health is more than max health
-        this->setCurrentHealth(getHealth());            //Then set current health to max health
-    }else{
-        this->setCurrentHealth(getCurrentHealth() + pHealValue);  //Else set Current health to new health
+    // Check if heal amount would exceed max health
+    if (getCurrentHealth() + pHealValue >= getHealth()) {
+        this->setCurrentHealth(getHealth());  // Set current health to max if heal exceeds it
+    } else {
+        this->setCurrentHealth(getCurrentHealth() + pHealValue);  // Otherwise, increase by heal value
     }
 };
 
-//Adding item to Inventory
+// Add item to Inventory
 bool Player::AddItem(Item* pItem) {
-    return fInventory.AddItem(pItem);
+    return fInventory.AddItem(pItem);  // Attempt to add item to inventory and return success status
 };
 
-//Equip item to be used
+// Equip item to be used
 bool Player::EquipItem() {
-    ViewItems();
+    ViewItems();  // Display current items in inventory
     string item_Name = "";
     cout << "Name of item to equip (Case sensitive and leave no blank space): ";
     cin.clear();
     cin.ignore();
     getline(cin, item_Name);
+    
+    // Search for the item by name in the inventory
     Item* searched_Item = fInventory.SearchItem(item_Name);
-    if (searched_Item != (Item*)0) {
+    if (searched_Item != nullptr) {
         if (searched_Item == getCurrentItem()) {
-            cout << "You have already equipped " << getCurrentItem() << endl;
+            cout << "You have already equipped " << getCurrentItem()->getName() << endl;
             system("PAUSE");
-            return false;
-        }
-        else {
-            fInventory.setCurrentItem(searched_Item);
+            return false;  // Item is already equipped
+        } else {
+            fInventory.setCurrentItem(searched_Item);  // Set as current equipped item
             cout << "You have equipped " << searched_Item->getName() << "!" << endl;
             system("PAUSE");
             return true;
-
         }
-    }
-    else {
+    } else {
         cout << item_Name << " is not in your inventory" << endl;
         system("PAUSE");
-        return  false;
+        return false;  // Item not found in inventory
     }
 }
 
+// View list of items in Inventory
 void Player::ViewItems() {
     system("CLS");
     cout << "Viewing Inventory. ";
@@ -180,95 +193,107 @@ void Player::ViewItems() {
     cout << ". " << endl;
     this_thread::sleep_for(chrono::seconds(1));
     system("CLS");
-    fInventory.ViewInventoryItems();
+    fInventory.ViewInventoryItems();  // Call to display inventory items
 }
 
+// View detailed information of all items in Inventory
 void Player::ViewItemsDetails() {
-    fInventory.ViewInventoryDetails();
+    fInventory.ViewInventoryDetails();  // Call to display inventory item details
 }
 
+// View details of a specific item in Inventory
 void Player::ViewItemDetails(Item& pItem) {
-    fInventory.ViewItemDetails(&pItem);
+    fInventory.ViewItemDetails(&pItem);  // Display details for specified item
 }
 
+// Discard item from Inventory
 bool Player::DiscardItem() {
-    ViewItems();
+    ViewItems();  // Show items before selection
     string item_Name = "";
     cout << "Name of item to remove (Case sensitive and leave no blank space): ";
     cin.ignore();
     cin.clear();
     getline(cin, item_Name);
+    
+    // Search for item by name in inventory
     Item* searched_Item = fInventory.SearchItem(item_Name);
-    if (searched_Item != (Item*)0) {
-        fInventory.RemoveItem(searched_Item);
+    if (searched_Item != nullptr) {
+        fInventory.RemoveItem(searched_Item);  // Remove item from inventory
         system("PAUSE");
         return true;
-    }
-    else {
+    } else {
         cout << item_Name << " is not in your inventory" << endl;
         system("PAUSE");
-        return false;
+        return false;  // Item not found in inventory
     }
 };
+
+// Search for an item in Inventory
 void Player::SearchItems() {
     string item_Name = "";
     cout << "Name of item to search (Case sensitive and leave no blank space): ";
     cin.clear();
     getline(cin, item_Name);
+    
+    // Search for item by name in inventory
     Item* searched_Item = fInventory.SearchItem(item_Name);
-    if (searched_Item != (Item*)0) {
+    if (searched_Item != nullptr) {
         cout << searched_Item->getName() << " has been found in your inventory:" << endl;
-        searched_Item->Inspect();
-    }
-    else {
+        searched_Item->Inspect();  // Display item details
+    } else {
         cout << item_Name << " is not in your inventory" << endl;
     }
 };
+
+// Get currently equipped item
 Item* Player::getCurrentItem() {
-    return fInventory.getCurrentItem();
+    return fInventory.getCurrentItem();  // Return the current equipped item
 };
 
-bool Player::UseCurrentItem(){
-    if (Weapon* weapon = dynamic_cast<Weapon*>(getCurrentItem())) { //If fCurrentItem is type of Weapon, it will decrease the durability instead of the quantity
+// Use the currently equipped item
+bool Player::UseCurrentItem() {
+    // Check if the current item is a weapon
+    if (Weapon* weapon = dynamic_cast<Weapon*>(getCurrentItem())) {
         if (fInventory.UseCurrentItem(*this)) {
             return true;
-        }
-        else {
+        } else {
             cout << "You are unable to use " << weapon->getName() << " right now, because you are not fighting" << endl;
             system("PAUSE");
             return false;
         }
     }
+    // Check if the current item is a sleeping bag
     else if (SleepingBag* sleepingBag = dynamic_cast<SleepingBag*>(getCurrentItem())) {
         if (fInventory.UseCurrentItem(*this)) {
-            cout << "Your hunger level and thrist level has been incresed by 1 after your rest" << endl;
+            cout << "Your hunger level and thirst level has been increased by 1 after your rest" << endl;
             system("PAUSE");
             return true;
-        }
-        else {
+        } else {
             cout << "Your stamina level is full!" << endl;
             system("PAUSE");
             return false;
         }
-    }
-    else {
-        return fInventory.UseCurrentItem(*this);
+    } else {
+        return fInventory.UseCurrentItem(*this);  // Use item if it's neither weapon nor sleeping bag
     }
 };
 
+// Record decision made by player
 void Player::MakeDecision(Decision& pDecision) {
-    fDecisionsMade.pushBack(pDecision);
-    pDecision.applyEffect(*this);
+    fDecisionsMade.pushBack(pDecision);  // Add decision to list of decisions
+    pDecision.applyEffect(*this);  // Apply the effects of the decision on the player
 };
 
-void Player::ShowDecision(){
-    cout << "List of decisions made by " << getName();
+// Display list of decisions made by player
+void Player::ShowDecision() {
+    cout << "List of decisions made by " << getName() << endl;
     for (int x = 0; x < fDecisionsMade.size(); x++) {
         cout << x + 1 << ". " << fDecisionsMade[x].getName() << endl;
     }
 };
 
-void Player::ShowAttributes(){
+// Show player's attributes (health, hunger, thirst, etc.)
+void Player::ShowAttributes() {
     system("CLS");
     cout << "Viewing Attributes. ";
     this_thread::sleep_for(chrono::seconds(1));
@@ -277,10 +302,11 @@ void Player::ShowAttributes(){
     cout << ". " << endl;
     this_thread::sleep_for(chrono::seconds(1));
     system("CLS");
-    cout << "--------------------------------------------------\n" <<endl;
+    
+    cout << "--------------------------------------------------\n" << endl;
     cout << "Player's Details" << endl;
-    cout << "Name:\t\t " << getName() << endl;;
-    cout << "Attack Damage: \t " << getAttackDamage() << endl;
+    cout << "Name:\t\t " << getName() << endl;
+    cout << "Attack Damage:\t " << getAttackDamage() << endl;
     cout << "Max Health:\t " << getHealth() << endl;
     cout << "Current Health:\t " << getCurrentHealth() << endl;
     cout << "Hunger Level:\t " << getCurrentHungerLevel() << "/" << getMaxHungerLevel() << endl;
@@ -291,10 +317,12 @@ void Player::ShowAttributes(){
     system("PAUSE");
 }
 
+// Accessor for player's inventory
 Inventory& Player::getInventory() {
     return fInventory;
 };
 
+// Apply effects of hunger, thirst, stamina, etc., on the player
 void Player::ApplyEffects(Monster& pMonster) {
     if (getCurrentHealth() <= 0) {
         Entity::Die();
@@ -331,8 +359,7 @@ void Player::ApplyEffects(Monster& pMonster) {
             if (getIsFighting()) {
                 Entity::Die();
                 cout << "With the last of your strength drained, you collapse in battle... Darkness claims you." << endl;
-            }
-            else {
+            } else {
                 cout << "Exhaustion takes its toll. You collapse, forced into a deep slumber...\n";
                 cout << "As you sleep, hunger and thirst intensify, clawing at your insides. (+2 Hunger, +2 Thirst)" << endl;
                 setIsResting(true);

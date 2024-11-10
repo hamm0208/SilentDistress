@@ -10,6 +10,7 @@ Monster::Monster():Entity(){
 //Overloaded constructor
 Monster::Monster(string pName, int pAttackDamage, int pHealth, Weapon* pWeapon):Entity(pName, pAttackDamage, pHealth), fWeapon(pWeapon){};
 
+//Destructor
 Monster::~Monster() {
     if (fWeapon != nullptr) {
         delete fWeapon;
@@ -20,6 +21,7 @@ Weapon* Monster::getWeapon(){
     return fWeapon;
 }
 
+//Jumpscare 1
 void Monster::Jumpscare1(){
     sf::SoundBuffer buffer;
     if (!buffer.loadFromFile("jumpscare.wav")) {
@@ -58,6 +60,7 @@ _#/|##########/\######(   /\   )######/\##########|\#_
             break;
         }
         system("CLS");
+        //Interchang colour from red to green
         if (ChangingColour) {
             system("Color 0A");
         }
@@ -88,9 +91,10 @@ _#/|##########/\######(   /\   )######/\##########|\#_
     }
     system("PAUSE");
     system("CLS");
-    system("Color 0E");
+    system("Color 0E"); //Back to default colour
 }
 
+//Jumpscare 2
 void Monster::Jumpscare2() {
     sf::SoundBuffer buffer;
     if (!buffer.loadFromFile("jumpscare2.wav")) {
@@ -135,6 +139,7 @@ void Monster::Jumpscare2() {
     system("Color 0E");
 }
 
+//Ambush player
 void Monster::Ambush(Player& pPlayer) {
     // Determine the damage to inflict on the player
     int damage = 8 + (rand() % 5);  // Base damage + random up to 5
@@ -157,38 +162,42 @@ void Monster::Ambush(Player& pPlayer) {
     system("CLS");
 };
 
+//Distrub player's rest
 bool Monster::DisturbRest(Player& pPlayer, int pChance) {
-    srand(static_cast<unsigned int>(time(0)));
-    if (rand() % 100 < pChance) {
-        if (pPlayer.getfIsResting()) {
-            system("CLS");
-            cout << "\nAs you attempt to rest, you hear rustling in the bushes...\n";
-            this_thread::sleep_for(chrono::milliseconds(1500));
-            cout << "Suddenly, the shadows shift, and you sense a presence lurking nearby!\n";
-            this_thread::sleep_for(chrono::milliseconds(1500));
+    srand(static_cast<unsigned int>(time(0)));  // Seed the random number generator with the current time
 
-            // Determine if the disturbance leads to an ambush
-            int chanceOfDamage = rand() % 100;
-            if (chanceOfDamage < 40) {
+    if (rand() % 100 < pChance) {  // Check if the random chance triggers the monster's disturbance
+        if (pPlayer.getfIsResting()) {  // Proceed only if the player is currently resting
+            system("CLS");  // Clear the screen for dramatic effect
+            cout << "\nAs you attempt to rest, you hear rustling in the bushes...\n";
+            this_thread::sleep_for(chrono::milliseconds(1500));  // Pause for effect
+            cout << "Suddenly, the shadows shift, and you sense a presence lurking nearby!\n";
+            this_thread::sleep_for(chrono::milliseconds(1500));  // Pause again for suspense
+
+            // Determine if the disturbance escalates into an ambush
+            int chanceOfDamage = rand() % 100;  // Generate a random chance for taking damage
+            if (chanceOfDamage < 40) {  // 40% chance that the player is attacked
                 cout << "The creature lunges at you, catching you off guard!\n";
-                pPlayer.TakeDamage(10);
+                pPlayer.TakeDamage(10);  // Apply 10 damage to the player
                 cout << "You feel a sharp pain as it claws at you, causing 10 damage!\n";
             }
             else {
                 cout << "You manage to wake up just in time to see the monster retreat into the shadows.\n";
-                this_thread::sleep_for(chrono::milliseconds(1500));
+                this_thread::sleep_for(chrono::milliseconds(1500));  // Pause before the next line
             }
+
+            // Player loses 1 stamina point due to the disturbance
             cout << "You lose " << 1 << " stamina from the disturbance!" << endl;
-            pPlayer.DecreaseStamina(1);
-            pPlayer.setIsResting(false);
+            pPlayer.DecreaseStamina(1);  // Decrease stamina by 1
+            pPlayer.setIsResting(false);  // End the player's resting state
             cout << endl;
-            return true;
+            return true;  // Return true indicating a successful disturbance
         }
         else {
-            return false;
+            return false;  // Player was not resting, no disturbance occurs
         }
     }
     else {
-        return false;
+        return false;  // Disturbance chance did not trigger
     }
 }

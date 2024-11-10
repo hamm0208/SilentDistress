@@ -6,11 +6,14 @@
 class Event{
 private:
 	Entity* fEntity;					//Responsible entity
-    bool showEntity;
     function<void(Entity&)> fEvent; // Event function taking a Player reference
 public:
-    Event();
-    Event(Entity* entity, bool pShowEntity, function<void(Entity&)> pEvent = nullptr);
+    //Default constructor
+    Event(); 
+    //Overloaded constructor
+    Event(Entity* entity, function<void(Entity&)> pEvent = nullptr);
+    //Getter for fEntity
     Entity* getEntity();
+    //Play event (call the fEvent function)
     void playEvent();
 };

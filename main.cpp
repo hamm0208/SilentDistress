@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Player.h"
-#include "Inventory.h" //Finish commenting on the .cpp 
+#include "Inventory.h"
 #include "Food.h"
 #include "Drinks.h"
 #include "SleepingBag.h"
@@ -17,6 +17,7 @@ using namespace std;
 const int ALL_ITEM_COUNT = 14;
 const int ALL_SCENE_COUNT = 5;
 
+//Loading Plane crash sound
 void PlayPlaneCrashSound() {
 	sf::SoundBuffer buffer;
 	if (!buffer.loadFromFile("plane_crash.wav")) {
@@ -34,13 +35,14 @@ void PlayPlaneCrashSound() {
 	}
 }
 
+//Display Text with a delay
 void DisplayDelayText(string fDialogue, int seconds) {
 	cout << fDialogue << endl;
 	this_thread::sleep_for(chrono::seconds(seconds));
 }
 
+//Introduction to the game
 void Introduction() {
-	//Introduce the game
 	string GameTittle =
 		"|\t\t _____ _____ _      _____ _   _ _____              |\n"
 		"|\t\t/  ___|_   _| |    |  ___| \\ | |_   _|             |\n"
@@ -90,12 +92,14 @@ void Introduction() {
 	system("CLS");
 }
 
+//Fight Scene
 int FightScene(Player& pPlayer, Monster& pMonster) {
-	pPlayer.setIsFighting(true);
-	int choice = 0;
-	bool turnFinish = false;
+	pPlayer.setIsFighting(true);	//Player is now fighting
+	int choice = 0;					//What choice would the player do
+	bool turnFinish = false;		//Is turn finish
 	do {
 		system("CLS");
+		//Show Player's attributes
 		cout << "Your Attributes:";
 		cout << "\nHealth: \t" << pPlayer.getCurrentHealth() << "/" << pPlayer.getHealth() << endl;
 		cout << "Hunger: \t" << pPlayer.getCurrentHungerLevel() << "/" << pPlayer.getMaxHungerLevel() << endl;
@@ -109,6 +113,8 @@ int FightScene(Player& pPlayer, Monster& pMonster) {
 			cout << "Equiped Item: \t" << pPlayer.getCurrentItem()->getName() << endl;
 		}
 		cout << endl;
+
+		//Show monster's attributes
 		cout << pMonster.getName() << "'s Attributes:";
 		cout << "\nHealth: \t" << pMonster.getCurrentHealth() << "/" << pMonster.getHealth() << endl;
 		cout << "Damage: \t" << pMonster.getAttackDamage() + pMonster.getWeapon()->getDamage() << endl; 
@@ -117,45 +123,47 @@ int FightScene(Player& pPlayer, Monster& pMonster) {
 		cout << "Is Badass?: \tYes" << endl;
 
 		cout << "\nWhat will you do?" << endl;
-		cout << "1. Use your item" << endl;  // Add "Give up" option
-		cout << "2. Equip an item" << endl;  // Add "Give up" option
-		cout << "3. Give up" << endl;  // Add "Give up" option
+		cout << "1. Use your item" << endl;  	//Use item
+		cout << "2. Equip an item" << endl;  	//Equip item
+		cout << "3. Give up" << endl;  			//Give up
 		cout << "Choice: ";
 		cin >> choice;
 
-		// Check if the choice is invalid (neither 1 nor 2)
-		if (choice <= 0 && choice >= 3) {
-			cout << "Invalid choice! Please select 1 or 2." << endl;
+		// Check if the choice is invalid (neither 1 or )
+		if (choice < 1 || choice > 3) {
+			cout << "Invalid choice! Please select 1 - 3." << endl;
 		}
-		if (choice == 1) {
-			if (pPlayer.UseCurrentItem()) {
+		if (choice == 1) {	//Use item
+			if (pPlayer.UseCurrentItem()) {	//If succesfully used the item, then...
 				if (Weapon* weapon = dynamic_cast<Weapon*>(pPlayer.getCurrentItem())) {		//If current item is a weapon (it will increase the player's attack damage)
 					pMonster.TakeDamage(pPlayer.getAttackDamage());
 					string message = "\nYou have dealt " + to_string(pPlayer.getAttackDamage()) + " to " + pMonster.getName() + "!\n";
 					DisplayDelayText(message, 1);
 					pPlayer.setAttackDamage(pPlayer.getAttackDamage() - weapon->getDamage()); //Decrease the damage back down to the original damage
 				}
-				turnFinish = true;
+				turnFinish = true;	//Finish turn
 			}
 		}
-		else if (choice == 2) {
-			pPlayer.EquipItem();
+		else if (choice == 2) { 	//Equip item
+			pPlayer.EquipItem();	//Cal player's EquipItem method
 		}
-		else if (choice == 3) {
+		else if (choice == 3) {		//Player give up
 			turnFinish = true;
 			return -1; //-1 means the player gave up
 		}
 	} while (!turnFinish);
 	return 0; //0 player's turn finishred
-	pPlayer.setIsFighting(false);
+	pPlayer.setIsFighting(false);	//Player stop fighting
 };
 
 void VillageFightScene(Player* pPlayer, Monster* pMonster) {
 	int result = 0;
 	do {
+		//If player's health reaches 0, means he lose
 		if (pPlayer->getCurrentHealth() == 0) {
 			break;
 		}
+		//In the village scene the monster will retreat when his Health reaches 170 or below
 		if (pMonster->getCurrentHealth() <= 170) {
 			system("CLS");
 			DisplayDelayText("Suddenly, the monster lets out a guttural roar, its massive form staggering back!\n", 2);
@@ -163,7 +171,10 @@ void VillageFightScene(Player* pPlayer, Monster* pMonster) {
 			DisplayDelayText("An uneasy chill settles over you. You know, deep down, that this creature will be back.\n", 2);
 			break;
 		}
+		//Assign the result from FightScene fucntion to result
 		result = FightScene(*pPlayer, *pMonster);
+
+		//If result is not -1, then the monster will deal damage to the player
 		if (result == 0) {
 			string message = pMonster->getName() + " has dealt " + to_string(pMonster->getAttackDamage() + pMonster->getWeapon()->getDamage()) + " to you!";
 			DisplayDelayText(message, 1);
@@ -171,8 +182,10 @@ void VillageFightScene(Player* pPlayer, Monster* pMonster) {
 			system("PAUSE");
 		}
 	} while (result != -1);
-
+	//Player stop fighting when the scene is over
 	pPlayer->setIsFighting(false);
+
+	//If result is -1, ...
 	if (result == -1) {
 		system("CLS");
 		DisplayDelayText("Outmatched, you flee to the village, heart pounding.\n", 2);
@@ -198,7 +211,7 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 	pCrashSiteScene.AddLoot(AllItems[4]);  // Survival Knife
 	pCrashSiteScene.AddLoot(AllItems[8]);  // Sleeping Bag
 	//Events for scene1
-	Event* event1 = new Event(pPlayer, false, [pPlayer](Entity& e) {
+	Event* event1 = new Event(pPlayer, [pPlayer](Entity& e) {
 		DisplayDelayText("You board the plane, settle into your seat, and stow your bag, feeling both excitement and fatigue.\n"
                      "As you buckle up, you sigh in relief, home is just a flight away.\n", 1);
 		DisplayDelayText("The plane's engines roar as it ascends. You gaze out the window, watching the city shrink below.\n", 1);
@@ -221,7 +234,8 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 		system("CLS");
 
 	});
-	Event* event2 = new Event(pPlayer, false, [pPlayer](Entity& e) {
+	//2nd event of scene 2
+	Event* event2 = new Event(pPlayer, [pPlayer](Entity& e) {
 		DisplayDelayText("Your head aches as you wake, smoke and fire crackling around you.\n"
                      "The plane is wrecked, debris everywhere.\n", 2);
 		DisplayDelayText("The jungle is still, then a deep growl echoes. Something huge moves nearby.\n", 2);
@@ -242,6 +256,7 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 		system("PAUSE");
 		system("CLS");
 	});
+	//Add events to the scene
 	pCrashSiteScene.AddEvent(event1);
 	pCrashSiteScene.AddEvent(event2);
 }
@@ -252,7 +267,8 @@ void InitScene2(Scene& pJungleClearingScene, Player* pPlayer, Monster* pMonster,
 	pJungleClearingScene.AddLoot(AllItems[9]); // Dull Machete
 	pJungleClearingScene.AddLoot(AllItems[7]);  // Wild Mint
 	pJungleClearingScene.AddLoot(AllItems[7]);  // Wild Mint
-	Event* event1 = new Event(pPlayer, false, [pMonster](Entity& e) {
+	//Scene2's event
+	Event* event1 = new Event(pPlayer, [pMonster](Entity& e) {
 		DisplayDelayText("Suddenly, out of the shadows, the creature emerges with a loud, terrifying roar!", 1);
 		pMonster->Jumpscare1();
 		DisplayDelayText("Panic sets in as you sprint into the jungle, desperate to escape.\n", 2);
@@ -278,7 +294,8 @@ void InitScene3(Scene& pVillage, Player* pPlayer, Monster* pMonster, Item* AllIt
 	pVillage.AddLoot(AllItems[5]);  // Axe
 	pVillage.AddLoot(AllItems[12]); // Hammock
 	pVillage.AddLoot(AllItems[6]);  // First Aid Kit
-	Event* event1 = new Event(pPlayer, false, [pMonster, pPlayer](Entity& e) {
+	//Scene3's event
+	Event* event1 = new Event(pPlayer,[pMonster, pPlayer](Entity& e) {
 		DisplayDelayText("After another long trek through the jungle, you finally stumble upon an abandoned village.\n", 2);
 		DisplayDelayText("It's eerily quiet, but the hairs on the back of your neck stand on end.\n", 2);
 		DisplayDelayText("Something feels wrong here.\n", 2);
@@ -296,8 +313,9 @@ void InitScene3(Scene& pVillage, Player* pPlayer, Monster* pMonster, Item* AllIt
 				cout << "\nInvalid choice. Please enter 1 to fight or 2 to run." << endl;
 			}
 		}
+		//If player decide to fight...
 		if (choice == 1) {
-			VillageFightScene(pPlayer, pMonster);
+			VillageFightScene(pPlayer, pMonster); //Call FightScene method
 		}else {
 			DisplayDelayText("You dash deeper into the village, heart racing.\n", 2);
 			DisplayDelayText("Old houses and twisted paths blur as you run, the monster close behind.\n", 2);
@@ -310,6 +328,7 @@ void InitScene3(Scene& pVillage, Player* pPlayer, Monster* pMonster, Item* AllIt
 			system("CLS");
 		}
 	});
+	//Add events to Scene3
 	pVillage.AddEvent(event1);
 }
 void InitScene4(Scene& pDeepJungle, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
@@ -317,7 +336,8 @@ void InitScene4(Scene& pDeepJungle, Player* pPlayer, Monster* pMonster, Item* Al
 	pDeepJungle.AddLoot(AllItems[11]);	// Bamboo Water
 	pDeepJungle.AddLoot(AllItems[3]);	// Bananas
 	pDeepJungle.AddLoot(AllItems[10]);	// Jungle Roots
-	Event* event1 = new Event(pPlayer, false, [pMonster, pPlayer](Entity& e) {
+	//Scene4's event
+	Event* event1 = new Event(pPlayer, [pMonster, pPlayer](Entity& e) {
 		pMonster->Jumpscare2();
 		system("CLS");
 		DisplayDelayText("The jungle around you seems silent.\nYou see little movement as you make your way through the dense foliage,\n", 2);
@@ -328,15 +348,19 @@ void InitScene4(Scene& pDeepJungle, Player* pPlayer, Monster* pMonster, Item* Al
 		system("PAUSE");
 		system("CLS");
 	});
+	//Adding event1 to scene4
 	pDeepJungle.AddEvent(event1);
 }
 
+//Last Fight Scene
 void LastFightScene(Player* pPlayer, Monster* pMonster) {
 	int result = 0;
 	do {
+		//When player dies
 		if (pPlayer->getCurrentHealth() == 0) {
 			break;
 		}
+		//When monster dies
 		if (pMonster->getCurrentHealth() == 0) {
 			system("CLS");
 			DisplayDelayText("The monster lets out a pained roar, staggering back from the fight!\n", 2);
@@ -346,6 +370,7 @@ void LastFightScene(Player* pPlayer, Monster* pMonster) {
 			system("PAUSE");
 			break;
 		}
+		//Call FightScene function
 		result = FightScene(*pPlayer, *pMonster);
 		if (result == 0) {
 			string message = pMonster->getName() + " has dealt " + to_string(pMonster->getAttackDamage() + pMonster->getWeapon()->getDamage()) + " to you!";
@@ -353,7 +378,8 @@ void LastFightScene(Player* pPlayer, Monster* pMonster) {
 			pPlayer->TakeDamage(pMonster->getAttackDamage() + pMonster->getWeapon()->getDamage());
 			system("PAUSE");
 		}
-	} while (result != -1);
+	} while (result != -1 ||  pPlayer->getCurrentHealth() == 0);
+	//Player stop fighting
 	pPlayer->setIsFighting(false);
 	if (result == -1) {
 		system("CLS");
@@ -368,8 +394,11 @@ void LastFightScene(Player* pPlayer, Monster* pMonster) {
 		pPlayer->Die();
 	}
 }
+
+//Scene5
 void InitScene5(Scene& pHelicopterRescue, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
-	Event* event1 = new Event(pPlayer, false, [pPlayer, pMonster](Entity& e) {
+	//Scene5's event
+	Event* event1 = new Event(pPlayer, [pPlayer, pMonster](Entity& e) {
 		DisplayDelayText("As you push through the dense jungle, your ears catch the faint sound of helicopter blades cutting through the air.\n", 2);
 		DisplayDelayText("You force your legs to move faster, adrenaline kicking in as the sound becomes unmistakable.\n", 2);
 		DisplayDelayText("Then, suddenly, a figure steps out from the shadows, blocking your path. The monster stands tall, its eyes locked on you.\n", 2);
@@ -378,6 +407,7 @@ void InitScene5(Scene& pHelicopterRescue, Player* pPlayer, Monster* pMonster, It
 		system("CLS");
 		LastFightScene(pPlayer, pMonster);
 	});
+	//Add event to Scene5
 	pHelicopterRescue.AddEvent(event1);
 }
 
@@ -429,11 +459,11 @@ int main() {
 	   new Scene("Deep Jungle", "The jungle grows darker and more foreboding.", 1),
 	   new Scene("Edge of the Island", "You see the rescue helicopter just ahead, its blades chopping through the air. But as you approach, the monster emerges from the jungle.", 3),
 	};
-	InitScene1(*AllScenes[0], player, dreadstalker, AllItems);	//Adding Scene1's event
-	InitScene2(*AllScenes[1], player, dreadstalker, AllItems);	//Adding Scene1's event
-	InitScene3(*AllScenes[2], player, dreadstalker, AllItems);	//Adding Scene1's event
-	InitScene4(*AllScenes[3], player, dreadstalker, AllItems);
-	InitScene5(*AllScenes[4], player, dreadstalker, AllItems);
+	InitScene1(*AllScenes[0], player, dreadstalker, AllItems);	//Initialise Scene1
+	InitScene2(*AllScenes[1], player, dreadstalker, AllItems);	//Initialise Scene2
+	InitScene3(*AllScenes[2], player, dreadstalker, AllItems);	//Initialise Scene3
+	InitScene4(*AllScenes[3], player, dreadstalker, AllItems);	//Initialise Scene4
+	InitScene5(*AllScenes[4], player, dreadstalker, AllItems);	//Initialise Scene5
 	//Attach all the scene to the binary tree of scene in newGame
 	BTree<Scene*>* rootScene = new BTree<Scene*>(AllScenes[0]); //Root Scene of the game
 	newGame.setRootScene(rootScene);							//Setting root scene

@@ -73,7 +73,7 @@ class Player :public Entity{
         void SearchItems();                             //Search an item in inventory
         Item* getCurrentItem();                         //Get currently equiped item
         bool UseCurrentItem();                          //Use currently equiped item
-        void MakeDecision(Decision& pDecision);
-        void ShowDecision();
-        void ApplyEffects(Monster& pMonster);
+        void MakeDecision(Decision& pDecision);         //Player makes a decision
+        void ShowDecision();                            //Player show all the decisions made
+        void ApplyEffects(Monster& pMonster);           //Check for player's attributes and apply it's effect
 };
