@@ -6,7 +6,6 @@ class SinglyLinkedNode {
 public:
     typedef SinglyLinkedNode<T> Node;
     static Node NIL;  // Static sentinel node
-
 private:
     T value;                     // Value held by the node
     Node* next;              // Pointer to the next node

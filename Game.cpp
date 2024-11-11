@@ -463,6 +463,7 @@ void Game::Play() {
     }
 };
 
+//Save Player's Decision
 void Game::SavePlayerDecisions() {
     // Open a file to save decisions
     ofstream outFile("PlayerDecisions.txt");
@@ -471,14 +472,15 @@ void Game::SavePlayerDecisions() {
         return;
     }
     outFile << fPlayer->getName() << "'s Decisions Log:\n\n";
-    if (isWin) {
-        outFile << "Status: Win\n\n";
+    if (isWin) { //If Win then...
+        outFile << "Status: Win\n\n"; //Show Status: Win
     }
-    if (isGameOver) {
-        outFile << "Status: Lose\n\n";
+    if (isGameOver) { //If Game Over then...
+        outFile << "Status: Lose\n\n"; //Show Status: Lose
     }
-    SinglyLinkedList<Decision>* decisions = fPlayer->getDecisionsMade(); // Assuming this method exists
-    for (SinglyLinkedNodeIterator<Decision> iter = decisions->getIteratorHead(); iter != iter.end(); ++iter) {
+    SinglyLinkedList<Decision>* decisions = fPlayer->getDecisionsMade(); //fPLayer's Made Decision
+    //Write the Decisions Made into PlayerDecisions.txt
+    for (SinglyLinkedNodeIterator<Decision> iter = decisions->getIteratorHead(); iter != iter.end(); ++iter) { //Iterate through the SLL
         Decision currentDecision = *iter;
         outFile << "Decision: " << currentDecision.getName() << "\n";
         outFile << "Description: " << currentDecision.getDescription() << "\n\n";
@@ -488,6 +490,7 @@ void Game::SavePlayerDecisions() {
     cout << "All decisions have been saved to PlayerDecisions.txt" << endl;
 }
 
+//Load Player's previous decisions
 void Game::LoadPlayerDecisions() {
     system("CLS");
     ifstream inFile("PlayerDecisions.txt");
@@ -506,13 +509,11 @@ void Game::LoadPlayerDecisions() {
         return;
     }
     inFile.seekg(0, ios::beg);  // Move back to the start of the file
-
     string line;
     // Read each line from the file and display it
     while (getline(inFile, line)) {
         cout << line << endl;
     }
-
     inFile.close();
 }
 Game::~Game() {

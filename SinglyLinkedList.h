@@ -5,14 +5,13 @@ template <class T>
 class SinglyLinkedList{
     private:
         typedef SinglyLinkedNode<T> Node;
-        Node* last;
-		Node* head;
-		int count;
+        Node* last;	//Pointer to last node
+		Node* head;	//Pointer to head node
+		int count;	//Total count of nodes in the list
     public:
 		typedef SinglyLinkedNodeIterator<T> Iterator;
 		SinglyLinkedList() : last(&(Node::NIL)), head(&(Node::NIL)), count(0) {}; //Empty list, head and tail points to the sentinel node
 		SinglyLinkedList(Node* firstNode) : last(firstNode), head(firstNode), count(1) {}; //List initailise with 1 Node, Head and tail points to the node, count is now 1
-
         //Destructor
         ~SinglyLinkedList(){
 			Iterator it = getIteratorHead();
@@ -76,9 +75,9 @@ class SinglyLinkedList{
 				T value = last->getValue();                 //Value of the last node
                 Node* toDelete = last;                      //Node to delete
                 if(head == last){                           //If there's only 1 node in the list
-                    delete toDelete;
-                    head = &(Node::NIL);
-                    last = &(Node::NIL);
+                    delete toDelete;						//Delete node
+                    head = &(Node::NIL);					//Head is now the sentinel NIL
+                    last = &(Node::NIL);					//Tail is now the sentinel NIL
                 }else{
                     Node* ptr = head;                       
                     while (ptr->getNext() != last) {        //If ptr's next points to the last node, then that is the new last node

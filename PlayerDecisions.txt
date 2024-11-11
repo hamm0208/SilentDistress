@@ -1,6 +1,9 @@
-bv's Decisions Log:
+bec's Decisions Log:
 
 Status: Lose
+
+Decision: Search for loot
+Description: Search the area for loot.
 
 Decision: Exit Game
 Description: Exit the game

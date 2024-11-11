@@ -1,9 +1,7 @@
 #pragma once
 #include "SinglyLinkedNode.h"
-
 template <class T>
-class SinglyLinkedNodeIterator
-{
+class SinglyLinkedNodeIterator{
     private:
 		typedef SinglyLinkedNode<T> Node;
 		Node* current;
@@ -41,12 +39,10 @@ class SinglyLinkedNodeIterator
         Node* getCurrent() {
 			return current;
 		}
-
         //Return the current SinglyLinkedNodeIterator 
 		SinglyLinkedNodeIterator begin() {
 			return SinglyLinkedNodeIterator(current);
 		}
-
         //Return the sentinel node SinglyLinkedIterator
 		SinglyLinkedNodeIterator end() {
 			return SinglyLinkedNodeIterator(Node::NIL);	
