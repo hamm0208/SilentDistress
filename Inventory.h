@@ -3,7 +3,7 @@
 
 class Inventory{
 	private:
-		ItemHashTable<int> fInventory; 	//HashTable of Inventory (Item , Int), Int = Quantity of that Item in the inventory
+		ItemHashTable<int> fInventory; 	//HashTable of Inventory (Item* , Int), Int = Quantity of that Item in the inventory
 		int fMaxCapacity;				//Max capacity of the inventory
 		int fCurrentCapacity;			//Current capacity of inventory
 		Item* fCurrentItem;				//Current equiped item

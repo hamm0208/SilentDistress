@@ -33,5 +33,3 @@ class Item{
         void setIsConsumable(bool pIsConsumable);
 
 };
-
-

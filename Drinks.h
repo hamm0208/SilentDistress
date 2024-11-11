@@ -7,8 +7,8 @@ class Drinks :public Item{
         Drinks();   //Default construcotr
         Drinks(string pName, string pDescription, int pWeight, bool pIsConsumable, int pHydrationValue);  //Overloaded constructor
         bool Use(Player& pPlayer) override; //Use drinks to lower thirst level
-        void Inspect(); //Inspect drink item
-        Item* clone() const; //Clone drink item
+        void Inspect() override; //Inspect drink item
+        Item* clone() const override; //Clone drink item
         
         //Getter and setter for fHydrationValue
         int getHydrationValue();

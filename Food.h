@@ -11,8 +11,8 @@ class Food:public Item{
         Food(); //Constructor
         Food(string pName, string pDescription, int pWeight, bool pIsConsumable, int pNutrition,bool pIsCooked, bool pIsCookable, int pHealthRestorationValue, int pStaminaValue); //Overloaded constructor
         bool Use(Player& pPlayer) override; //Use Food Item
-        void Inspect(); //Inspect Food Item
-        Item* clone() const; //Clone Food Item
+        void Inspect() override; //Inspect Food Item
+        Item* clone() const override; //Clone Food Item
         
         //Getter and setter for fNutrition
         int getNutrition();

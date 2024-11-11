@@ -404,7 +404,7 @@ void Game::PlayerPickUpLoot() {
             index--;  // Adjust for zero-based indexing
 
             // Validate the player's input for a valid index
-            if (index < 0 || index >= currentScene->getLoot().size() + 1) {
+            if (index < 0 || index >= currentScene->getLoot().size()) {
                 cout << "Invalid choice!" << endl;
                 cout << endl;
             }

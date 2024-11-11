@@ -5,7 +5,7 @@
 Inventory::Inventory(int pCapacity) : fInventory(BUCKET_SIZE), fMaxCapacity(pCapacity), fCurrentItem(nullptr), fCurrentCapacity(0) {
 }
 
-//Add  new item to inventory
+//Add new item to inventory
 bool Inventory::AddItem(Item* pItem) {
 	int item_Weight = pItem->getWeight(); //Item's weight
 	if (!IsFull()) {
@@ -124,7 +124,7 @@ void Inventory::ViewInventoryItems() {
 		while (node != &(HNode::NIL)) {				//While HNode is not the sentinel node, display item details
 			isEmpty = false;
 			count++;
-			cout << count << ". " << node->getValue() <<" " << node->getKey()->getName() << ", Total Weight: " << (node->getKey()->getWeight() * node->getValue()) << endl;
+			cout << count << ". "  << node->getKey()->getName() << "(x" << node->getValue() << ")" << ", Total Weight : " << (node->getKey()->getWeight() * node->getValue()) << endl;
 			node = node->getNext();					//Move to next node
 		}
 	}

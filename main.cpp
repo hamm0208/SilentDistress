@@ -108,7 +108,7 @@ bool Introduction(Game& pGame) {
 		case 1:
 			cout << "\nStarting a new game...\n";
 			exitMenu = true;  // Exit menu loop and start the game
-			RulesOfTheGame();
+			//RulesOfTheGame();
 			return true;  // Proceed to the game
 			break;
 		case 2:
@@ -248,6 +248,7 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 	pCrashSiteScene.AddLoot(AllItems[6]);  // First Aid Kit
 	pCrashSiteScene.AddLoot(AllItems[4]);  // Survival Knife
 	pCrashSiteScene.AddLoot(AllItems[8]);  // Sleeping Bag
+	/*
 	//Events for scene1
 	Event* event1 = new Event(pPlayer, [pPlayer](Entity& e) {
 		system("CLS");
@@ -298,6 +299,7 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 	//Add events to the scene
 	pCrashSiteScene.AddEvent(event1);
 	pCrashSiteScene.AddEvent(event2);
+	*/
 }
 void InitScene2(Scene& pJungleClearingScene, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
 	pJungleClearingScene.AddLoot(AllItems[11]); // Bamboo Water
@@ -455,9 +457,9 @@ int main() {
 	system("Color 0E");
 
 	//Initialise Variable
+	Player* player;
 	Weapon* playerDefaultWeapon = new Weapon("Bare Hands", "Good Ole Bare Knuckles", 0, false, 1, 1000); //Default player weapon
 	Weapon* monsterDefaultWeapon = new Weapon("Claw of the Damned", "A razor-sharp claw imbued with dark energy. It causes deep wounds and instills fear in its victims.", 10, false, 15, 100); //Default monster weapon
-	Player* player;
 	Monster* dreadstalker = new Monster("Dreadstalker", 20, 200, monsterDefaultWeapon); //Allocate memory for Monster variable on the heap
 	//All Items of the game
 	Item* AllItems[ALL_ITEM_COUNT] = {
@@ -539,5 +541,6 @@ int main() {
 	}
 	delete player;
 	delete dreadstalker;
+	delete playerDefaultWeapon;
 	return 0;
 }

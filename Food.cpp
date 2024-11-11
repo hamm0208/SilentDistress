@@ -32,7 +32,7 @@ bool Food::Use(Player& pPlayer){
 }
 //Display Food's attributes
 void Food::Inspect(){
-    Item::Inspect();
+    Item::Inspect(); //Call the base class's Inspect() method
     cout << "Nutrition:\t\t\t" << fNutrition << endl;
     cout << "Is Cookable:\t\t\t" << (fIsCookable ? "Yes" : "No") << endl;
     cout << "Health Restoration Value:\t" << fHealthRestorationValue << endl;
@@ -41,7 +41,7 @@ void Food::Inspect(){
 
 //Clone new Food
 Item* Food::clone() const {
-    return new Food(*this); // Use the copy constructor of Weapon
+    return new Food(*this); // Use the copy constructor of Food
 }
 
 //Getter and setter for fNutrition
