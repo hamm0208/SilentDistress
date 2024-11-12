@@ -1,7 +1,6 @@
 #include "DoublyLinkedNode.h"
 #include "DoublyLinkedNodeIterator.h"
 #pragma once
-
 template<class T>
 class List
 {
@@ -147,4 +146,3 @@ class List
 			return Iterator(head);
 		}
 };
-

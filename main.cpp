@@ -113,7 +113,7 @@ bool Introduction(Game& pGame) {
 			break;
 		case 2:
 			cout << "\nLoading previous decisions...\n";
-			pGame.LoadPlayerDecisions();
+			pGame.LoadPlayerMenuDecisions();
 			system("PAUSE");
 			break;
 		case 3:

@@ -38,6 +38,11 @@ class Game{
         void setRootScene(TreeScene* pNewRoot);
         void setIsGameOver(bool pFlag);
 
+        void RemoveDecisions();                         //Remove all decisions from fDecisions
+        void LoadPlayerMenuDecision();                  //Load Player menu decisions
+        void LoadInventoryMenuDecision();               //Load Inventory menu decisions
+        void LoadLootMenuDecision();                    //Load Loot Menu Decisions
+        void LoadDiscoverMenuDecision();                //Load Discover Menu Decisions
         void IncreaseTurn();                            //Increase turn
         void AddDecisions(Decision& pDecision);         //Add decisions into the Game
         void ShowDecisions(List<Decision>& pDecision);  //Show decisions available in the game
@@ -60,5 +65,5 @@ class Game{
         void CheckReduceResources();                    //Reduce player's resources based on turns
         void Play();                                    //Start the game
         void SavePlayerDecisions();                     //Save the decisions made by player into a file
-        void LoadPlayerDecisions();                     //Load the decisions made by player
+        void LoadPlayerMenuDecisions();                     //Load the decisions made by player
 };

@@ -39,10 +39,6 @@ Queue<Event*> Scene::getEvent() {
     return fEvents;
 };
 
-//Adding items to fLoot
-void Scene::AddLoot(Item* pLoot){
-    fLoot.pushBack(pLoot);
-};
 
 //Queueing event to fEvents
 void Scene::AddEvent(Event* pEvent) {
@@ -67,6 +63,11 @@ bool Scene::IsEventEmpty() {
     return fEvents.IsEmpty();  // Returns true if the event list (fEvents) is empty, otherwise false
 }
 
+//Adding items to fLoot
+void Scene::AddLoot(Item* pLoot){
+    fLoot.pushBack(pLoot);
+};
+
 // Displays all the loot items in the current scene
 void Scene::ShowLoots() {
     int x = 1;  // Initializes a counter to number the loot items
@@ -82,9 +83,10 @@ void Scene::ShowLootsDetails(){
     bool isEmpty = false;							//Is inventory empty flag
     cout << "------------------------------------------------------------------" << endl;
     for (auto it = fLoot.getIteratorHead(); it != it.end(); ++it) {
-        Item* currentItem = *it;
+        Item* currentItem = *it;    //Get current item
+        //Details of item
         cout << "Details of " << currentItem->getName() << endl;
-        currentItem->Inspect();
+        currentItem->Inspect(); //Call item's inspect method
         cout << "Total Weight:\t\t\t" << currentItem->getWeight() << "\n" << endl;
         cout << "==================================================================" << endl;
 
