@@ -359,6 +359,7 @@ void InitScene3(Scene& pVillage, Player* pPlayer, Monster* pMonster, Item* AllIt
 		if (choice == 1) {
 			VillageFightScene(pPlayer, pMonster); //Call FightScene method
 		}else {
+			system("CLS");
 			DisplayDelayText("You dash deeper into the village, heart racing.\n", 2);
 			DisplayDelayText("Old houses and twisted paths blur as you run, the monster close behind.\n", 2);
 			DisplayDelayText("Ahead, an abandoned house looms with its door ajar. You dive in, hiding in the shadows.\n", 2);

@@ -64,13 +64,15 @@ void Monster::selectRandomCombo() {
 }
 
 void Monster::executeCombo(Player& pPlayer) {
+    int totalDamage = 0;
     while (!fComboAttack.IsEmpty()) {
         Attacks action = fComboAttack.Pop();
-        cout << "Monster performs: " << action.name << " with damage: " << action.damage << endl;
+        cout << getName() << " performs: " << action.name << " with damage: " << action.damage << endl;
         pPlayer.TakeDamage(action.damage);
         this_thread::sleep_for(chrono::milliseconds(1000));
-
+        totalDamage+=action.damage;
     }
+    cout << getName() << " has dealt " << to_string(totalDamage);
 }
 
 //Jumpscare 1

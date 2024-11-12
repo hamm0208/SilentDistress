@@ -1,5 +1,5 @@
 #pragma once
-#include "List.h"  // Assuming List<T> is a linked list implementation that supports popFront, pushBack, size, etc.
+#include "List.h"
 
 template<class T>
 class Queue {

@@ -39,7 +39,6 @@ Queue<Event*> Scene::getEvent() {
     return fEvents;
 };
 
-
 //Queueing event to fEvents
 void Scene::AddEvent(Event* pEvent) {
     fEvents.queue(pEvent);
@@ -71,7 +70,7 @@ void Scene::AddLoot(Item* pLoot){
 // Displays all the loot items in the current scene
 void Scene::ShowLoots() {
     int x = 1;  // Initializes a counter to number the loot items
-    for (auto it = fLoot.getIteratorHead(); it != it.end(); ++it) {  // Iterates through the loot list using an iterator
+    for (DoublyLinkedNodeIterator<Item*> it = fLoot.getIteratorHead(); it != it.end(); ++it) {  // Iterates through the loot list using an iterator
         Item* currentItem = *it;  // Dereferences the iterator to get the current item
         cout << x << ". " << currentItem->getName() << endl;  // Prints the loot item number and its name
         x++;  // Increments the counter for the next loot item
@@ -82,7 +81,7 @@ void Scene::ShowLootsDetails(){
     system("CLS");
     bool isEmpty = false;							//Is inventory empty flag
     cout << "------------------------------------------------------------------" << endl;
-    for (auto it = fLoot.getIteratorHead(); it != it.end(); ++it) {
+    for (DoublyLinkedNodeIterator<Item*> it = fLoot.getIteratorHead(); it != it.end(); ++it) {
         Item* currentItem = *it;    //Get current item
         //Details of item
         cout << "Details of " << currentItem->getName() << endl;

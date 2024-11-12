@@ -3,8 +3,9 @@
 #include <fstream>
 typedef BTree<Scene*> TreeScene;
 
-Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPlayer(pPlayer),fMonster(pMonster), fTurnHunger(0), fTurnStamina(0), fTurnThirst(0), isGameOver(false) {
-    fTreeTarget = fRootScene;
+//Constructor
+Game::Game(Player* pPlayer, Monster* pMonster): fRootScene(&TreeScene::NIL), fPlayer(pPlayer),fMonster(pMonster), fTurnHunger(0), fTurnStamina(0), fTurnThirst(0), isGameOver(false), isWin(false) {
+    fTreeTarget = fRootScene; //Set fTreeTarget to fRootScene (in this case it will be the sentinel node)
 };
 
 //Getter for fPlayer
@@ -110,6 +111,7 @@ void Game::LoadDiscoverMenuDecision() {
     RemoveDecisions(); //Remove all decisions
     //Check if left route is available
     if (!fTreeTarget->left().isEmpty()) {
+        //Add move to left route option
         fDecisions.pushBack(Decision("Move left to " + fTreeTarget->left().key()->getName(),
             "Move to the left route to discover " + fTreeTarget->left().key()->getName(),
             [this](Entity& fEntity) { PlayerMoveLeft(); }));
@@ -117,6 +119,7 @@ void Game::LoadDiscoverMenuDecision() {
 
     // Check if right route is available
     if (!fTreeTarget->right().isEmpty()) {
+        //Add move to right route option
         fDecisions.pushBack(Decision("Move right to " + fTreeTarget->right().key()->getName(),
             "Move to the right route to discover " + fTreeTarget->right().key()->getName(),
             [this](Entity& fEntity) { PlayerMoveRight(); }));
@@ -135,35 +138,42 @@ void Game::AddDecisions(Decision& pDecision){
 //Show all the available Decisions
 void Game::ShowDecisions(List<Decision>& pDecision) {
     int x = 1;
-    for (auto it = pDecision.getIteratorHead(); it != it.end(); ++it) {
+    for (DoublyLinkedNodeIterator<Decision> it = pDecision.getIteratorHead(); it != it.end(); ++it) {
         cout << x << ". " << it.getCurrent()->getValue().getName() << endl;
         x++;
     }
 };
 
-//fRootScene & fTreeTarget
+//Attach Left Tree to fTreeTarget
 void Game::AttachLeftScene(Scene* pScene){
     TreeScene* newScene= new TreeScene(pScene);
     fTreeTarget->attachLeft(newScene);
 };
+
+//Attach Right Tree to fTreeTarget
 void Game::AttachRightScene(Scene* pScene){
     TreeScene* newScene = new TreeScene(pScene);
     fTreeTarget->attachRight(newScene);
 };
+
+//Detach Left Tree of fTreeTarget
 void Game::DettachLeftScene(){
     fTreeTarget->detachLeft();
-    
 };
+
+//Detach Right Tree of fTreeTarget
 void Game::DettachRightScene(){
     fTreeTarget->detachRight();
 };
+
+//Player Move Left
 void Game::PlayerMoveLeft(){
+    //If left is empty then...
     if (fTreeTarget->left().isEmpty()) {
         cout << "No route to go to..." << endl;
-    }
-    else {
-        fPlayer->DecreaseStamina(1);
-        IncreaseTurn();
+    }else { //else...
+        fPlayer->DecreaseStamina(1); //Decrease stamina by 1
+        IncreaseTurn(); //Increase player's turn
         system("CLS");
         cout<<"Moving to " << fTreeTarget->left().key()->getName();
         this_thread::sleep_for(chrono::seconds(1));
@@ -172,17 +182,20 @@ void Game::PlayerMoveLeft(){
         cout << ". " << endl;
         this_thread::sleep_for(chrono::seconds(1));
         system("CLS");
-        setTreeTarget(&fTreeTarget->left());
-        PlaySceneEvent();
+        setTreeTarget(&fTreeTarget->left()); //Set TreeTarget to current TreeTarget's left
+        PlaySceneEvent(); //Play event in the Scene
     }
 };
+
+//Player Move right
 void Game::PlayerMoveRight(){
-    if (fTreeTarget->left().isEmpty()) {
+    //if fTreeTarget's right node is empty = no route to go
+    if (fTreeTarget->right().isEmpty()) {
         cout << "No route to go to..." << endl;
     }
     else {
-        fPlayer->DecreaseStamina(1);
-        IncreaseTurn();
+        fPlayer->DecreaseStamina(1); //Decrease stamina by 1
+        IncreaseTurn(); //Increase player's turn
         system("CLS");
         cout<<"Moving to " << fTreeTarget->right().key()->getName();
         this_thread::sleep_for(chrono::seconds(1));
@@ -191,26 +204,33 @@ void Game::PlayerMoveRight(){
         cout << ". " << endl;
         this_thread::sleep_for(chrono::seconds(1));
         system("CLS");
-        setTreeTarget(&fTreeTarget->right());
-        PlaySceneEvent();
+        setTreeTarget(&fTreeTarget->right()); //Set TreeTarget to current TreeTarget's right
+        PlaySceneEvent(); //Play events in the scene
     }
 };
+
+//Go Left (For debugging purposes)
 void Game::Left() {
     setTreeTarget(&fTreeTarget->left());
 };
+
+//Go Right (For debugging purposes)
 void Game::Right() {
     setTreeTarget(&fTreeTarget->right());
 };
+
+//Go back to fSceneRoot
 void Game::BackToRoot() {
+    //If fTreeTarget is equal to fRootScene then the player is already in the Root node
     if (fTreeTarget == fRootScene) {
         cout << "You're already at the crash site!" << endl;
         system("PAUSE");
     }
     else {
-        fPlayer->DecreaseStamina(1);
-        IncreaseTurn();
+        fPlayer->DecreaseStamina(1); //Decrease stamina by 1
+        IncreaseTurn(); //Increase player's turn
         cout << "Moving back to " << fRootScene->key()->getName() << endl;
-        setTreeTarget(fRootScene);
+        setTreeTarget(fRootScene); //Set Tree Target to fRootScene
         PlaySceneEvent();
     }
 }
