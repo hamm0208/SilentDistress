@@ -415,9 +415,8 @@ void LastFightScene(Player* pPlayer, Monster* pMonster) {
 		//Call FightScene function
 		result = FightScene(*pPlayer, *pMonster);
 		if (result == 0) {
-			string message = pMonster->getName() + " has dealt " + to_string(pMonster->getAttackDamage() + pMonster->getWeapon()->getDamage()) + " to you!";
-			DisplayDelayText(message, 2);
-			pPlayer->TakeDamage(pMonster->getAttackDamage() + pMonster->getWeapon()->getDamage());
+			pMonster->selectRandomCombo();
+			pMonster->executeCombo(*pPlayer);
 			system("PAUSE");
 		}
 	} while (result != -1 ||  pPlayer->getCurrentHealth() == 0);
