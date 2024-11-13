@@ -66,6 +66,72 @@ void Game::setIsWin(bool pFlag) {
     isWin = pFlag;
 };
 
+int Game::FightScene() {
+    fPlayer->setIsFighting(true);	//Player is now fighting
+    int choice = 0;					//What choice would the player do
+    bool turnFinish = false;		//Is turn finish
+    do {
+        system("CLS");
+        //Show Player's attributes
+        CheckReduceResources();
+        cout << "Your Attributes:";
+        cout << "\nHealth: \t" << fPlayer->getCurrentHealth() << "/" << fPlayer->getHealth() << endl;
+        cout << "Hunger: \t" << fPlayer->getCurrentHungerLevel() << "/" << fPlayer->getMaxHungerLevel() << endl;
+        cout << "Thirst: \t" << fPlayer->getCurrentThirstLevel() << "/" << fPlayer->getMaxThirstLevel() << endl;
+        cout << "Stamina: \t" << fPlayer->getCurrentStaminaLevel() << "/" << fPlayer->getMaxStaminaLevel() << endl;
+        cout << "Damage: \t" << fPlayer->getAttackDamage() << endl;
+        if (fPlayer->getCurrentItem() == nullptr) {
+            cout << "Equiped Item: \tEmpty Slot" << endl;
+        }
+        else {
+            cout << "Equiped Item: \t" << fPlayer->getCurrentItem()->getName() << endl;
+        }
+        cout << endl;
+
+        //Show monster's attributes
+        cout << fMonster->getName() << "'s Attributes:";
+        cout << "\nHealth: \t" << fMonster->getCurrentHealth() << "/" << fMonster->getHealth() << endl;
+        cout << "Damage: \t" << fMonster->getAttackDamage() + fMonster->getWeapon()->getDamage() << endl;
+        cout << "Weapon Name: \t" << fMonster->getWeapon()->getName() << endl;
+        cout << "Durability: \t" << fMonster->getWeapon()->getDurability() << endl;
+        cout << "Is Badass?: \tYes" << endl;
+
+        cout << "\nWhat will you do?" << endl;
+        cout << "1. Use your item" << endl;  	//Use item
+        cout << "2. Equip an item" << endl;  	//Equip item
+        cout << "3. Give up" << endl;  			//Give up
+        cout << "Choice: ";
+        cin >> choice;
+
+        // Check if the choice is invalid (neither 1 or )
+        if (choice < 1 || choice > 3) {
+            cout << "Invalid choice! Please select 1 - 3." << endl;
+        }
+        if (choice == 1) {	//Use item
+            if (fPlayer->UseCurrentItem()) {	//If succesfully used the item, then...
+                if (Weapon* weapon = dynamic_cast<Weapon*>(fPlayer->getCurrentItem())) {		//If current item is a weapon (it will increase the player's attack damage)
+                    fMonster->TakeDamage(fPlayer->getAttackDamage());
+                    string message = "\nYou have dealt " + to_string(fPlayer->getAttackDamage()) + " to " + fMonster->getName() + "!\n";
+                    cout << message << endl;
+                    this_thread::sleep_for(chrono::seconds(1));
+                    fPlayer->setAttackDamage(fPlayer->getAttackDamage() - weapon->getDamage()); //Decrease the damage back down to the original damage
+                }
+                turnFinish = true;	//Finish turn
+                IncreaseTurn();
+            }
+        }
+        else if (choice == 2) { 	//Equip item
+            fPlayer->EquipItem();	//Cal player's EquipItem method
+        }
+        else if (choice == 3) {		//Player give up
+            turnFinish = true;
+            return -1; //-1 means the player gave up
+        }
+    } while (!turnFinish);
+    return 0; //0 player's turn finishred
+    fPlayer->setIsFighting(false);	//Player stop fighting
+};
+
 //Remove all the decisions in fDecisions
 void Game::RemoveDecisions() {
     while (!fDecisions.isEmpty()) {
@@ -299,6 +365,8 @@ void Game::DiscoverMenu() {
         }
     }
 }
+
+//Play current scene's event
 void Game::PlaySceneEvent(){
     fTreeTarget->key()->PlayEvent();
 };
@@ -306,7 +374,8 @@ void Game::PlaySceneEvent(){
 //fPlayer;
 void Game::DisplayPlayerMenu() {
     if (!getIsGameOver()) {
-        LoadPlayerMenuDecision();
+        LoadPlayerMenuDecision(); //Load player menu
+        //Player's stats
         cout << "\n---------------- Player Menu ----------------" << endl;
         cout << "Current Location: " << getCurrentScene()->getName() << endl;
         cout << "\nHealth: \t" << fPlayer->getCurrentHealth() << "/" << fPlayer->getHealth() << endl;
@@ -373,6 +442,8 @@ void Game::DisplayInventoryMenu() {
         }
     }
 };
+
+//Display loot menu
 void Game::DisplayLootMenu() {
     system("CLS");
     if (!getIsGameOver()) {
@@ -386,7 +457,7 @@ void Game::DisplayLootMenu() {
         this_thread::sleep_for(chrono::seconds(1));
         while (inLootMenu) {
             system("CLS");
-            LoadLootMenuDecision();
+            LoadLootMenuDecision();     //Load loot menu's decisions
             int choice;
             cout << "---------------- " << currentScene->getName() << "'s loot ----------------" << endl;
             if (currentScene->getLoot().isEmpty()) {
@@ -407,7 +478,7 @@ void Game::DisplayLootMenu() {
                     inLootMenu = false; // Exit loot menu
                 }
                 else {
-                    fPlayer->MakeDecision(fDecisions[choice]);
+                    fPlayer->MakeDecision(fDecisions[choice]);  //Player make decision
                 }
             }
             else {
@@ -417,20 +488,27 @@ void Game::DisplayLootMenu() {
         }
     }
 };
+
+//Show look details
 void Game::ShowLootDetails() {
     Scene* currentScene = getCurrentScene();
     currentScene->ShowLootsDetails();
     system("PAUSE");
 }
+
+//Reduce player's resources
 void Game::CheckReduceResources() {
+    //Every 3 turn, increase thirst level
     if (fTurnThirst % 3 == 0 && fTurnThirst != 0) {
         fPlayer->IncreaseThirstLevel(1);
         fTurnThirst = 0;
     }
+    //Every 4 turns, decrease stamina
     if (fTurnStamina % 4 == 0 && fTurnStamina != 0) {
         fPlayer->DecreaseStamina(1);
         fTurnStamina = 0;
     }
+    //Every 5 turns, increase hunger level
     if (fTurnHunger % 5 == 0 && fTurnHunger != 0) {
         fPlayer->IncreaseHungerLevel(1);
         fTurnHunger = 0;
@@ -443,56 +521,90 @@ void Game::CheckReduceResources() {
 
 void Game::PlayerPickUpLoot() {
     system("CLS");
-    Scene* currentScene = getCurrentScene();
-    int continuePicking = 1;  // Initialize to 1 (Yes) to start the loop
+    Scene* currentScene = getCurrentScene(); //Current Scene the player is in
+    // Check if there's any loot in the current scene
     if (currentScene->getLoot().isEmpty()) {
         cout << "There's no loot here!" << endl;
+        return;
     }
-    else {
-        while (continuePicking == 1) {  // Loop while the player chooses "Yes"
-            int index = 0;
+    // Initialize iterator and index
+    DoublyLinkedNodeIterator<Item*> it = currentScene->getLoot().getIteratorHead();
+    int index = 0;
 
-            cout << "---------------- " << currentScene->getName() << "'s loot ----------------" << endl;
-            currentScene->ShowLoots();
-            cout << "---------------------------------------------------------" << endl;
-            cout << "\nType the number corresponding to the desired item and press Enter (e.g., 1): ";
-            cin >> index;
-            index--;  // Adjust for zero-based indexing
+    // Start interaction loop
+    while (true) {
+        // Display the current loot item
+        Item* currentItem = *it;
+        cout << "-------------------------------- " << currentScene->getName() << "'s loot --------------------------------" << endl;
+        currentScene->ShowLootDetails(currentItem);
+        cout << "-----------------------------------------------------------------------------------------" << endl;
 
-            // Validate the player's input for a valid index
-            if (index < 0 || index >= currentScene->getLoot().size()) {
-                cout << "Invalid choice!" << endl;
-                cout << endl;
-            }
-            else {
-                // Retrieve the selected item and add it to the player's inventory
-                Item* selectedItem = currentScene->getLoot()[index];
-                if (fPlayer->AddItem(selectedItem)) {
-                    currentScene->getLoot().popAt(index); // Remove the item from the scene's loot
+        // Display options for the player
+        cout << "Options:\n";
+        cout << "1. Next Item\n";       // Option to move to the next item
+        cout << "2. Previous Item\n";   // Option to move to the previous item
+        cout << "3. Take Item\n";       // Option to take the current item
+        cout << "4. Exit Menu\n";       // Option to exit the loot menu
+        cout << "Choice: ";             // Prompt the player for their choice
+        // Get player choice
+        int choice;
+        cin >> choice;
+
+        //If choice is to move to next item, and currentItem is not the last then...
+        if (choice == 1 && it != currentScene->getLoot().getIteratorLast()) {
+            ++it;  // Move to the next item
+            index++; //Increase index by 1
+        }
+        //If choice is to move to previous item, and currentItem is not the head then...
+        else if (choice == 2 && it != currentScene->getLoot().getIteratorHead()) {
+            --it;  // Move to the previous item
+            index--; //Decrease index by 1
+        }
+        else if (choice == 3) {
+            // Take (remove) the current item from loot
+            Item* selectedItem = currentScene->getLoot()[index];
+
+            //if player's succesfully added the item, then...
+            if (fPlayer->AddItem(selectedItem)) {
+                currentScene->getLoot().popAt(index); // Remove the item from the scene's loot
+                if (currentScene->getLoot().isEmpty()) {
+                    cout << "All loot has been taken!\n";
+                    break;
                 }
-            }
-
-            // Prompt the player if they want to pick up another item
-            if (currentScene->getLoot().isEmpty()) {
-                cout << "No more loot left!" << endl;
-                continuePicking = 2;
-
-            }
-            else {
-                cout << "\nDo you want to pick up another item?" << endl;
-                cout << "1. Yes\n2. No" << endl;
-                cout << "Enter your choice: ";
-                cin >> continuePicking;
-            }
-
-            // Clear the screen if the player chooses to continue
-            if (continuePicking == 1) {
-                system("CLS");
+                // Reinitialize iterator after modification
+                else if (index >= currentScene->getLoot().size()) {
+                    // If we removed the last item, reset to the previous one
+                    index = currentScene->getLoot().size() - 1;
+                    it = currentScene->getLoot().getIteratorHead();
+                    for (int i = 0; i < index; ++i) {
+                        ++it;
+                    }
+                }
+                else {
+                    // Otherwise, reset iterator to the current index
+                    it = currentScene->getLoot().getIteratorHead();
+                    for (int i = 0; i < index; ++i) {
+                        ++it;
+                    }
+                }
+            }else {
+                system("PAUSE");
             }
         }
+        else if (choice == 4) {
+            cout << "Exiting loot view.\n";
+            system("PAUSE");
+            break;  // Exit the loop
+        }
+        else {
+            cout << "Invalid choice or no more items in that direction.\n";
+            system("PAUSE");
+        }
+        system("CLS");
     }
 }
 
+//Play game
 void Game::Play() {
     if (fRootScene->isEmpty()) {
         cout << "There's no scene in the game!" << endl;
@@ -505,9 +617,9 @@ void Game::Play() {
             else if (fMonster->getCurrentHealth() == 0) {
                 setIsWin(true);
             }else {
-                PlaySceneEvent();
-                CheckReduceResources();
-                DisplayPlayerMenu();
+                PlaySceneEvent(); //Play scene's event
+                CheckReduceResources(); //Check for flags to reduce resources
+                DisplayPlayerMenu();    //Display Menu
             }
         }
         if (isWin) {

@@ -1,19 +1,19 @@
 #include "Event.h"
 //Constructor
-Event::Event() : fEntity(nullptr), fEvent(nullptr) {}
+Event::Event() : fGame(nullptr), fEvent(nullptr) {}
 
-Event::Event(Entity* entity, function<void(Entity&)> pEvent)
-    : fEntity(entity),fEvent(pEvent) {
+Event::Event(Game* pGame, function<void(Game&)> pEvent)
+    : fGame(pGame),fEvent(pEvent) {
 }
 
 //Getter for fEnttiy
-Entity* Event::getEntity() {
-    return fEntity;
+Game* Event::getGame() {
+    return fGame;
 }
 
 //Call the fEvent method
 void Event::playEvent() {
     if (fEvent != nullptr) {
-        fEvent(*fEntity);
+        fEvent(*fGame);
     }
 }

@@ -26,5 +26,6 @@ class Scene{
 		void PlayEvent();				//Play the event
 		bool IsEventEmpty();			//Check if the event is empty
 		void ShowLoots();				//Show the loots in the scene
+		void ShowLootDetails(Item* pItem);
         void ShowLootsDetails();		//Show the loot details
 };

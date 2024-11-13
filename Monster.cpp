@@ -72,7 +72,7 @@ void Monster::executeCombo(Player& pPlayer) {
         this_thread::sleep_for(chrono::milliseconds(1000));
         totalDamage+=action.damage;
     }
-    cout << getName() << " has dealt " << to_string(totalDamage);
+    cout << getName() << " has dealt " << to_string(totalDamage) <<endl;
 }
 
 //Jumpscare 1

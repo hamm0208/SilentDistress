@@ -108,7 +108,7 @@ bool Introduction(Game& pGame) {
 		case 1:
 			cout << "\nStarting a new game...\n";
 			exitMenu = true;  // Exit menu loop and start the game
-			RulesOfTheGame();
+			//RulesOfTheGame();
 			return true;  // Proceed to the game
 			break;
 		case 2:
@@ -194,8 +194,10 @@ int FightScene(Player& pPlayer, Monster& pMonster){
 	pPlayer.setIsFighting(false);	//Player stop fighting
 };
 
-void VillageFightScene(Player* pPlayer, Monster* pMonster) {
+void VillageFightScene(Game& pGame) {
 	int result = 0;
+	Player* pPlayer = pGame.getPlayer();
+	Monster* pMonster = pGame.getMonster();
 	do {
 		//If player's health reaches 0, means he lose
 		if (pPlayer->getCurrentHealth() == 0) {
@@ -210,7 +212,7 @@ void VillageFightScene(Player* pPlayer, Monster* pMonster) {
 			break;
 		}
 		//Assign the result from FightScene fucntion to result
-		result = FightScene(*pPlayer, *pMonster);
+		result = pGame.FightScene();
 
 		//If result is not -1, then the monster will deal damage to the player
 		if (result == 0) {
@@ -240,7 +242,7 @@ void VillageFightScene(Player* pPlayer, Monster* pMonster) {
 	}
 }
 
-void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
+void InitScene1(Scene& pCrashSiteScene, Game* pGame, Item* AllItems[ALL_ITEM_COUNT]) {
 	pCrashSiteScene.AddLoot(AllItems[0]);  // Water Bottle
 	pCrashSiteScene.AddLoot(AllItems[0]);  // Water Bottle
 	pCrashSiteScene.AddLoot(AllItems[2]);  // MRE Pack
@@ -248,8 +250,9 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 	pCrashSiteScene.AddLoot(AllItems[6]);  // First Aid Kit
 	pCrashSiteScene.AddLoot(AllItems[4]);  // Survival Knife
 	pCrashSiteScene.AddLoot(AllItems[8]);  // Sleeping Bag
+	/*
 	//Events for scene1
-	Event* event1 = new Event(pPlayer, [pPlayer](Entity& e) {
+	Event* event1 = new Event(pGame, [pGame](Game& e) {
 		system("CLS");
 		DisplayDelayText("You board the plane, settle into your seat, and stow your bag, feeling both excitement and fatigue.\n"
                      "As you buckle up, you sigh in relief, home is just a flight away.\n", 1);
@@ -274,7 +277,7 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 
 	});
 	//2nd event of scene 2
-	Event* event2 = new Event(pPlayer, [pPlayer](Entity& e) {
+	Event* event2 = new Event(pGame, [pGame](Game& e) {
 		DisplayDelayText("Your head aches as you wake, smoke and fire crackling around you.\n"
                      "The plane is wrecked, debris everywhere.\n", 2);
 		DisplayDelayText("The jungle is still, then a deep growl echoes. Something huge moves nearby.\n", 2);
@@ -291,15 +294,15 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 		DisplayDelayText("The static clears for a moment, and you can hear the distant sound of a helicopter overhead.\n", 2);
 		DisplayDelayText("A surge of hope fills you, but there's no time to waste.\nYou gather your strength and prepare to make your way to the edge of the island,\n"
 						 "your heart racing with both fear and anticipation.\n", 2);
-		DisplayDelayText(e.getName() + ": I should loot the area and find the path to the outskirts of the island...\n", 2);
+		DisplayDelayText(e.getPlayer()->getName() + ": I should loot the area and find the path to the outskirts of the island...\n", 2);
 		system("PAUSE");
 		system("CLS");
 	});
 	//Add events to the scene
 	pCrashSiteScene.AddEvent(event1);
-	pCrashSiteScene.AddEvent(event2);
+	pCrashSiteScene.AddEvent(event2);*/
 }
-void InitScene2(Scene& pJungleClearingScene, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
+void InitScene2(Scene& pJungleClearingScene, Game* pGame, Item* AllItems[ALL_ITEM_COUNT]) {
 	pJungleClearingScene.AddLoot(AllItems[11]); // Bamboo Water
 	pJungleClearingScene.AddLoot(AllItems[11]); // Bamboo Water
 	pJungleClearingScene.AddLoot(AllItems[3]);  // Bananas
@@ -308,9 +311,9 @@ void InitScene2(Scene& pJungleClearingScene, Player* pPlayer, Monster* pMonster,
 	pJungleClearingScene.AddLoot(AllItems[7]);  // Wild Mint
 	pJungleClearingScene.AddLoot(AllItems[7]);  // Wild Mint
 	//Scene2's event
-	Event* event1 = new Event(pPlayer, [pMonster](Entity& e) {
+	Event* event1 = new Event(pGame, [pGame](Game& e) {
 		DisplayDelayText("Suddenly, out of the shadows, the creature emerges with a loud, terrifying roar!", 1);
-		pMonster->Jumpscare1();
+		pGame->getMonster()->Jumpscare1();
 		DisplayDelayText("Panic sets in as you sprint into the jungle, desperate to escape.\n", 2);
 		DisplayDelayText("As you push through the dense jungle, your breath heavy, every rustle in the trees makes you jump.\n", 2);
 		DisplayDelayText("Finally, after what feels like an eternity, you break through the trees and find yourself in a small clearing.\n", 2);
@@ -328,18 +331,18 @@ void InitScene2(Scene& pJungleClearingScene, Player* pPlayer, Monster* pMonster,
 	});
 	pJungleClearingScene.AddEvent(event1);
 }
-void InitScene3(Scene& pVillage, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
+void InitScene3(Scene& pVillage, Game* pGame, Item* AllItems[ALL_ITEM_COUNT]) {
 	pVillage.AddLoot(AllItems[1]);  // Coconut Water
 	pVillage.AddLoot(AllItems[13]); // Cooked Meat
 	pVillage.AddLoot(AllItems[5]);  // Axe
 	pVillage.AddLoot(AllItems[12]); // Hammock
 	pVillage.AddLoot(AllItems[6]);  // First Aid Kit
 	//Scene3's event
-	Event* event1 = new Event(pPlayer,[pMonster, pPlayer](Entity& e) {
+	Event* event1 = new Event(pGame,[pGame](Game& e) {
 		DisplayDelayText("After another long trek through the jungle, you finally stumble upon an abandoned village.\n", 2);
 		DisplayDelayText("It's eerily quiet, but the hairs on the back of your neck stand on end.\n", 2);
 		DisplayDelayText("Something feels wrong here.\n", 2);
-		pMonster->Ambush(*pPlayer);
+		pGame->getMonster()->Ambush(*pGame->getPlayer());
 		DisplayDelayText("Your pulse races as you weigh your options. The creature is fast, but you might have a chance if you fight.\n", 2);
 
 		int choice = 0;
@@ -355,7 +358,7 @@ void InitScene3(Scene& pVillage, Player* pPlayer, Monster* pMonster, Item* AllIt
 		}
 		//If player decide to fight...
 		if (choice == 1) {
-			VillageFightScene(pPlayer, pMonster); //Call FightScene method
+			VillageFightScene(e); //Call FightScene method
 		}else {
 			system("CLS");
 			DisplayDelayText("You dash deeper into the village, heart racing.\n", 2);
@@ -372,20 +375,20 @@ void InitScene3(Scene& pVillage, Player* pPlayer, Monster* pMonster, Item* AllIt
 	//Add events to Scene3
 	pVillage.AddEvent(event1);
 }
-void InitScene4(Scene& pDeepJungle, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
+void InitScene4(Scene& pDeepJungle, Game* pGame, Item* AllItems[ALL_ITEM_COUNT]) {
 	pDeepJungle.AddLoot(AllItems[7]);	//Wild mint
 	pDeepJungle.AddLoot(AllItems[11]);	// Bamboo Water
 	pDeepJungle.AddLoot(AllItems[3]);	// Bananas
 	pDeepJungle.AddLoot(AllItems[10]);	// Jungle Roots
 	//Scene4's event
-	Event* event1 = new Event(pPlayer, [pMonster, pPlayer](Entity& e) {
-		pMonster->Jumpscare2();
+	Event* event1 = new Event(pGame, [pGame](Game& e) {
+		pGame->getMonster()->Jumpscare2();
 		system("CLS");
 		DisplayDelayText("The jungle around you seems silent.\nYou see little movement as you make your way through the dense foliage,\n", 2);
 		DisplayDelayText("Only the sound of your footsteps breaking the silence.\n", 2);
 		DisplayDelayText("But suddenly, a chilling voice echoes from the shadows: 'You think you can escape? I'll be waiting for you at the edge of the island.'\n", 2);
 		DisplayDelayText("The voice sends a cold shiver down your spine, and you realize the monster is lurking, watching your every move.\n", 2);
-		DisplayDelayText( pPlayer->getName() + ":I better get everything ready first before I go to the edge of the island... There's no turning back from there.\n", 2);
+		DisplayDelayText(pGame->getPlayer()->getName() + ":I better get everything ready first before I go to the edge of the island... There's no turning back from there.\n", 2);
 		system("PAUSE");
 		system("CLS");
 	});
@@ -394,7 +397,9 @@ void InitScene4(Scene& pDeepJungle, Player* pPlayer, Monster* pMonster, Item* Al
 }
 
 //Last Fight Scene
-void LastFightScene(Player* pPlayer, Monster* pMonster) {
+void LastFightScene(Game& pGame) {
+	Player* pPlayer = pGame.getPlayer();
+	Monster* pMonster = pGame.getMonster();
 	int result = 0;
 	do {
 		//When player dies
@@ -412,7 +417,7 @@ void LastFightScene(Player* pPlayer, Monster* pMonster) {
 			break;
 		}
 		//Call FightScene function
-		result = FightScene(*pPlayer, *pMonster);
+		result = pGame.FightScene();
 		if (result == 0) {
 			pMonster->selectRandomCombo();
 			pMonster->executeCombo(*pPlayer);
@@ -436,16 +441,16 @@ void LastFightScene(Player* pPlayer, Monster* pMonster) {
 }
 
 //Scene5
-void InitScene5(Scene& pHelicopterRescue, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
+void InitScene5(Scene& pHelicopterRescue, Game* pGame, Item* AllItems[ALL_ITEM_COUNT]) {
 	//Scene5's event
-	Event* event1 = new Event(pPlayer, [pPlayer, pMonster](Entity& e) {
+	Event* event1 = new Event(pGame, [pGame](Game& e) {
 		DisplayDelayText("As you push through the dense jungle, your ears catch the faint sound of helicopter blades cutting through the air.\n", 2);
 		DisplayDelayText("You force your legs to move faster, adrenaline kicking in as the sound becomes unmistakable.\n", 2);
 		DisplayDelayText("Then, suddenly, a figure steps out from the shadows, blocking your path. The monster stands tall, its eyes locked on you.\n", 2);
 		DisplayDelayText("With no choice left, you prepare for the final battle. It's him or you. You must fight to survive.\n", 2);
 		system("PAUSE");
 		system("CLS");
-		LastFightScene(pPlayer, pMonster);
+		LastFightScene(e);
 	});
 	//Add event to Scene5
 	pHelicopterRescue.AddEvent(event1);
@@ -457,7 +462,7 @@ int main() {
 	//Initialise Variable
 	Player* player;
 	Weapon* playerDefaultWeapon = new Weapon("Bare Hands", "Good Ole Bare Knuckles", 0, false, 1, 1000); //Default player weapon
-	Weapon* monsterDefaultWeapon = new Weapon("Claw of the Damned", "A razor-sharp claw imbued with dark energy. It causes deep wounds and instills fear in its victims.", 10, false, 15, 100); //Default monster weapon
+	Weapon* monsterDefaultWeapon = new Weapon("Claw of the Damned", "A razor-sharp claw imbued with dark energy. It causes deep wounds and instills fear in its victims.", 10, false, 10, 100); //Default monster weapon
 	Monster* dreadstalker = new Monster("Dreadstalker", 20, 200, monsterDefaultWeapon); //Allocate memory for Monster variable on the heap
 	//All Items of the game
 	Item* AllItems[ALL_ITEM_COUNT] = {
@@ -466,7 +471,7 @@ int main() {
 		new Food("MRE Pack", "Ready-to-eat meal for survival", 10, true, 4, false, true, 20, 4),
 		new Food("Bananas", "These wild bananas are rich in carbohydrates and easy to find in the jungle.", 8, true, 7, false, false, 15, 4),
 		new Weapon("Survival Knife", "A versatile blade for hunting and self-defense", 10, false, 8, 20),
-		new Weapon("Axe", "A powerful tool for defense, but won't last long.", 30, false, 15, 6),
+		new Weapon("Axe", "A powerful tool for defense, but won't last long.", 20, false, 25, 7),
 		new Medical("First Aid Kit", "Everything you need to tend to your wounds and stay alive.", 10, true, 80),
 		new Medical("Wild Mint", "Wild mint leaves can relieve headaches and stomach aches. A natural way to ease discomfort.", 1, false, 20),
 		new SleepingBag("Sleeping Bag", "Compact and warm, ideal for the wild", 15, false, 8, dreadstalker),
@@ -503,11 +508,11 @@ int main() {
 		newGame.getPlayer()->setName(playerName);
 
 		//All available scenes in the game
-		InitScene1(*AllScenes[0], player, dreadstalker, AllItems);	//Initialise Scene1
-		InitScene2(*AllScenes[1], player, dreadstalker, AllItems);	//Initialise Scene2
-		InitScene3(*AllScenes[2], player, dreadstalker, AllItems);	//Initialise Scene3
-		InitScene4(*AllScenes[3], player, dreadstalker, AllItems);	//Initialise Scene4
-		InitScene5(*AllScenes[4], player, dreadstalker, AllItems);	//Initialise Scene5
+		InitScene1(*AllScenes[0], &newGame, AllItems);	//Initialise Scene1
+		InitScene2(*AllScenes[1], &newGame, AllItems);	//Initialise Scene2
+		InitScene3(*AllScenes[2], &newGame, AllItems);	//Initialise Scene3
+		InitScene4(*AllScenes[3], &newGame, AllItems);	//Initialise Scene4
+		InitScene5(*AllScenes[4], &newGame, AllItems);	//Initialise Scene5
 		//Attach all the scene to the binary tree of scene in newGame
 		BTree<Scene*>* rootScene = new BTree<Scene*>(AllScenes[0]); //Root Scene of the game
 		newGame.setRootScene(rootScene);							//Setting root scene

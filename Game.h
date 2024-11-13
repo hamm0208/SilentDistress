@@ -38,6 +38,7 @@ class Game{
         void setRootScene(TreeScene* pNewRoot);
         void setIsGameOver(bool pFlag);
 
+        int FightScene();
         void RemoveDecisions();                         //Remove all decisions from fDecisions
         void LoadPlayerMenuDecision();                  //Load Player menu decisions
         void LoadInventoryMenuDecision();               //Load Inventory menu decisions

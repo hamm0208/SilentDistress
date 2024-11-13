@@ -210,7 +210,7 @@ bool Inventory::UseCurrentItem(Player& pPlayer){
 				cout << "Decreasing " << fCurrentItem->getName() << "'s durability by 1" << endl;
 				if(weapon->getCurrentDurability() <= 0){ //If durability reaches 0, then it will call DecreaseCurrentItemQuantity(1), which will decrease the current item by 1
 					DecreaseCurrentItemQuantity(1);
-					if (getCurrentItemQuantity() >= 0) {	//If there are still extra quantity, then change the CurrentDurability to the max Durability
+					if (getCurrentItemQuantity() > 0) {	//If there are still extra quantity, then change the CurrentDurability to the max Durability
 						cout << "Decreasing " << fCurrentItem->getName() << "'s quantity by 1" << endl;
 						cout << "You only have " << getCurrentItemQuantity() << " " << getCurrentItem()->getName() << " left!\n" << endl;
 						weapon->setCurrentDurability(weapon->getDurability());

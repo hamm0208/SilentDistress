@@ -57,6 +57,7 @@ void Scene::PlayEvent() {
         this_thread::sleep_for(chrono::milliseconds(1500));
     }
 };
+
 // Checks if the event list is empty
 bool Scene::IsEventEmpty() {
     return fEvents.IsEmpty();  // Returns true if the event list (fEvents) is empty, otherwise false
@@ -72,10 +73,14 @@ void Scene::ShowLoots() {
     int x = 1;  // Initializes a counter to number the loot items
     for (DoublyLinkedNodeIterator<Item*> it = fLoot.getIteratorHead(); it != it.end(); ++it) {  // Iterates through the loot list using an iterator
         Item* currentItem = *it;  // Dereferences the iterator to get the current item
-        cout << x << ". " << currentItem->getName() << endl;  // Prints the loot item number and its name
+        cout << x << ". " << currentItem->getName() <<" (Weight:" << currentItem->getWeight() << ")" << endl;  // Prints the loot item number and its name
         x++;  // Increments the counter for the next loot item
     }
 };
+
+void Scene::ShowLootDetails(Item* pItem) {
+    pItem->Inspect();
+}
 
 void Scene::ShowLootsDetails(){
     system("CLS");
@@ -88,7 +93,6 @@ void Scene::ShowLootsDetails(){
         currentItem->Inspect(); //Call item's inspect method
         cout << "Total Weight:\t\t\t" << currentItem->getWeight() << "\n" << endl;
         cout << "==================================================================" << endl;
-
         isEmpty = true;
     }
     if (!isEmpty) {
