@@ -108,7 +108,7 @@ bool Introduction(Game& pGame) {
 		case 1:
 			cout << "\nStarting a new game...\n";
 			exitMenu = true;  // Exit menu loop and start the game
-			//RulesOfTheGame();
+			RulesOfTheGame();
 			return true;  // Proceed to the game
 			break;
 		case 2:
@@ -248,7 +248,6 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 	pCrashSiteScene.AddLoot(AllItems[6]);  // First Aid Kit
 	pCrashSiteScene.AddLoot(AllItems[4]);  // Survival Knife
 	pCrashSiteScene.AddLoot(AllItems[8]);  // Sleeping Bag
-	/*
 	//Events for scene1
 	Event* event1 = new Event(pPlayer, [pPlayer](Entity& e) {
 		system("CLS");
@@ -299,7 +298,6 @@ void InitScene1(Scene& pCrashSiteScene, Player* pPlayer, Monster* pMonster, Item
 	//Add events to the scene
 	pCrashSiteScene.AddEvent(event1);
 	pCrashSiteScene.AddEvent(event2);
-	*/
 }
 void InitScene2(Scene& pJungleClearingScene, Player* pPlayer, Monster* pMonster, Item* AllItems[ALL_ITEM_COUNT]) {
 	pJungleClearingScene.AddLoot(AllItems[11]); // Bamboo Water
