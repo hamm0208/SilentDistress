@@ -1,6 +1,27 @@
-bc's Decisions Log:
+Beckham's Decisions Log:
 
 Status: Lose
+
+Decision: Search for loot
+Description: Search the area for loot.
+
+Decision: View All Item Details
+Description: Take a look at all of the item details in 
+
+Decision: Take an item
+Description: Take an item from  the loot to your inventory
+
+Decision: View Inventory
+Description: Take a look at all the items in your inventory.
+
+Decision: View Character's Attributes
+Description: Take a look at all the attributes of your character.
+
+Decision: Discover more areas
+Description: Moving to next location
+
+Decision: Move left to Jungle Clearing
+Description: Move to the left route to discover Jungle Clearing
 
 Decision: Search for loot
 Description: Search the area for loot.
@@ -8,10 +29,124 @@ Description: Search the area for loot.
 Decision: Take an item
 Description: Take an item from  the loot to your inventory
 
-Decision: View All Item Details
-Description: Take a look at all of the item details in 
+Decision: View Character's Attributes
+Description: Take a look at all the attributes of your character.
 
-Decision: Exit Game
-Description: Exit the game
+Decision: Discover more areas
+Description: Moving to next location
+
+Decision: Move left to Abandoned Village
+Description: Move to the left route to discover Abandoned Village
+
+Decision: View Inventory
+Description: Take a look at all the items in your inventory.
+
+Decision: Equip an item
+Description: Equip an item from your inventory
+
+Decision: Use Equipped Item
+Description: Use your currently equipped item.
+
+Decision: View Inventory
+Description: Take a look at all the items in your inventory.
+
+Decision: View All Item Details
+Description: Take a look at all of the item details in your inventory
+
+Decision: Equip an item
+Description: Equip an item from your inventory
+
+Decision: Use Equipped Item
+Description: Use your currently equipped item.
+
+Decision: View Inventory
+Description: Take a look at all the items in your inventory.
+
+Decision: Equip an item
+Description: Equip an item from your inventory
+
+Decision: Use Equipped Item
+Description: Use your currently equipped item.
+
+Decision: Search for loot
+Description: Search the area for loot.
+
+Decision: Take an item
+Description: Take an item from  the loot to your inventory
+
+Decision: View Inventory
+Description: Take a look at all the items in your inventory.
+
+Decision: View All Item Details
+Description: Take a look at all of the item details in your inventory
+
+Decision: Discard an item
+Description: Discard an item from your inventory
+
+Decision: Search for loot
+Description: Search the area for loot.
+
+Decision: Take an item
+Description: Take an item from  the loot to your inventory
+
+Decision: Discover more areas
+Description: Moving to next location
+
+Decision: Head back to Crash Site
+Description: Take a look at all of the item details in your inventory
+
+Decision: Discover more areas
+Description: Moving to next location
+
+Decision: Move left to Jungle Clearing
+Description: Move to the left route to discover Jungle Clearing
+
+Decision: Discover more areas
+Description: Moving to next location
+
+Decision: Move right to Deep Jungle
+Description: Move to the right route to discover Deep Jungle
+
+Decision: View Inventory
+Description: Take a look at all the items in your inventory.
+
+Decision: View All Item Details
+Description: Take a look at all of the item details in your inventory
+
+Decision: Equip an item
+Description: Equip an item from your inventory
+
+Decision: Use Equipped Item
+Description: Use your currently equipped item.
+
+Decision: View Inventory
+Description: Take a look at all the items in your inventory.
+
+Decision: View All Item Details
+Description: Take a look at all of the item details in your inventory
+
+Decision: Equip an item
+Description: Equip an item from your inventory
+
+Decision: Use Equipped Item
+Description: Use your currently equipped item.
+
+Decision: Use Equipped Item
+Description: Use your currently equipped item.
+
+Decision: View Inventory
+Description: Take a look at all the items in your inventory.
+
+Decision: Equip an item
+Description: Equip an item from your inventory
+
+Decision: Use Equipped Item
+Description: Use your currently equipped item.
+
+Decision: Discover more areas
+Description: Moving to next location
+
+Decision: Move left to Edge of the Island
+Description: Move to the left route to discover Edge of the Island
 
 End of decisions.
